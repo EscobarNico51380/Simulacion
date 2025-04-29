@@ -153,6 +153,19 @@ def graficar_capital(capital_historial, titulo, nombre_archivo):
     plt.savefig(nombre_archivo)
     plt.close()
 
+def graficar_todas_corridas(historiales_capital, titulo, nombre_archivo):
+    plt.figure(figsize=(10, 6))
+    for i, capital_historial in enumerate(historiales_capital):
+        plt.plot(range(1, len(capital_historial) + 1), capital_historial, label=f"Corrida {i + 1}", alpha=0.7)
+    plt.axhline(y=historiales_capital[0][0], color='blue', linestyle='--', label='Capital Inicial')
+    plt.title(titulo)
+    plt.xlabel("Tiradas")
+    plt.ylabel("Capital")
+    plt.grid(True)
+    plt.legend()
+    plt.savefig(nombre_archivo)
+    plt.close()    
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--corridas", type=int, default=1, help="Número de corridas")
@@ -164,13 +177,15 @@ def main():
     args = parser.parse_args()
 
     banca_rotas = 0
+    historiales_capital = []
 
     for i in range(args.corridas):
         capital_historial, banca_rota = jugar(args.tiradas, args.elegido, args.estrategia, args.capital, args.inicial)
+        historiales_capital.append(capital_historial)
         graficar_capital(capital_historial, f"Corrida {i+1} - Evolución del Capital", f"capital_corrida_{i+1}.png")
         if banca_rota or capital_historial[-1] <= 0:
             banca_rotas += 1
-
+    graficar_todas_corridas(historiales_capital, "Evolución del Capital - Todas las Corridas", "capital_todas_corridas.png")
     print(f"Simulación finalizada.")
     print(f"Resultados de la estrategia '{args.estrategia}' con capital '{args.capital}':")
     print(f"Capital inicial: {args.inicial}")
