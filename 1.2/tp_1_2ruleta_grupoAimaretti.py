@@ -168,7 +168,7 @@ def main():
     for i in range(args.corridas):
         capital_historial, banca_rota = jugar(args.tiradas, args.elegido, args.estrategia, args.capital, args.inicial)
         graficar_capital(capital_historial, f"Corrida {i+1} - Evolución del Capital", f"capital_corrida_{i+1}.png")
-        if banca_rota:
+        if banca_rota or capital_historial[-1] <= 0:
             banca_rotas += 1
 
     print(f"Simulación finalizada.")
