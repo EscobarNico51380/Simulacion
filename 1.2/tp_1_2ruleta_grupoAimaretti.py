@@ -39,7 +39,7 @@ def estrategia(apuesta_actual, historial, gano, tipo):
     elif tipo == 'f':
         nueva_apuesta, historial = apostar_fibonacci(historial, gano)
         return nueva_apuesta, historial
-    elif tipo == 'o':
+    elif tipo == 'p':
         return apostar_paroli(apuesta_actual, gano), historial
     else:
         raise ValueError("Estrategia no reconocida")
@@ -139,7 +139,22 @@ def jugar(tiradas, numero_elegido, tipo_estrategia, capital_tipo, capital_inicia
     while len(capital_historial) < tiradas:
         capital_historial.append(capital)
 
-    return capital_historial, banca_rota
+    frsa = []
+    aciertos = 0
+    for i, c in enumerate(capital_historial):
+        # Primer tirada
+        if i == 0:
+            frsa.append(1 if c > capital_inicial else 0)
+            if c > capital_inicial:
+                aciertos += 1
+        # El resto de las tiradas
+        else:
+            #Compara contra el capital de la tirada anterior
+            if capital_historial[i] > capital_historial[i-1]:
+                aciertos += 1
+            #Agrega la frecuencia relativa de aciertos de la tirada i al arreglo
+            frsa.append(aciertos / (i + 1))
+    return capital_historial, banca_rota, frsa
 
 def graficar_capital(capital_historial, titulo, nombre_archivo):
     plt.figure(figsize=(10, 6))
@@ -150,6 +165,17 @@ def graficar_capital(capital_historial, titulo, nombre_archivo):
     plt.ylabel("Capital")
     plt.grid(True)
     plt.legend()
+    plt.savefig(nombre_archivo)
+    plt.close()
+    
+def graficar_frsa(frsa, titulo, nombre_archivo):
+    plt.figure(figsize=(8, 5))
+    plt.bar(range(1, len(frsa) + 1), frsa, color='salmon', edgecolor='blue')
+    plt.title(titulo)
+    plt.xlabel("n (número de tiradas)")
+    plt.ylabel("frsa (frecuencia relativa)")
+    plt.ylim(0, 1)
+    plt.grid(True, linestyle='--', alpha=0.5)
     plt.savefig(nombre_archivo)
     plt.close()
 
@@ -171,7 +197,7 @@ def main():
     parser.add_argument("-c", "--corridas", type=int, default=1, help="Número de corridas")
     parser.add_argument("-n", "--tiradas", type=int, default=1000, help="Número de tiradas por corrida")
     parser.add_argument("-e", "--elegido", type=str, default='17', help="Número elegido")
-    parser.add_argument("-s", "--estrategia", type=str, required=True, help="Estrategia: m (martingala), d (D'Alembert), f (Fibonacci), o (otra)")
+    parser.add_argument("-s", "--estrategia", type=str, required=True, help="Estrategia: m (martingala), d (D'Alembert), f (Fibonacci), p (Paroli)")
     parser.add_argument("-a", "--capital", type=str, required=True, help="Capital: f (finito), i (infinito)")
     parser.add_argument("-i", "--inicial", type=int, default=1000, help="Capital inicial")
     args = parser.parse_args()
@@ -179,13 +205,17 @@ def main():
     banca_rotas = 0
     historiales_capital = []
 
-    for i in range(args.corridas):
-        capital_historial, banca_rota = jugar(args.tiradas, args.elegido, args.estrategia, args.capital, args.inicial)
+    for _ in range(args.corridas):
+        capital_historial, banca_rota, frsa = jugar(args.tiradas, args.elegido, args.estrategia, args.capital, args.inicial)
         historiales_capital.append(capital_historial)
-        graficar_capital(capital_historial, f"Corrida {i+1} - Evolución del Capital", f"capital_corrida_{i+1}.png")
         if banca_rota or capital_historial[-1] <= 0:
             banca_rotas += 1
-    graficar_todas_corridas(historiales_capital, "Evolución del Capital - Todas las Corridas", "capital_todas_corridas.png")
+
+    graficar_capital(capital_historial, f"Corrida {args.corridas} - Evolución del Capital", f"capital_corrida_{args.corridas}_{args.estrategia}_{args.capital}.png")
+    graficar_frsa(frsa, f"Corrida {args.corridas} - Frecuencia Relativa de Aciertos", f"frsa_corrida_{args.corridas}_{args.estrategia}_{args.capital}.png")
+        
+    
+    graficar_todas_corridas(historiales_capital, "Evolución del Capital - Todas las Corridas", f"capital_todas_corridas_{args.estrategia}_{args.capital}.png")
     print(f"Simulación finalizada.")
     print(f"Resultados de la estrategia '{args.estrategia}' con capital '{args.capital}':")
     print(f"Capital inicial: {args.inicial}")
