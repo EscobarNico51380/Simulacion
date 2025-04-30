@@ -180,7 +180,7 @@ def graficar_frsa(frsa, titulo, nombre_archivo):
     plt.close()
 
 def graficar_todas_corridas(historiales_capital, titulo, nombre_archivo):
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(17, 10))
     for i, capital_historial in enumerate(historiales_capital):
         plt.plot(range(1, len(capital_historial) + 1), capital_historial, label=f"Corrida {i + 1}", alpha=0.7)
     plt.axhline(y=historiales_capital[0][0], color='blue', linestyle='--', label='Capital Inicial')

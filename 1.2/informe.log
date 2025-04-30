@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.20)  30 APR 2025 09:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.20)  30 APR 2025 10:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -625,11 +625,11 @@ File: ./images/frsa_corrida_30_m_f.png Graphic file (type png)
 <use ./images/frsa_corrida_30_m_f.png>
 Package pdftex.def Info: ./images/frsa_corrida_30_m_f.png  used on input line 331.
 (pdftex.def)             Requested size: 330.42041pt x 206.51198pt.
-<./images/capital_todas_corridas_m_f.png, id=99, 722.7pt x 433.62pt>
+<./images/capital_todas_corridas_m_f.png, id=99, 1228.59pt x 722.7pt>
 File: ./images/capital_todas_corridas_m_f.png Graphic file (type png)
 <use ./images/capital_todas_corridas_m_f.png>
 Package pdftex.def Info: ./images/capital_todas_corridas_m_f.png  used on input line 337.
-(pdftex.def)             Requested size: 401.22942pt x 240.73473pt.
+(pdftex.def)             Requested size: 401.22942pt x 236.02158pt.
 
 
 [7 <./images/capital_corrida_30_m_f.png> <./images/frsa_corrida_30_m_f.png>]
@@ -645,11 +645,11 @@ Package pdftex.def Info: ./images/frsa_corrida_30_m_i.png  used on input line 35
 
 
 [8 <./images/capital_todas_corridas_m_f.png> <./images/frsa_corrida_30_m_i.png>]
-<./images/capital_todas_corridas_m_i.png, id=119, 722.7pt x 433.62pt>
+<./images/capital_todas_corridas_m_i.png, id=119, 1228.59pt x 722.7pt>
 File: ./images/capital_todas_corridas_m_i.png Graphic file (type png)
 <use ./images/capital_todas_corridas_m_i.png>
 Package pdftex.def Info: ./images/capital_todas_corridas_m_i.png  used on input line 356.
-(pdftex.def)             Requested size: 401.22942pt x 240.73473pt.
+(pdftex.def)             Requested size: 401.22942pt x 236.02158pt.
 <./images/frsa_corrida_30_d_f.png, id=120, 578.16pt x 361.35pt>
 File: ./images/frsa_corrida_30_d_f.png Graphic file (type png)
 <use ./images/frsa_corrida_30_d_f.png>
@@ -662,11 +662,11 @@ File: ./images/frsa_corrida_30_d_f.png Graphic file (type png)
 <use ./images/frsa_corrida_30_d_f.png>
 Package pdftex.def Info: ./images/frsa_corrida_30_d_f.png  used on input line 375.
 (pdftex.def)             Requested size: 330.42041pt x 206.51198pt.
-<./images/capital_todas_corridas_d_f.png, id=128, 722.7pt x 433.62pt>
+<./images/capital_todas_corridas_d_f.png, id=128, 1228.59pt x 722.7pt>
 File: ./images/capital_todas_corridas_d_f.png Graphic file (type png)
 <use ./images/capital_todas_corridas_d_f.png>
 Package pdftex.def Info: ./images/capital_todas_corridas_d_f.png  used on input line 381.
-(pdftex.def)             Requested size: 401.22942pt x 240.73473pt.
+(pdftex.def)             Requested size: 401.22942pt x 236.02158pt.
 
 
 [10 <./images/frsa_corrida_30_d_f.png>]
@@ -683,11 +683,11 @@ Package pdftex.def Info: ./images/frsa_corrida_30_d_i.png  used on input line 39
 
 
 [11 <./images/capital_todas_corridas_d_f.png> <./images/capital_corrida_30_d_i.png>]
-<./images/capital_todas_corridas_d_i.png, id=147, 722.7pt x 433.62pt>
+<./images/capital_todas_corridas_d_i.png, id=147, 1228.59pt x 722.7pt>
 File: ./images/capital_todas_corridas_d_i.png Graphic file (type png)
 <use ./images/capital_todas_corridas_d_i.png>
 Package pdftex.def Info: ./images/capital_todas_corridas_d_i.png  used on input line 400.
-(pdftex.def)             Requested size: 401.22942pt x 240.73473pt.
+(pdftex.def)             Requested size: 401.22942pt x 236.02158pt.
 <./images/capital_corrida_30_f_f.png, id=148, 722.7pt x 433.62pt>
 File: ./images/capital_corrida_30_f_f.png Graphic file (type png)
 <use ./images/capital_corrida_30_f_f.png>
@@ -701,11 +701,11 @@ File: ./images/frsa_corrida_30_f_f.png Graphic file (type png)
 <use ./images/frsa_corrida_30_f_f.png>
 Package pdftex.def Info: ./images/frsa_corrida_30_f_f.png  used on input line 419.
 (pdftex.def)             Requested size: 330.42041pt x 206.51198pt.
-<./images/capital_todas_corridas_f_f.png, id=158, 722.7pt x 433.62pt>
+<./images/capital_todas_corridas_f_f.png, id=158, 1228.59pt x 722.7pt>
 File: ./images/capital_todas_corridas_f_f.png Graphic file (type png)
 <use ./images/capital_todas_corridas_f_f.png>
 Package pdftex.def Info: ./images/capital_todas_corridas_f_f.png  used on input line 425.
-(pdftex.def)             Requested size: 401.22942pt x 240.73473pt.
+(pdftex.def)             Requested size: 401.22942pt x 236.02158pt.
 
 
 [13 <./images/capital_corrida_30_f_f.png> <./images/frsa_corrida_30_f_f.png>]
@@ -722,11 +722,11 @@ Package pdftex.def Info: ./images/frsa_corrida_30_f_i.png  used on input line 43
 
 
 [14 <./images/capital_todas_corridas_f_f.png> <./images/capital_corrida_30_f_i.png>]
-<./images/capital_todas_corridas_f_i.png, id=179, 722.7pt x 433.62pt>
+<./images/capital_todas_corridas_f_i.png, id=179, 1228.59pt x 722.7pt>
 File: ./images/capital_todas_corridas_f_i.png Graphic file (type png)
 <use ./images/capital_todas_corridas_f_i.png>
 Package pdftex.def Info: ./images/capital_todas_corridas_f_i.png  used on input line 444.
-(pdftex.def)             Requested size: 401.22942pt x 240.73473pt.
+(pdftex.def)             Requested size: 401.22942pt x 236.02158pt.
 <./images/frsa_corrida_30_p_f.png, id=180, 578.16pt x 361.35pt>
 File: ./images/frsa_corrida_30_p_f.png Graphic file (type png)
 <use ./images/frsa_corrida_30_p_f.png>
@@ -739,11 +739,11 @@ File: ./images/frsa_corrida_30_p_f.png Graphic file (type png)
 <use ./images/frsa_corrida_30_p_f.png>
 Package pdftex.def Info: ./images/frsa_corrida_30_p_f.png  used on input line 463.
 (pdftex.def)             Requested size: 330.42041pt x 206.51198pt.
-<./images/capital_todas_corridas_p_f.png, id=189, 722.7pt x 433.62pt>
+<./images/capital_todas_corridas_p_f.png, id=189, 1228.59pt x 722.7pt>
 File: ./images/capital_todas_corridas_p_f.png Graphic file (type png)
 <use ./images/capital_todas_corridas_p_f.png>
 Package pdftex.def Info: ./images/capital_todas_corridas_p_f.png  used on input line 469.
-(pdftex.def)             Requested size: 401.22942pt x 240.73473pt.
+(pdftex.def)             Requested size: 401.22942pt x 236.02158pt.
 
 
 [16 <./images/frsa_corrida_30_p_f.png>]
@@ -759,11 +759,11 @@ Package pdftex.def Info: ./images/frsa_corrida_30_p_f.png  used on input line 48
 
 
 [17 <./images/capital_todas_corridas_p_f.png> <./images/capital_corrida_30_p_i.png>]
-<./images/capital_todas_corridas_p_i.png, id=207, 722.7pt x 433.62pt>
+<./images/capital_todas_corridas_p_i.png, id=207, 1228.59pt x 722.7pt>
 File: ./images/capital_todas_corridas_p_i.png Graphic file (type png)
 <use ./images/capital_todas_corridas_p_i.png>
 Package pdftex.def Info: ./images/capital_todas_corridas_p_i.png  used on input line 487.
-(pdftex.def)             Requested size: 401.22942pt x 240.73473pt.
+(pdftex.def)             Requested size: 401.22942pt x 236.02158pt.
 
 
 [18 <./images/capital_todas_corridas_p_i.png>]
@@ -780,15 +780,15 @@ Package rerunfilecheck Info: File `informe.out' has not changed.
 (rerunfilecheck)             Checksum: 68C440B46A83CEC72D18EC2E21AD797E;1809.
  ) 
 Here is how much of TeX's memory you used:
- 16840 strings out of 469959
- 277025 string characters out of 5469834
+ 16838 strings out of 469959
+ 277007 string characters out of 5469834
  703788 words of memory out of 5000000
  43201 multiletter control sequences out of 15000+600000
- 695210 words of font info for 149 fonts, out of 8000000 for 9000
+ 695127 words of font info for 148 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,6n,79p,1046b,638s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx9.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr9.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on informe.pdf (19 pages, 1514188 bytes).
+Output written on informe.pdf (19 pages, 2116496 bytes).
 PDF statistics:
  292 PDF objects out of 1000 (max. 8388607)
  67 named destinations out of 1000 (max. 500000)
