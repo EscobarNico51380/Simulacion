@@ -55,6 +55,28 @@ En este informe, vamos a simular la ruleta con una apuesta de \$10, y teniendo e
     \item Apostar a numero alto o numero bajo(del 1 al 18 o del 19 al 36)
 \end{itemize}
 La apuesta que se decida realizar va a ingresarse por argumento en la consola
+\subsection{Justificación del número de corridas: Teorema Central del Límite}
+
+En este trabajo se realizaron 30 corridas independientes para cada combinación de estrategia y condición de capital (finito e infinito). Esta elección se fundamenta teóricamente en el \textbf{Teorema Central del Límite (TCL)}, uno de los pilares fundamentales de la estadística inferencial.
+
+El Teorema Central del Límite establece que, dado un número suficientemente grande de muestras independientes y aleatorias de una población con una media $\mu$ y desviación estándar $\sigma$ finitas, la distribución de la media muestral tenderá a una distribución normal, independientemente de la forma de la distribución original de la población.
+
+En particular, el TCL permite aproximar la distribución de cualquier estadístico (como el capital final o la tasa de éxito promedio) mediante una distribución normal cuando se cuenta con un tamaño de muestra significtiva. Aunque no existe un umbral fijo, en la práctica estadística se considera que un número de muestras igual o superior a 30 suele ser suficiente para que esta aproximación sea válida, incluso cuando la distribución original es asimétrica o discreta.
+
+\noindent
+\textbf{Ventajas de usar 30 corridas:}
+\begin{itemize}
+    \item Permite calcular medias y desviaciones estándar muestrales con una estimación robusta.
+    \item Facilita el uso de herramientas estadísticas como intervalos de confianza o pruebas de hipótesis.
+    \item Reduce la variabilidad atribuida a una única simulación, mejorando la representatividad de los resultados.
+\end{itemize}
+
+\noindent
+\textbf{Aplicación en este estudio:} Cada corrida representa una simulación independiente de una estrategia de apuestas bajo condiciones aleatorias. Al realizar 30 de estas corridas, obtenemos una muestra suficientemente grande para estudiar el comportamiento promedio de cada estrategia y analizar su variabilidad. Esto nos permite comparar estrategias de forma más confiable y realizar generalizaciones sobre su desempeño típico.
+
+\begin{center}
+    \textit{En conclusion, se utilizan 30 corridas para garantizar una base estadística sólida, aprovechar la validez del Teorema Central del Límite y permitir inferencias representativas sobre el comportamiento de cada estrategia.}
+\end{center}
     
 \section{Descripción del programa}
 \subsection{Funciones del programa}

@@ -237,6 +237,7 @@ INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr12.
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx12.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr7.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx12.tfm
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx10.tfm
 INPUT C:\Users\renzo\AppData\Local\MiKTeX\fonts\map\pdftex\pdftex.map
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-ec.enc
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\rm-lmr10.tfm
@@ -254,12 +255,11 @@ INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\sym
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm10.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm7.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm5.tfm
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmri10.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr5.tfm
-INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx10.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmtt10.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-mathit.enc
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-rm.enc
-INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmri10.tfm
 INPUT .\images\capital_corrida_30_m_f.png
 INPUT .\images\capital_corrida_30_m_f.png
 INPUT .\images\capital_corrida_30_m_f.png
