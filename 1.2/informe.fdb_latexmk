@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1745953162.62787 "c:/Facultad/4to año/Simulacion/tps/1.2/informe.tex" "informe.pdf" "informe" 1745953166.8153 0
-  "C:/Users/renzo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1745336611 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
+["pdflatex"] 1746017221.57319 "c:/Facultad/4to año/Simulacion/tps/1.2/informe.tex" "informe.pdf" "informe" 1746017225.93713 0
+  "C:/Users/renzo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1746017216 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/renzo/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1745161349 13148213 3dd757c46c27ce467f288f7596cb62c4 ""
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc" 1256929440 2375 baa924870cfb487815765f9094cf3728 ""
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc" 1256929440 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -97,6 +97,7 @@
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/caption/caption3.sty" 1696169587 72619 ee90b6612147680fd73c3b1406a74245 ""
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/epstopdf-pkg/epstopdf-base.sty" 1623003186 13886 d1306dcf79a944f6988e688c1785f9ce ""
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/etoolbox/etoolbox.sty" 1739279216 46850 d87daedc2abdc653769a6f1067849fe0 ""
+  "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/float/float.sty" 1469023953 6916 16d2656a1984957e674b149555f1ea1d ""
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/geometry/geometry.cfg" 1578053545 1104 7ac475a4e3466b0b43e138e9356bda83 ""
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/geometry/geometry.sty" 1578053545 42759 9cf6c5257b1bc7af01a58859749dd37a ""
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/graphics-cfg/color.cfg" 1465894292 1213 620bba36b25224fa9b7e1ccb4ecb76fd ""
@@ -138,7 +139,7 @@
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/rerunfilecheck/rerunfilecheck.sty" 1657800696 9714 ba3194bd52c8499b3f1e3eb91d409670 ""
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/units/nicefrac.sty" 1469029150 4163 0462ee5ab265cf59dc15a41a3b883101 ""
   "C:/Users/renzo/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "c:/Facultad/4to año/Simulacion/tps/1.2/informe.tex" 1745953158 23383 514977b38ca86ba05e7d3e28a242cde6 ""
+  "c:/Facultad/4to año/Simulacion/tps/1.2/informe.tex" 1746017206 26085 5cd7a7852f9b8d50032c2e69c850228b ""
   "images/capital_corrida_30_d_i.png" 1745952093 38215 a0dba72ab4c9f26bfafec381b5f4d33e ""
   "images/capital_corrida_30_f_f.png" 1745952121 34654 df685f12f3a3adef831506f9ba2feba3 ""
   "images/capital_corrida_30_f_i.png" 1745952126 45511 979b9a04e4de74651a80de640832f124 ""
@@ -159,9 +160,9 @@
   "images/frsa_corrida_30_m_f.png" 1745952072 28284 a4672a0609d27190220c01e9ae5a3125 ""
   "images/frsa_corrida_30_m_i.png" 1745952081 27110 5535cb660db31d9fb802aad2655d84b5 ""
   "images/frsa_corrida_30_p_f.png" 1745952051 30686 3fdaab95f831d2700c0a227cc5c17afb ""
-  "informe.aux" 1745953166 5785 82197d9f4b58fe2ca3df9e79d8e609c5 "pdflatex"
-  "informe.out" 1745953166 1501 8443fab409d47558d214afbe63f85c5a "pdflatex"
-  "informe.tex" 1745953158 23383 514977b38ca86ba05e7d3e28a242cde6 ""
+  "informe.aux" 1746017225 6030 68cf84bcd6fa92ec58fdd3b61b8039f5 "pdflatex"
+  "informe.out" 1746017225 1809 68c440b46a83cec72d18ec2e21ad797e "pdflatex"
+  "informe.tex" 1746017206 26085 5cd7a7852f9b8d50032c2e69c850228b ""
   (generated)
   "informe.aux"
   "informe.log"
