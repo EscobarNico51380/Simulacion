@@ -1,0 +1,135 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{color}
+\graphicspath{{./images/}}
+\usepackage{lmodern}  % Latin Modern, versión escalable de Computer Modern
+\usepackage[margin=2.5cm]{geometry}
+
+\title{Trabajo Práctico 2.1 -- Simulación}
+\author{
+    Renzo Aimaretti \\ \texttt{renzoceronueve@gmail.com}
+    \and
+    Facundo Sosa Bianciotto \\ \texttt{facundososabianciotto@gmail.com}
+    \and
+    Vittorio Maragliano \\ \texttt{maraglianovittorio@gmail.com}
+    \and
+    Ignacio Amelio Ortiz \\ \texttt{nameliortiz@gmail.com}
+    \and
+    Nicolás Roberto Escobar \\ \texttt{escobar.nicolas.isifrro@gmail.com}
+    \and
+    Juan Manuel De Elia \\ \texttt{juanmadeelia@gmail.com}
+}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+    Este trabajo practico consiste en la simulacion de generadores de numeros pseudoaleatorios, en particular el GCL, el generador de cuadrados medios y el generador de Python. Se implementaron los algoritmos en Python y se compararon los resultados obtenidos realizando 4 tests enfocados en distintos aspectos de calidad del generador. \texttt{random}. Se realizaron graficos de histograma y de dispersión para analizar la calidad de los generadores. 
+\end{abstract}
+
+\section{Introducción}
+Se desarollaron los 3 simuladores mencionados en python con el propósito de analizar la calidad de los números generados. Se realizaron 4 tests para evaluar la calidad de los números generados. Los tests realizados son:
+\begin{itemize}
+    \item Test de Kolmogorov-Smirnov
+    \item Test de Chi-Cuadrado
+    \item Test de Media y Varianza
+    \item Test de Autocorrelación
+\end{itemize}
+El numero de corridas y la seed pueden ingresarse como argumentos al script. Si no se ingresan, se utilizan los valores por defecto.
+
+\section{Generadores}
+\subsection{GCL}
+El generador de congruencia lineal (GCL) es un generador de números pseudoaleatorios que utiliza la siguiente fórmula:
+\begin{equation}
+    X_{n+1} = (a \cdot X_n + c) \mod m
+\end{equation}
+Donde:
+\begin{itemize}
+    \item $X_n$ es el número pseudoaleatorio generado en la iteración $n$.
+    \item $a$ es el multiplicador.
+    \item $c$ es la constante aditiva.
+    \item $m$ es el módulo.
+    \item $X_{n+1}$ es el siguiente número pseudoaleatorio generado.
+\end{itemize}
+El generador de congruencia lineal es uno de los generadores de números pseudoaleatorios más simples y ampliamente utilizados. Sin embargo, su calidad puede verse afectada por la elección de los parámetros $a$, $c$ y $m$. En este trabajo práctico, se utilizarán los siguientes valores:
+\begin{itemize}
+    \item $a = 1664525$
+    \item $c = 1013904223$
+    \item $m = 2^{32}$
+    \item $X_0 = seed$
+\end{itemize}
+\subsection{Cuadrados Medios}
+El generador de cuadrados medios es un generador de números pseudoaleatorios que utiliza la siguiente fórmula:
+\begin{equation}
+    X_{n+1} = \left( \frac{X_n^2}{10^{d}} \right) \mod 1
+\end{equation}
+Donde:
+\begin{itemize}
+    \item $X_n$ es el número pseudoaleatorio generado en la iteración $n$.
+    \item $d$ es el número de dígitos de la parte entera de $X_n^2$.
+    \item $X_{n+1}$ es el siguiente número pseudoaleatorio generado.
+    \item $X_0 = seed$
+\end{itemize}
+El generador de cuadrados medios es un generador de números pseudoaleatorios que utiliza la propiedad de que el cuadrado de un número tiene una distribución uniforme. Sin embargo, su calidad puede verse afectada por la elección de los parámetros y la forma en que se extraen los dígitos.
+\subsection{Python}
+El generador de Python utiliza el algoritmo Mersenne Twister, que es un generador de números pseudoaleatorios de propósito general. Este algoritmo tiene un período muy largo y una buena calidad de aleatoriedad. El generador de Python se basa en la siguiente fórmula:
+\begin{equation}
+    X_{n+1} = (X_n \cdot A + B) \mod M
+\end{equation}
+Donde:
+\begin{itemize}
+    \item $X_n$ es el número pseudoaleatorio generado en la iteración $n$.
+    \item $A$ es una matriz de transformación.
+    \item $B$ es un vector de desplazamiento.
+    \item $M$ es el módulo.
+    \item $X_{n+1}$ es el siguiente número pseudoaleatorio generado.
+\end{itemize}
+El generador de Python es uno de los generadores de números pseudoaleatorios más utilizados en la actualidad debido a su calidad y facilidad de uso.
+
+\section{Tests}
+\subsection{Test de Kolmogorov-Smirnov}
+El test de Kolmogorov-Smirnov es una prueba estadística que se utiliza para determinar si una muestra de datos proviene de una distribución específica. En este caso, se utilizará para evaluar si los números generados por los generadores son uniformemente distribuidos en el intervalo [0, 1]. El test compara la función de distribución empírica de la muestra con la función de distribución acumulativa de la distribución uniforme.
+\subsection{Test de Chi-Cuadrado}
+El test de Chi-Cuadrado es una prueba estadística que se utiliza para determinar si hay una diferencia significativa entre la distribución observada y la distribución esperada. En este caso, se utilizará para evaluar si los números generados por los generadores son uniformemente distribuidos en el intervalo [0, 1]. El test compara la frecuencia observada de los números generados con la frecuencia esperada de una distribución uniforme.
+\subsection{Test de Media y Varianza}
+El test de media y varianza se utiliza para evaluar si la media y la varianza de los números generados por los generadores son iguales a los valores esperados para una distribución uniforme. En este caso, se espera que la media sea 0.5 y la varianza sea 1/12.
+\subsection{Test de Autocorrelación}
+El test de autocorrelación se utiliza para evaluar si los números generados por los generadores son independientes entre sí. En este caso, se calculará la autocorrelación de los números generados y se comparará con el valor esperado para una distribución uniforme. Si la autocorrelación es significativamente diferente de cero, se puede concluir que los números generados no son independientes.
+\section{Resultados}
+Se obtuvieron los resultados de los tests para cada generador. En la siguiente tabla se muestran los resultados de los tests realizados:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{@{}ccccc@{}}
+        \toprule
+        Generador & Kolmogorov-Smirnov & Chi-Cuadrado & Media y Varianza & Autocorrelación \\ \midrule
+        GCL       & 0.0642                      & 11.55                & 0.5193 y 0.0791    & 0.0514\\
+        Cuadrados Medios & 0.2094             & 639.63               & 0.5088 y 0.0879               & -0.6958  \\
+        Python    & 0.0329                      & 9.70               & 0.4921 y 0.0808               & -0.0085  \\ \bottomrule
+    \end{tabular}
+    \caption{Resultados de los tests realizados}
+    \label{tab:resultados}
+\end{table}
+
+    \section{Conclusion general}
+    
+Los generadores de números pseudoaleatorios analizados en este trabajo presentan diferencias significativas en calidad y desempeño según los tests aplicados:
+
+\begin{itemize} 
+    \item \textbf{Generador Python (Mersenne Twister):} Demostró ser claramente el generador de mayor calidad. Todos sus estadísticos están muy cercanos a los valores ideales: media próxima a 0.5, varianza cercana a 1/12, p-valores no significativos en las pruebas chi-cuadrado y Kolmogorov-Smirnov (indicando distribución uniforme), y una autocorrelación prácticamente nula (-0.0085). Estos resultados confirman por qué el algoritmo Mersenne Twister es ampliamente utilizado en aplicaciones científicas y de simulación.
+    \item \textbf{Generador Congruencial Lineal (GCL):} Presentó un desempeño aceptable pero con algunas limitaciones. Sus estadísticos de media y varianza son razonables, aunque el p-valor en la prueba Kolmogorov-Smirnov (0.0537) está muy cercano al umbral de significancia del 5\%, lo que sugiere una leve desviación de la uniformidad perfecta. También muestra una autocorrelación positiva de 0.0514, indicando cierta dependencia entre valores consecutivos. Este generador es adecuado para aplicaciones que no requieran la máxima calidad estadística.
+    \item \textbf{Generador de Cuadrados Medios:} Demostró ser el de peor calidad, con problemas graves en todos los tests aplicados. Sus p-valores de 0.0000 en las pruebas chi-cuadrado y Kolmogorov-Smirnov evidencian un rechazo contundente a la hipótesis de uniformidad. El valor de autocorrelación extremadamente alto (-0.6958) indica una fuerte dependencia negativa entre valores consecutivos, lo que compromete seriamente su uso en cualquier aplicación que requiera independencia estadística. Este método histórico confirma su obsolescencia frente a algoritmos modernos.
+\end{itemize}
+    
+\end{document}

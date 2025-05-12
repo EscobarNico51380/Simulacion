@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 import random
 from scipy.stats import chisquare, kstest
@@ -55,17 +56,23 @@ def autocorrelacion_test(nums, lag=1):
 
 
 if __name__ == "__main__":
-    N = 10000
-    seed = 1234
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-s", "--seed", type=int, default=1234, help="Número de seed")
+    parser.add_argument("-n", "--n", type=int, default=10000, help="Número de corridas")
+    args = parser.parse_args()
+    seed = args.seed
+    n = args.n
+    print(f"Using random seed: {seed}")
 
     # GCL params
     a = 1664525
     c = 1013904223
     m = 2**32
 
-    gcl_nums = gcl(seed, a, c, m, N)
-    cuad_nums = cuadrados_medios(seed, N)
-    py_nums = python_random(N)
+    gcl_nums = gcl(seed, a, c, m, n)
+    cuad_nums = cuadrados_medios(seed, n)
+    py_nums = python_random(n)
 
     generadores = {
         "GCL": gcl_nums,
