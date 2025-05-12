@@ -2,6 +2,8 @@ import argparse
 import numpy as np
 import random
 from scipy.stats import chisquare, kstest
+import matplotlib.pyplot as plt
+import os
 
 # GENERADORES
 
@@ -52,13 +54,33 @@ def autocorrelacion_test(nums, lag=1):
     r = num / den
     return r
 
+def guardar_visualizacion_bitmap(nums, nombre, size=(512, 512), carpeta="visualizaciones_prueba"):
+    if not os.path.exists(carpeta):
+        os.makedirs(carpeta)
+
+    # Usar sólo los primeros size[0]*size[1] números
+    data = np.array(nums[:size[0]*size[1]])
+
+    # Convertir a blanco (1) y negro (0) usando un umbral de 0.5
+    binarizado = np.where(data > 0.5, 1, 0)
+
+    # Redimensionar en matriz 2D
+    imagen = binarizado.reshape(size)
+
+    # Guardar la imagen sin ejes ni bordes, estilo puro bitmap
+    plt.figure(figsize=(6, 6), dpi=100)
+    plt.imshow(imagen, cmap='gray', interpolation='nearest')
+    plt.axis('off')
+    plt.savefig(f"{carpeta}/{nombre}_bitmap.png", bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+
 # MAIN
 
 
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--seed", type=int, default=1234, help="Número de seed")
     parser.add_argument("-n", "--n", type=int, default=10000, help="Número de corridas")
     args = parser.parse_args()
     seed = args.seed
@@ -91,3 +113,7 @@ if __name__ == "__main__":
         print(f"Chi²: {chi2:.2f}, p-valor: {p_chi:.4f}")
         print(f"KS D: {d:.4f}, p-valor: {p_ks:.4f}")
         print(f"Autocorrelación (lag 1): {r:.4f}")
+
+# python tp_2_1generadores_grupoAimaretti.py --gcl-seed 3129871234 --cuad-seed 5732 -n 100000000
+# NOTA: Para correr n=100000000 se tiene que correr cada generador por separado, sino no da la memoria. Por lo menos a mi.
+# Se usa ese n para poder ver los patrones en la imagen.
