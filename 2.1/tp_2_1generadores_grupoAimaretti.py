@@ -81,20 +81,28 @@ def guardar_visualizacion_bitmap(nums, nombre, size=(512, 512), carpeta="visuali
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
+    parser.add_argument("--gcl-seed", type=int, default=1234, help="Semilla para GCL")
+    parser.add_argument("--cuad-seed", type=int, default=1234, help="Semilla para Cuadrados Medios")
     parser.add_argument("-n", "--n", type=int, default=10000, help="Número de corridas")
     args = parser.parse_args()
-    seed = args.seed
+    
+    GCLseed = args.gcl_seed
+    cuad_seed = args.cuad_seed
+
     n = args.n
-    print(f"Using random seed: {seed}")
+    print(f"Using GCL seed: {GCLseed}") # 0 ≤ seed < 4,294,967,296. Hasta 10 cifras
+    print(f"Using Cuadrados_Medios seed: {cuad_seed}") #4 cifras
+
 
     # GCL params
     a = 1664525
     c = 1013904223
     m = 2**32
 
-    gcl_nums = gcl(seed, a, c, m, n)
-    cuad_nums = cuadrados_medios(seed, n)
+    gcl_nums = gcl(GCLseed, a, c, m, n)
+    cuad_nums = cuadrados_medios(cuad_seed, n)
     py_nums = python_random(n)
+    
 
     generadores = {
         "GCL": gcl_nums,
@@ -103,6 +111,9 @@ if __name__ == "__main__":
     }
 
     for nombre, nums in generadores.items():
+        
+        nums = np.array(nums, dtype=np.float32)
+
         print(f"\n--- Resultados para {nombre} ---")
         media, varianza = media_varianza_test(nums)
         chi2, p_chi = chi_cuadrado_test(nums)
@@ -113,6 +124,8 @@ if __name__ == "__main__":
         print(f"Chi²: {chi2:.2f}, p-valor: {p_chi:.4f}")
         print(f"KS D: {d:.4f}, p-valor: {p_ks:.4f}")
         print(f"Autocorrelación (lag 1): {r:.4f}")
+
+        guardar_visualizacion_bitmap(nums, f"{nombre}")
 
 # python tp_2_1generadores_grupoAimaretti.py --gcl-seed 3129871234 --cuad-seed 5732 -n 100000000
 # NOTA: Para correr n=100000000 se tiene que correr cada generador por separado, sino no da la memoria. Por lo menos a mi.
