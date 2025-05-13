@@ -81,6 +81,7 @@ def guardar_visualizacion_bitmap(nums, nombre, size=(512, 512), carpeta="visuali
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
+    parser.add_argument("-s", "--seed", type=int, default=1234, help="Semilla")
     parser.add_argument("-n", "--n", type=int, default=10000, help="Número de corridas")
     args = parser.parse_args()
     seed = args.seed
