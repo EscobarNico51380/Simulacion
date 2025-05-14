@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.20)  12 MAY 2025 12:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.20)  14 MAY 2025 12:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -583,8 +583,33 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 [2{C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}]
 
 [3]
+<visualizaciones_prueba/GCL_bitmap.png, id=91, 333.8874pt x 333.8874pt>
+File: visualizaciones_prueba/GCL_bitmap.png Graphic file (type png)
+<use visualizaciones_prueba/GCL_bitmap.png>
+Package pdftex.def Info: visualizaciones_prueba/GCL_bitmap.png  used on input line 158.
+(pdftex.def)             Requested size: 146.32852pt x 146.33011pt.
+<visualizaciones_prueba/cuadrados_Medios_bitmap.png, id=93, 333.8874pt x 333.8874pt>
+File: visualizaciones_prueba/cuadrados_Medios_bitmap.png Graphic file (type png)
+<use visualizaciones_prueba/cuadrados_Medios_bitmap.png>
+Package pdftex.def Info: visualizaciones_prueba/cuadrados_Medios_bitmap.png  used on input line 165.
+(pdftex.def)             Requested size: 146.32852pt x 146.33011pt.
+<visualizaciones_prueba/Python_bitmap.png, id=94, 333.8874pt x 333.8874pt>
+File: visualizaciones_prueba/Python_bitmap.png Graphic file (type png)
+<use visualizaciones_prueba/Python_bitmap.png>
+Package pdftex.def Info: visualizaciones_prueba/Python_bitmap.png  used on input line 172.
+(pdftex.def)             Requested size: 146.32852pt x 146.33011pt.
+<visualizaciones_error/GCL_bitmap.png, id=98, 333.8874pt x 333.8874pt>
+File: visualizaciones_error/GCL_bitmap.png Graphic file (type png)
+<use visualizaciones_error/GCL_bitmap.png>
+Package pdftex.def Info: visualizaciones_error/GCL_bitmap.png  used on input line 196.
+(pdftex.def)             Requested size: 146.32852pt x 146.33011pt.
 
-[4] (informe.aux
+
+[4 <./visualizaciones_prueba/GCL_bitmap.png> <./visualizaciones_prueba/cuadrados_Medios_bitmap.png> <./visualizaciones_prueba/Python_bitmap.png>]
+
+[5 <./visualizaciones_error/GCL_bitmap.png>]
+
+[6] (informe.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
 )
@@ -593,20 +618,20 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-03-26>
  ***********
 Package rerunfilecheck Info: File `informe.out' has not changed.
-(rerunfilecheck)             Checksum: A38362FC759EF78DA5B1D2A8E9BC264A;1529.
+(rerunfilecheck)             Checksum: A5B0CF8C7B700733B552CC32812C63C6;2286.
  ) 
 Here is how much of TeX's memory you used:
- 16602 strings out of 469959
- 269819 string characters out of 5469834
- 700843 words of memory out of 5000000
- 43044 multiletter control sequences out of 15000+600000
- 683469 words of font info for 129 fonts, out of 8000000 for 9000
+ 16680 strings out of 469959
+ 271812 string characters out of 5469834
+ 701158 words of memory out of 5000000
+ 43088 multiletter control sequences out of 15000+600000
+ 684581 words of font info for 142 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,1046b,554s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,79p,1247b,552s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx9.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr9.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt9.pfb>
-Output written on informe.pdf (4 pages, 300756 bytes).
+Output written on informe.pdf (6 pages, 448549 bytes).
 PDF statistics:
- 158 PDF objects out of 1000 (max. 8388607)
- 21 named destinations out of 1000 (max. 500000)
- 31841 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 191 PDF objects out of 1000 (max. 8388607)
+ 29 named destinations out of 1000 (max. 500000)
+ 31877 words of extra memory for PDF output out of 35830 (max. 10000000)
 

@@ -47,7 +47,7 @@ Se desarollaron los 3 simuladores mencionados en python con el propósito de ana
     \item Test de Media y Varianza
     \item Test de Autocorrelación
 \end{itemize}
-El numero de corridas y la seed pueden ingresarse como argumentos al script. Si no se ingresan, se utilizan los valores por defecto.
+El numero de corridas y las semillas (seeds) pueden ingresarse como argumentos al script. Si no se ingresan, se utilizan los valores por defecto.
 
 \section{Generadores}
 \subsection{GCL}
@@ -63,13 +63,37 @@ Donde:
     \item $m$ es el módulo.
     \item $X_{n+1}$ es el siguiente número pseudoaleatorio generado.
 \end{itemize}
-El generador de congruencia lineal es uno de los generadores de números pseudoaleatorios más simples y ampliamente utilizados. Sin embargo, su calidad puede verse afectada por la elección de los parámetros $a$, $c$ y $m$. En este trabajo práctico, se utilizarán los siguientes valores:
+
+Uno de los aspectos críticos de un PRNG es su período, es decir, la longitud máxima de la secuencia antes de que empiece a repetirse. En el caso del generador congruencial lineal (GCL), su período máximo es igual al módulo \( m \), siempre y cuando se cumplan ciertas condiciones sobre los parámetros \( a \), \( c \) y la semilla inicial \( X_0 \). Para alcanzar el período máximo, la semilla debe recorrer todo el espacio de posibles valores sin colisiones.
+
+Estas condiciones, conocidas como los **criterios de Hull-Dobell**, son las siguientes:
+
+\begin{itemize}
+    \item \( c \) y \( m \) deben ser coprimos, es decir, \( \gcd(c, m) = 1 \).
+    \item \( a - 1 \) debe ser divisible por todos los factores primos de \( m \).
+    \item Si \( m \) es divisible por 4, entonces \( a - 1 \) también debe ser divisible por 4.
+\end{itemize}
+
+Dichas condiciones garantizan que el GCL tenga un período completo igual a \( m \), lo cual maximiza la calidad estadística de la secuencia generada. Si alguna de estas condiciones no se cumple, el generador puede entrar en ciclos cortos, lo que compromete la aleatoriedad y representatividad de los datos simulados.
+
+En este trabajo práctico, se utilizarán los siguientes valores:
 \begin{itemize}
     \item $a = 1664525$
     \item $c = 1013904223$
     \item $m = 2^{32}$
     \item $X_0 = seed$
 \end{itemize}
+
+La semilla $X_0$ determina completamente la secuencia generada. En este trabajo, se justifica el uso de semillas de hasta 10 cifras decimales debido a la necesidad de cubrir todo el espacio de valores posibles para el módulo $m$.
+
+Dado que el módulo es $m = 2^{32} \approx 4.29 \times 10^9$, la cantidad de cifras decimales necesarias para representar cualquier valor en ese espacio se calcula como:
+
+\begin{equation}
+    \log_{10}(m) = \log_{10}(2^{32}) = 32 \cdot \log_{10}(2) \approx 32 \cdot 0.3010 \approx 9.63
+\end{equation}
+
+Por lo tanto, se requieren hasta \textbf{10 dígitos decimales} para representar cualquier semilla válida en este espacio. Esto garantiza que la semilla pueda recorrer completamente el dominio de entrada del generador y aprovechar el máximo período posible.
+
 \subsection{Cuadrados Medios}
 El generador de cuadrados medios es un generador de números pseudoaleatorios que utiliza la siguiente fórmula:
 \begin{equation}
@@ -82,6 +106,7 @@ Donde:
     \item $X_{n+1}$ es el siguiente número pseudoaleatorio generado.
     \item $X_0 = seed$
 \end{itemize}
+Para este generador, la semilla $X_0$ debe ser un número de 4 dígitos. La elección de una semilla de 4 dígitos es importante porque el generador de cuadrados medios utiliza los dígitos centrales del cuadrado del número generado en la iteración anterior. Si la semilla es demasiado pequeña, el generador puede no producir una secuencia suficientemente aleatoria.
 El generador de cuadrados medios es un generador de números pseudoaleatorios que utiliza la propiedad de que el cuadrado de un número tiene una distribución uniforme. Sin embargo, su calidad puede verse afectada por la elección de los parámetros y la forma en que se extraen los dígitos.
 \subsection{Python}
 El generador de Python utiliza el algoritmo Mersenne Twister, que es un generador de números pseudoaleatorios de propósito general. Este algoritmo tiene un período muy largo y una buena calidad de aleatoriedad. El generador de Python se basa en la siguiente fórmula:
@@ -106,30 +131,106 @@ El test de Chi-Cuadrado es una prueba estadística que se utiliza para determina
 \subsection{Test de Media y Varianza}
 El test de media y varianza se utiliza para evaluar si la media y la varianza de los números generados por los generadores son iguales a los valores esperados para una distribución uniforme. En este caso, se espera que la media sea 0.5 y la varianza sea 1/12.
 \subsection{Test de Autocorrelación}
-El test de autocorrelación se utiliza para evaluar si los números generados por los generadores son independientes entre sí. En este caso, se calculará la autocorrelación de los números generados y se comparará con el valor esperado para una distribución uniforme. Si la autocorrelación es significativamente diferente de cero, se puede concluir que los números generados no son independientes.
+El test de autocorrelación se utiliza para evaluar si los números generados por los generadores son independientes entre sí. En este caso, se calculará la autocorrelación de los números generados y se comparará con el valor esperado para una distribución uniforme. Si la autocorrelación es significativamente diferente de cero, se puede concluir que los números generados no son independientes. Sin embargo, para una cantidad alta de corridas podemos ver como el generador de cuadrados medios devuelve un resultado fuera de lo esperado dentro de este test, esto puede ser un indicio de fallas para secuencias largas. 
 \section{Resultados}
-Se obtuvieron los resultados de los tests para cada generador. En la siguiente tabla se muestran los resultados de los tests realizados:
+Se obtuvieron los resultados de los tests para cada generador con 1 millon de corridas. En la siguiente tabla se muestran los resultados de los tests realizados:
 \begin{table}[H]
     \centering
     \begin{tabular}{@{}ccccc@{}}
         \toprule
         Generador & Kolmogorov-Smirnov & Chi-Cuadrado & Media y Varianza & Autocorrelación \\ \midrule
-        GCL       & 0.0642                      & 11.55                & 0.5193 y 0.0791    & 0.0514\\
-        Cuadrados Medios & 0.2094             & 639.63               & 0.5088 y 0.0879               & -0.6958  \\
-        Python    & 0.0329                      & 9.70               & 0.4921 y 0.0808               & -0.0085  \\ \bottomrule
+        GCL       & 0.0005                      & 7.08                & 0.5000 y 0.0833    & 0.0007\\
+        Cuadrados Medios & 0.2100             & 1499900.00              & 0.5100 y 0.0500               & 0.0000  \\
+        Python    & 0.0006                      & 10.86              & 0.5002 y 0.0833               & 0.0011  \\ \bottomrule
     \end{tabular}
     \caption{Resultados de los tests realizados}
     \label{tab:resultados}
 \end{table}
 
-    \section{Conclusion general}
+\subsection{Visualización de Patrones en los Números Generados}
+
+Además de los tests estadísticos, se generaron imágenes en formato bitmap donde cada píxel representa un número pseudoaleatorio convertido en un valor de escala de grises. Estas visualizaciones permiten detectar patrones estructurales o repetitivos que pueden comprometer la aleatoriedad.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[t]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{visualizaciones_prueba/GCL_bitmap.png}
+        \caption{Visualización de números generados con GCL}
+        \label{fig:gcl_vis}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{visualizaciones_prueba/cuadrados_Medios_bitmap.png}
+        \caption{Visualización de números generados con Cuadrados Medios}
+        \label{fig:cm_vis}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.31\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{visualizaciones_prueba/Python_bitmap.png}
+        \caption{Visualización de números generados con Python}
+        \label{fig:python_vis}
+    \end{minipage}
+\end{figure}
+Estas visualizaciones confirman los resultados de los tests estadísticos. La imagen del generador de Python (Fig. \ref{fig:python_vis}) muestra un patrón de ruido aleatorio uniformemente distribuido, sin estructuras visibles. El generador GCL (Fig. \ref{fig:gcl_vis}) presenta algunas estructuras sutiles que sugieren cierta predictibilidad, pero mantiene una apariencia mayormente aleatoria. En contraste, el generador de Cuadrados Medios (Fig. \ref{fig:cm_vis}) exhibe patrones evidentes y repetitivos, lo que revela su pobre calidad como fuente de números pseudoaleatorios. Ademas, esta imagen nos confirma el error por parte del test de autocorrelacion el cual devuelve un valor igual 0 contrastando con el mapa de bits donde se observan patrones claros.
+
+
+
+\subsection{Relación entre período y número de corridas para el generador GCL}
+
+Con el propósito de analizar la influencia del \textbf{período} en la calidad de los números generados por un \textbf{Generador Congruencial Lineal (GCL)}, se realizaron pruebas controladas variando el número de corridas en relación al período máximo teórico del generador. Particularmente, se implementó un GCL con parámetros que determinan un módulo reducido: \( m = 2^{16} = 65.536 \), lo que implica que el período del generador no puede exceder dicho valor.
+
+Para este experimento, se generaron \textbf{1.000.000 de valores pseudoaleatorios}, superando ampliamente el período del generador, con el objetivo de estudiar el efecto de la repetición cíclica sobre las propiedades estadísticas de la secuencia.
+
+Los resultados mostraron que:
+
+
+
+    {En el mapa de bits} generado a partir de los valores binarizados, se observaron \textbf{patrones regulares visuales}, lo que indica la \textbf{presencia de ciclos} en la secuencia numérica. Este fenómeno es esperado al superar el período del generador, ya que la sucesión entra en una fase periódica donde los valores comienzan a repetirse en el mismo orden.
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}[t]{0.31\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{visualizaciones_error/GCL_bitmap.png}
+            \caption{Visualización de números generados con GCL}
+            \label{fig:gcl_vis_err}
+        \end{minipage}
+    \end{figure}
+    Sin embargo, los \textbf{tests estadísticos clásicos} utilizados (media-varianza, chi-cuadrado, Kolmogórov-Smirnov y autocorrelación) \textbf{no detectaron anomalías significativas}. Los resultados obtenidos fueron:
+
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{@{}ccccc@{}}
+        \toprule
+        Generador         & Kolmogorov-Smirnov & Chi-Cuadrado & Media y Varianza      & Autocorrelación \\ \midrule
+        GCL               & 0.0001             & 0.09          & 0.4999 y 0.0833      & 0.0771          \\
+                \\ \bottomrule
+    \end{tabular}
+    \caption{Resultados de los tests realizados para diferentes GCL}
+    \end{table}
     
-Los generadores de números pseudoaleatorios analizados en este trabajo presentan diferencias significativas en calidad y desempeño según los tests aplicados:
+
+Esto pone en evidencia una \textbf{limitación de los tests estadísticos univariados}, los cuales pueden no ser sensibles a la \textbf{estructura cíclica o correlación a largo plazo} cuando la distribución marginal de los valores se mantiene aproximadamente uniforme. Es decir, aunque la distribución de frecuencias y otros indicadores se ajusten a lo esperado para una secuencia aleatoria, la \textbf{dependencia temporal introducida por la repetición del ciclo} puede pasar desapercibida para estos tests.
+
+Aunque el \textbf{Generador Congruencial Lineal (GCL)} puede ser un \textbf{buen generador} de números pseudoaleatorios en situaciones donde el período no se ve comprometido, este experimento resalta la importancia de elegir un \textbf{número adecuado de corridas} que no exceda el \textbf{período del generador}. Si el número de corridas es mayor que el período, se introduce una \textbf{repetición cíclica} que afecta la aleatoriedad de la secuencia y, por ende, puede comprometer la calidad de los resultados generados.
+
+En conclusión, este experimento demuestra que, al trabajar con generadores pseudoaleatorios, es \textbf{fundamental asegurar que el número de valores generados no exceda el período del generador}, o en su defecto, utilizar generadores con períodos suficientemente grandes como para evitar que los ciclos introduzcan correlaciones o patrones detectables, especialmente en contextos donde se requiere alta calidad de aleatoriedad.
+
+\section{Conclusión general}
+
+Los generadores de números pseudoaleatorios analizados en este trabajo presentan diferencias notables en calidad y desempeño según los tests aplicados:
 
 \begin{itemize} 
-    \item \textbf{Generador Python (Mersenne Twister):} Demostró ser claramente el generador de mayor calidad. Todos sus estadísticos están muy cercanos a los valores ideales: media próxima a 0.5, varianza cercana a 1/12, p-valores no significativos en las pruebas chi-cuadrado y Kolmogorov-Smirnov (indicando distribución uniforme), y una autocorrelación prácticamente nula (-0.0085). Estos resultados confirman por qué el algoritmo Mersenne Twister es ampliamente utilizado en aplicaciones científicas y de simulación.
-    \item \textbf{Generador Congruencial Lineal (GCL):} Presentó un desempeño aceptable pero con algunas limitaciones. Sus estadísticos de media y varianza son razonables, aunque el p-valor en la prueba Kolmogorov-Smirnov (0.0537) está muy cercano al umbral de significancia del 5\%, lo que sugiere una leve desviación de la uniformidad perfecta. También muestra una autocorrelación positiva de 0.0514, indicando cierta dependencia entre valores consecutivos. Este generador es adecuado para aplicaciones que no requieran la máxima calidad estadística.
-    \item \textbf{Generador de Cuadrados Medios:} Demostró ser el de peor calidad, con problemas graves en todos los tests aplicados. Sus p-valores de 0.0000 en las pruebas chi-cuadrado y Kolmogorov-Smirnov evidencian un rechazo contundente a la hipótesis de uniformidad. El valor de autocorrelación extremadamente alto (-0.6958) indica una fuerte dependencia negativa entre valores consecutivos, lo que compromete seriamente su uso en cualquier aplicación que requiera independencia estadística. Este método histórico confirma su obsolescencia frente a algoritmos modernos.
+    \item \textbf{Generador Python (Mersenne Twister):} Este generador mostró los mejores resultados en todos los aspectos evaluados. Los valores obtenidos para la media (0.5002) y la varianza (0.0833) están cercanos a los valores ideales para una distribución uniforme. En cuanto a los tests estadísticos, los p-valores para la prueba de Kolmogorov-Smirnov (0.0006) y la prueba chi-cuadrado (10.86) indican que la secuencia generada se ajusta de manera muy adecuada a una distribución uniforme. La autocorrelación es prácticamente nula (0.0011), lo que refuerza la independencia de los números generados. Esto confirma que el Mersenne Twister sigue siendo una opción robusta y confiable para aplicaciones científicas y simulaciones.
+
+    \item \textbf{Generador Congruencial Lineal (GCL):} Aunque el GCL mostró un comportamiento adecuado en cuanto a los estadísticos de media y varianza (0.5000 y 0.0833, respectivamente), su p-valor en la prueba de Kolmogorov-Smirnov (0.0005) y en la prueba chi-cuadrado (7.08) sugiere una leve desviación respecto a la distribución uniforme perfecta. A pesar de que estos resultados podrían considerarse satisfactorios, el test de autocorrelación reveló que la dependencia entre números consecutivos es mínima (0.0007). Sin embargo, se observó que, al realizar un gran número de corridas (en este caso, 1 millón), los ciclos dentro de la secuencia generada se hicieron evidentes, especialmente en la visualización de mapas de bits. Los tests de Kolmogorov-Smirnov y chi-cuadrado no lograron detectar estos ciclos, ya que estos tests se enfocan en la distribución uniforme de la secuencia en general, sin considerar la posible repetición de ciclos en una secuencia larga. Esto subraya la importancia de elegir un periodo adecuado en el GCL para evitar la repetición de secuencias y garantizar una mayor aleatoriedad en aplicaciones a largo plazo.
+
+    \item \textbf{Generador de Cuadrados Medios:} Los resultados del generador de Cuadrados Medios fueron notoriamente deficientes. Los p-valores obtenidos en las pruebas de Kolmogorov-Smirnov (0.2100) y chi-cuadrado (1499900.00) son muy bajos, lo que indica un rechazo evidente de la hipótesis de uniformidad. La media y la varianza (0.5100 y 0.0500) se desvían considerablemente de los valores ideales esperados. Además, la autocorrelación de 0.0000 refleja una falta de dependencia inmediata entre valores consecutivos, lo cual podría ser engañoso ya que no garantiza una distribución uniforme ni la independencia en secuencias a largo plazo. Este generador tiene serias limitaciones y es inapropiado para aplicaciones modernas que requieran alta calidad en la generación de números pseudoaleatorios.
 \end{itemize}
-    
+
+En resumen, el GCL, a pesar de tener un desempeño decente, muestra limitaciones en cuanto a la detección de ciclos cuando se utilizan periodos inadecuados, lo que no es capturado por los tests aplicados. En cambio, el generador Python (Mersenne Twister) sigue siendo la opción más fiable para aplicaciones que requieren una calidad estadística alta, mientras que el generador de Cuadrados Medios es claramente obsoleto y no es adecuado para aplicaciones actuales debido a sus serias deficiencias estadísticas.
+
 \end{document}

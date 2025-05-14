@@ -58,6 +58,14 @@ def guardar_visualizacion_bitmap(nums, nombre, size=(512, 512), carpeta="visuali
     if not os.path.exists(carpeta):
         os.makedirs(carpeta)
 
+    # Determinar el tamaño máximo posible según la cantidad de números disponibles
+    total_elementos = len(nums)
+    if total_elementos < size[0] * size[1]:
+        # Ajustar el tamaño al número disponible de elementos
+        lado = int(np.sqrt(total_elementos))
+        size = (lado, lado)
+        print(f"Advertencia: Ajustando bitmap a {size} debido a que hay solo {total_elementos} números")
+    
     # Usar sólo los primeros size[0]*size[1] números
     data = np.array(nums[:size[0]*size[1]])
 
@@ -81,8 +89,12 @@ def guardar_visualizacion_bitmap(nums, nombre, size=(512, 512), carpeta="visuali
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gcl-seed", type=int, default=1234, help="Semilla para GCL")
-    parser.add_argument("--cuad-seed", type=int, default=1234, help="Semilla para Cuadrados Medios")
+    # Se precisan 2 tipos de semilla dada la naturaleza de cada generador
+    # En GCL la cantidad de digitos necesarios de la semilla puede decidirse a partir  del logaritmo en base 10 de m
+    # Siendo en este caso log10(2**32)=9.63, luego precisariamos al menos 10 digitos. 
+    parser.add_argument("--gcl-seed", type=int, default=1234567890, help="Semilla para GCL(10 digitos)")
+    # Cuadrados medios usa de digitos 4
+    parser.add_argument("--cuad-seed", type=int, default=1234, help="Semilla para Cuadrados Medios(4 digitos)")
     parser.add_argument("-n", "--n", type=int, default=10000, help="Número de corridas")
     args = parser.parse_args()
     
@@ -92,12 +104,16 @@ if __name__ == "__main__":
     n = args.n
     print(f"Using GCL seed: {GCLseed}") # 0 ≤ seed < 4,294,967,296. Hasta 10 cifras
     print(f"Using Cuadrados_Medios seed: {cuad_seed}") #4 cifras
-
+    
 
     # GCL params
     a = 1664525
     c = 1013904223
     m = 2**32
+
+    if(len(str(GCLseed))!=10 or len(str(cuad_seed))!=4):
+        print("Error: La semilla de GCL debe tener 10 digitos y la de cuadrados medios 4 digitos")
+        exit(1)
 
     gcl_nums = gcl(GCLseed, a, c, m, n)
     cuad_nums = cuadrados_medios(cuad_seed, n)
@@ -106,7 +122,7 @@ if __name__ == "__main__":
 
     generadores = {
         "GCL": gcl_nums,
-        "Cuadrados Medios": cuad_nums,
+        "Cuadrados_Medios": cuad_nums,
         "Python": py_nums
     }
 
