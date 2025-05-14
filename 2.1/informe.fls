@@ -156,6 +156,8 @@ INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\generic\iftex\ifvtex.sty
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.cfg
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.cfg
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.cfg
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\fancyvrb\fancyvrb.sty
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\lm\t1lmr.fd
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\lm\t1lmr.fd
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\lm\t1lmr.fd
@@ -287,6 +289,13 @@ INPUT .\visualizaciones_error\GCL_bitmap.png
 INPUT .\visualizaciones_error\GCL_bitmap.png
 INPUT .\visualizaciones_error\GCL_bitmap.png
 INPUT .\visualizaciones_error\GCL_bitmap.png
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr7.tfm
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmtt8.tfm
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\lm\ts1lmtt.fd
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\lm\ts1lmtt.fd
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\tex\latex\lm\ts1lmtt.fd
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ts1-lmtt8.tfm
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-ts1.enc
 INPUT informe.aux
 INPUT .\informe.out
 INPUT .\informe.out
@@ -316,5 +325,7 @@ INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmsy10.
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmsy10.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtt12.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtt12.pfb
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtt8.pfb
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtt8.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtt9.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtt9.pfb

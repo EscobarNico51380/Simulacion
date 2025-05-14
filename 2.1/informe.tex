@@ -17,6 +17,7 @@
 \graphicspath{{./images/}}
 \usepackage{lmodern}  % Latin Modern, versión escalable de Computer Modern
 \usepackage[margin=2.5cm]{geometry}
+\usepackage{fancyvrb}
 
 \title{Trabajo Práctico 2.1 -- Simulación}
 \author{
@@ -233,4 +234,125 @@ Los generadores de números pseudoaleatorios analizados en este trabajo presenta
 
 En resumen, el GCL, a pesar de tener un desempeño decente, muestra limitaciones en cuanto a la detección de ciclos cuando se utilizan periodos inadecuados, lo que no es capturado por los tests aplicados. En cambio, el generador Python (Mersenne Twister) sigue siendo la opción más fiable para aplicaciones que requieren una calidad estadística alta, mientras que el generador de Cuadrados Medios es claramente obsoleto y no es adecuado para aplicaciones actuales debido a sus serias deficiencias estadísticas.
 
+\section{Codigo}
+    \begin{Verbatim}[fontsize=\scriptsize]
+    import argparse
+    import numpy as np
+    import random
+    from scipy.stats import chisquare, kstest
+    import matplotlib.pyplot as plt
+    import os
+    
+    # GENERADORES
+    def gcl(seed, a, c, m, n):
+        x = seed
+        numeros = []
+        for _ in range(n):
+            x = (a * x + c) % m
+            numeros.append(x / m)
+        return numeros
+    
+    def cuadrados_medios(seed, n):
+        numeros = []
+        x = seed
+        for _ in range(n):
+            x = int(str(x**2).zfill(8)[2:6])
+            numeros.append(x / 10000)
+        return numeros
+    
+    def python_random(n):
+        return [random.random() for _ in range(n)]
+    
+    # TESTS ESTADÍSTICOS
+    def media_varianza_test(nums):
+        media = np.mean(nums)
+        varianza = np.var(nums)
+        return media, varianza
+    
+    def chi_cuadrado_test(nums, bins=10):
+        freq, _ = np.histogram(nums, bins=bins, range=(0, 1))
+        esperada = len(nums) / bins
+        chi2, p = chisquare(freq, f_exp=[esperada]*bins)
+        return chi2, p
+    
+    def kolmogorov_smirnov_test(nums):
+        d, p = kstest(nums, 'uniform')
+        return d, p
+    
+    def autocorrelacion_test(nums, lag=1):
+        n = len(nums)
+        x = np.array(nums)
+        x_mean = np.mean(x)
+        num = np.sum((x[:n-lag] - x_mean) * (x[lag:] - x_mean))
+        den = np.sum((x - x_mean)**2)
+        r = num / den
+        return r
+    
+    def guardar_visualizacion_bitmap(nums, nombre, size=(512, 512), carpeta="visualizaciones_prueba"):
+        if not os.path.exists(carpeta):
+            os.makedirs(carpeta)
+        total_elementos = len(nums)
+        if total_elementos < size[0] * size[1]:
+            lado = int(np.sqrt(total_elementos))
+            size = (lado, lado)
+            print(f"Advertencia: Ajustando bitmap a {size} debido a que hay solo {total_elementos} números")
+        data = np.array(nums[:size[0]*size[1]])
+        binarizado = np.where(data > 0.5, 1, 0)
+        imagen = binarizado.reshape(size)
+        plt.figure(figsize=(6, 6), dpi=100)
+        plt.imshow(imagen, cmap='gray', interpolation='nearest')
+        plt.axis('off')
+        plt.savefig(f"{carpeta}/{nombre}_bitmap.png", bbox_inches='tight', pad_inches=0)
+        plt.close()
+    
+    # MAIN
+    if __name__ == "__main__":
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--gcl-seed", type=int, default=1234567890, help="Semilla para GCL(10 digitos)")
+        parser.add_argument("--cuad-seed", type=int, default=1234, help="Semilla para Cuadrados Medios(4 digitos)")
+        parser.add_argument("-n", "--n", type=int, default=10000, help="Número de corridas")
+        args = parser.parse_args()
+    
+        GCLseed = args.gcl_seed
+        cuad_seed = args.cuad_seed
+        n = args.n
+    
+        print(f"Using GCL seed: {GCLseed}")
+        print(f"Using Cuadrados_Medios seed: {cuad_seed}")
+    
+        a = 1664525
+        c = 1013904223
+        m = 2**32
+    
+        if(len(str(GCLseed))!=10 or len(str(cuad_seed))!=4):
+            print("Error: La semilla de GCL debe tener 10 digitos y la de cuadrados medios 4 digitos")
+            exit(1)
+    
+        gcl_nums = gcl(GCLseed, a, c, m, n)
+        cuad_nums = cuadrados_medios(cuad_seed, n)
+        py_nums = python_random(n)
+    
+        generadores = {
+            "GCL": gcl_nums,
+            "Cuadrados_Medios": cuad_nums,
+            "Python": py_nums
+        }
+    
+        for nombre, nums in generadores.items():
+            nums = np.array(nums, dtype=np.float32)
+    
+            print(f"\n--- Resultados para {nombre} ---")
+            media, varianza = media_varianza_test(nums)
+            chi2, p_chi = chi_cuadrado_test(nums)
+            d, p_ks = kolmogorov_smirnov_test(nums)
+            r = autocorrelacion_test(nums)
+    
+            print(f"Media: {media:.4f}, Varianza: {varianza:.4f}")
+            print(f"Chi²: {chi2:.2f}, p-valor: {p_chi:.4f}")
+            print(f"KS D: {d:.4f}, p-valor: {p_ks:.4f}")
+            print(f"Autocorrelación (lag 1): {r:.4f}")
+    
+            guardar_visualizacion_bitmap(nums, f"{nombre}")
+    \end{Verbatim}
+    
 \end{document}
