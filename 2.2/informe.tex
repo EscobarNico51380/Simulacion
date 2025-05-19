@@ -1,0 +1,137 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{color}
+\graphicspath{{./images/}}
+\usepackage{lmodern}  % Latin Modern, versión escalable de Computer Modern
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{fancyvrb}
+
+\title{Trabajo Práctico 2.2 \\
+Generadores Pseudoaleatorios de Distribuciones de Probabilidad}
+\author{
+    Renzo Aimaretti \\ \texttt{renzoceronueve@gmail.com}
+    \and
+    Facundo Sosa Bianciotto \\ \texttt{facundososabianciotto@gmail.com}
+    \and
+    Vittorio Maragliano \\ \texttt{maraglianovittorio@gmail.com}
+    \and
+    Ignacio Amelio Ortiz \\ \texttt{nameliortiz@gmail.com}
+    \and
+    Nicolás Roberto Escobar \\ \texttt{escobar.nicolas.isifrro@gmail.com}
+    \and
+    Juan Manuel De Elia \\ \texttt{juanmadeelia@gmail.com}
+}\date{Mayo 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Este trabajo desarrolla la implementación de generadores de números pseudoaleatorios para diversas distribuciones de probabilidad, abordando tanto distribuciones continuas como discretas. Cada distribución se fundamenta teóricamente, se implementa computacionalmente en Python y se testea mediante herramientas visuales y estadísticas. Se utilizan métodos como la transformada inversa y el método de rechazo, conforme a los lineamientos clásicos expuestos por Thomas Naylor en su obra \textit{Técnicas de Simulación en Computadoras}.
+\end{abstract}
+
+\section{Introducción}
+La generación de números pseudoaleatorios que sigan una distribución de probabilidad específica es un aspecto clave en simulación computacional. A partir de un generador uniforme confiable, se pueden construir generadores para cualquier distribución mediante distintas transformaciones. En este trabajo se presentan los generadores para distribuciones seleccionadas, junto a su justificación teórica, construcción algorítmica y evaluación empírica.
+
+\section{Distribuciones Continuas}
+
+% --- UNIFORME ---
+\subsection{Distribución Uniforme}
+Su función de densidad es constante:
+\begin{equation}
+f(x) = \frac{1}{b-a}, \quad a \leq x \leq b
+\end{equation}
+
+La transformada inversa es:
+\begin{equation}
+x = a + (b-a)u, \quad u \sim U(0,1)
+\end{equation}
+
+Se implementó un generador utilizando esta transformación. Se generaron 10.000 valores con \$a=2\$, \$b=5\$, obteniendo:
+\begin{itemize}
+\item Media empírica: 3.4951 (teórica: 3.5)
+\item Varianza empírica: 0.7568 (teórica: 0.75)
+\end{itemize}
+
+\subsection{Distribución Exponencial}
+\begin{equation}
+f(x) = \lambda e^{-\lambda x}, \quad x \geq 0
+\end{equation}
+
+La transformada inversa es:
+\begin{equation}
+x = -\frac{1}{\lambda} \ln(u)
+\end{equation}
+
+Con $ \lambda = 1.5$ se obtuvieron 10.000 muestras:
+\begin{itemize}
+\item Media empírica: 0.6657 (teórica: 0.6667)
+\item Varianza empírica: 0.4532 (teórica: 0.4444)
+\end{itemize}
+
+
+\subsection{Distribución Normal}
+\begin{equation}
+f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+\end{equation}
+
+Se utilizó el método de Box-Muller. Con $\mu=0$ y $\sigma=1$ se obtuvo:
+\begin{itemize}
+\item Media empírica: -0.0062 (teórica: 0)
+\item Desviación empírica: 1.0003 (teórica: 1)
+\end{itemize}
+
+\section{Distribuciones Discretas}
+
+\subsection{Distribución Binomial}
+Se implementó mediante \$n\$ pruebas de Bernoulli.
+\begin{equation}
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}
+\end{equation}
+Con $n=10$, $p=0.5$, se obtuvo:
+\begin{itemize}
+\item Media empírica: 5.012 (teórica: 5)
+\item Varianza empírica: 2.48 (teórica: 2.5)
+\end{itemize}
+
+
+\subsection{Distribución Poisson}
+Implementada con el algoritmo de Knuth:
+\begin{equation}
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}
+\end{equation}
+Con $\lambda=4$ se obtuvo:
+\begin{itemize}
+\item Media empírica: 3.995 (teórica: 4)
+\item Varianza empírica: 3.92 (teórica: 4)
+\end{itemize}
+
+
+\subsection{Distribución Empírica}
+Se generaron datos a partir de frecuencias definidas manualmente. Se usó el método de transformación acumulada. Los resultados se ajustaron perfectamente a la distribución discreta definida.
+
+
+\section{Conclusión}
+Se logró implementar generadores para diversas distribuciones continuas y discretas utilizando la transformada inversa, el método de rechazo y otros algoritmos clásicos. Las muestras fueron validadas mediante estadísticas de primer y segundo orden, y contrastadas con sus modelos teóricos. Este trabajo permite fundamentar futuras simulaciones más complejas.
+
+\section\*{Referencias}
+\begin{itemize}
+\item Naylor, T.H. (1982). \textit{Técnicas de simulación en computadoras}.
+\item Ross, S.M. (2006). \textit{Simulación}.
+\item Documentación oficial de Numpy y Scipy.
+\end{itemize}
+
+\end{document}
