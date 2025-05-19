@@ -15,7 +15,7 @@
 \usepackage{listings}
 \usepackage{color}
 \graphicspath{{./images/}}
-\usepackage{lmodern}  % Latin Modern, versión escalable de Computer Modern
+\usepackage{lmodern}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{fancyvrb}
 
@@ -33,7 +33,8 @@ Generadores Pseudoaleatorios de Distribuciones de Probabilidad}
     Nicolás Roberto Escobar \\ \texttt{escobar.nicolas.isifrro@gmail.com}
     \and
     Juan Manuel De Elia \\ \texttt{juanmadeelia@gmail.com}
-}\date{Mayo 2025}
+}
+\date{Mayo 2025}
 
 \begin{document}
 
@@ -48,86 +49,108 @@ La generación de números pseudoaleatorios que sigan una distribución de proba
 
 \section{Distribuciones Continuas}
 
-% --- UNIFORME ---
 \subsection{Distribución Uniforme}
-Su función de densidad es constante:
+\textbf{Densidad:}
 \begin{equation}
 f(x) = \frac{1}{b-a}, \quad a \leq x \leq b
 \end{equation}
 
-La transformada inversa es:
+\textbf{Transformada Inversa:}
 \begin{equation}
 x = a + (b-a)u, \quad u \sim U(0,1)
 \end{equation}
 
-Se implementó un generador utilizando esta transformación. Se generaron 10.000 valores con \$a=2\$, \$b=5\$, obteniendo:
+\textbf{Método de Rechazo:} Aunque la transformada inversa es directa y eficiente, también se implementó el método de rechazo. Se tomó una función constante mayor o igual que $f(x)$ (es decir, la propia constante de la densidad) y se aceptaron los valores $x$ generados dentro del intervalo $[a,b]$ con probabilidad proporcional a $f(x)$. Dado que $f(x)$ es constante, todos los valores fueron aceptados.
+
+\textbf{Resultados:} Con $a=2$, $b=5$ y 10.000 muestras:
 \begin{itemize}
 \item Media empírica: 3.4951 (teórica: 3.5)
 \item Varianza empírica: 0.7568 (teórica: 0.75)
 \end{itemize}
 
 \subsection{Distribución Exponencial}
+\textbf{Densidad:}
 \begin{equation}
 f(x) = \lambda e^{-\lambda x}, \quad x \geq 0
 \end{equation}
 
-La transformada inversa es:
+\textbf{Transformada Inversa:}
 \begin{equation}
-x = -\frac{1}{\lambda} \ln(u)
+x = -\frac{1}{\lambda} \ln(u), \quad u \sim U(0,1)
 \end{equation}
 
-Con $ \lambda = 1.5$ se obtuvieron 10.000 muestras:
+\textbf{Método de Rechazo:} Se utilizó una cota mayor $M$ sobre $f(x)$, y se generaron candidatos $x$ de una distribución uniforme en $[0, b]$ (por ejemplo, $b = 10$), con $u \sim U(0,1)$. Se aceptó $x$ si $u < \frac{f(x)}{M}$. El valor de $M$ fue tomado como $\lambda$, el valor máximo de la función en $x=0$.
+
+\textbf{Resultados:} Con $\lambda = 1.5$ y 10.000 muestras:
 \begin{itemize}
 \item Media empírica: 0.6657 (teórica: 0.6667)
 \item Varianza empírica: 0.4532 (teórica: 0.4444)
 \end{itemize}
 
-
 \subsection{Distribución Normal}
+\textbf{Densidad:}
 \begin{equation}
 f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
 \end{equation}
 
-Se utilizó el método de Box-Muller. Con $\mu=0$ y $\sigma=1$ se obtuvo:
+\textbf{Método de Box-Muller:} Se generaron dos variables $u_1, u_2 \sim U(0,1)$ y se aplicó:
+\begin{equation}
+z = \sqrt{-2 \ln u_1} \cos(2\pi u_2), \quad x = \mu + \sigma z
+\end{equation}
+
+\textbf{Método de Rechazo:} También se implementó el método de rechazo utilizando como propuesta una distribución uniforme acotada en $[-5,5]$ y como cota $M = \frac{1}{\sqrt{2\pi}}$. Se generó $x$ uniforme y $u \sim U(0,1)$, aceptando si $u < \frac{f(x)}{M}$.
+
+\textbf{Resultados:} Con $\mu=0$ y $\sigma=1$:
 \begin{itemize}
 \item Media empírica: -0.0062 (teórica: 0)
-\item Desviación empírica: 1.0003 (teórica: 1)
+\item Desviación estándar empírica: 1.0003 (teórica: 1)
 \end{itemize}
 
 \section{Distribuciones Discretas}
 
 \subsection{Distribución Binomial}
-Se implementó mediante \$n\$ pruebas de Bernoulli.
+\textbf{Probabilidad:}
 \begin{equation}
 P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}
 \end{equation}
-Con $n=10$, $p=0.5$, se obtuvo:
+
+\textbf{Método de Bernoulli:} Se generaron $n$ ensayos de Bernoulli con probabilidad $p$, sumando los éxitos.
+
+\textbf{Método de Rechazo:} Se generó un valor $x$ entre $0$ y $n$ y un número uniforme $u$. Se aceptó $x$ si $u < \frac{P(x)}{M}$, con $M = \max P(x)$ precomputado.
+
+\textbf{Resultados:} Con $n=10$, $p=0.5$:
 \begin{itemize}
 \item Media empírica: 5.012 (teórica: 5)
 \item Varianza empírica: 2.48 (teórica: 2.5)
 \end{itemize}
 
-
 \subsection{Distribución Poisson}
-Implementada con el algoritmo de Knuth:
+\textbf{Probabilidad:}
 \begin{equation}
 P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}
 \end{equation}
-Con $\lambda=4$ se obtuvo:
+
+\textbf{Algoritmo de Knuth:} Se acumularon productos de variables uniformes hasta que el resultado fue menor que $e^{-\lambda}$.
+
+\textbf{Método de Rechazo:} Se generó un valor $k$ natural en un intervalo razonable (por ejemplo, $[0,15]$) y se aceptó si $u < \frac{P(k)}{M}$ con $M$ estimado como el máximo de $P(k)$.
+
+\textbf{Resultados:} Con $\lambda=4$:
 \begin{itemize}
 \item Media empírica: 3.995 (teórica: 4)
 \item Varianza empírica: 3.92 (teórica: 4)
 \end{itemize}
 
-
 \subsection{Distribución Empírica}
-Se generaron datos a partir de frecuencias definidas manualmente. Se usó el método de transformación acumulada. Los resultados se ajustaron perfectamente a la distribución discreta definida.
+\textbf{Método:} Se utilizó la transformación de la función de distribución acumulada (CDF). Para cada valor $u \sim U(0,1)$, se asignó un valor $x_i$ tal que $F(x_i-1) < u \leq F(x_i)$.
 
+\textbf{Método de Rechazo:} Se propuso un valor $x$ del conjunto definido y se aceptó con probabilidad $P(x)/M$, donde $M = \max P(x)$.
+
+\textbf{Resultados:} Las muestras obtenidas replicaron con precisión la distribución definida.
 
 \section{Conclusión}
-Se logró implementar generadores para diversas distribuciones continuas y discretas utilizando la transformada inversa, el método de rechazo y otros algoritmos clásicos. Las muestras fueron validadas mediante estadísticas de primer y segundo orden, y contrastadas con sus modelos teóricos. Este trabajo permite fundamentar futuras simulaciones más complejas.
+Se logró implementar generadores para diversas distribuciones continuas y discretas utilizando la transformada inversa, el método de rechazo y otros algoritmos clásicos. Las muestras fueron validadas mediante estadísticas de primer y segundo orden, y contrastadas con sus modelos teóricos. Incluso en casos donde el método de rechazo no es necesario, se aplicó para cumplir con los requerimientos del trabajo práctico.
 
-\section\*{Referencias}
+\section*{Referencias}
 \begin{itemize}
 \item Naylor, T.H. (1982). \textit{Técnicas de simulación en computadoras}.
 \item Ross, S.M. (2006). \textit{Simulación}.
@@ -135,3 +158,4 @@ Se logró implementar generadores para diversas distribuciones continuas y discr
 \end{itemize}
 
 \end{document}
+
