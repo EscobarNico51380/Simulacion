@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import binom, chisquare
+from scipy.stats import binom, chisquare, kstest
 
 # Parámetros de la binomial y tamaño de muestra
 n = 10        # número de ensayos
@@ -51,14 +51,19 @@ plt.ylabel("Probabilidad")
 plt.title("Método de rechazo para $B(10, 0.5)$")
 plt.legend()
 plt.tight_layout()
-plt.show()
+plt.savefig("2.2/visualizaciones/binomial_rechazo.png")
 
 # --- Test Chi-cuadrado ---
 observed_freqs = np.bincount(samples, minlength=n+1)
 expected_freqs = N * binomial_pmf(x, n, p)
-chi2_stat, p_value = chisquare(f_obs=observed_freqs, f_exp=expected_freqs)
+chi2_stat, p_value_chi2 = chisquare(f_obs=observed_freqs, f_exp=expected_freqs)
+
+# --- Test Kolmogorov-Smirnov (con CDF escalonada) ---
+# Importante: usar la función acumulada teórica como callable
+ks_stat, p_value_ks = kstest(samples, cdf=lambda k: binom.cdf(k, n, p))
 
 # --- Impresiones finales ---
 print(f"Media empírica: {mean_emp:.4f} (teórica: {mean_theo:.4f})")
 print(f"Varianza empírica: {var_emp:.4f} (teórica: {var_theo:.4f})")
-print(f"Chi-cuadrado: {chi2_stat:.2f}, p-value: {p_value:.4f}")
+print(f"Chi-cuadrado: {chi2_stat:.2f}, p-value: {p_value_chi2:.4f}")
+print(f"Kolmogorov-Smirnov: {ks_stat:.4f}, p-value: {p_value_ks:.4f}")

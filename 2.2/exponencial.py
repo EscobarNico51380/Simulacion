@@ -40,7 +40,8 @@ def testeo_exponencial(datos, lambd, metodo):
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.show()
+    plt.savefig(f"2.2/visualizaciones/exponencial_{metodo}.png", )
+
 
 
 if __name__ == "__main__":

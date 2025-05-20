@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import gamma, kstest
+import os
 
 # 1. Parámetros de la distribución objetivo (Gamma)
 k = 2.0       # parámetro de forma
@@ -35,6 +36,7 @@ while len(samples) < N:
 
 samples = np.array(samples)
 
+os.makedirs("2.2/visualizaciones", exist_ok=True)
 # 5. Graficar resultados
 plt.hist(samples, bins=50, density=True, alpha=0.6, label='Muestra generada')
 x = np.linspace(a, b, 1000)
@@ -44,7 +46,7 @@ plt.xlabel('x')
 plt.ylabel('Densidad')
 plt.legend()
 plt.grid()
-plt.show()
+plt.savefig("2.2/visualizaciones/gamma_rechazo.png", )
 
 # 6. Prueba estadística (Kolmogorov-Smirnov)
 stat, p_value = kstest(samples, 'gamma', args=(k, 0, theta))

@@ -47,4 +47,5 @@ plt.title("Distribución generada por rechazo")
 plt.ylabel("Frecuencia")
 plt.legend()
 plt.grid(True)
-plt.show()
+plt.savefig("2.2/visualizaciones/empirica_discreta_rechazo.png", )
+

@@ -57,7 +57,8 @@ def testear_poisson_histograma(lam, n):
     plt.ylabel("Frecuencia relativa")
     plt.legend()
     plt.grid(True)
-    plt.show()
+    plt.savefig(f"2.2/visualizaciones/poisson_rechazo.png", )
+
 
 if __name__ == "__main__":
     lam = 4

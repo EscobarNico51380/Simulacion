@@ -75,4 +75,5 @@ plt.xlabel('x (fallos hasta r éxitos)')
 plt.ylabel('Probabilidad')
 plt.legend()
 plt.grid(True)
-plt.show()
+plt.savefig(f"2.2/visualizaciones/pascal_rechazo.png", )
+

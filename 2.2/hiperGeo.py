@@ -56,7 +56,8 @@ def testeo_hipergeometrica(valores, N, K, n):
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
-    plt.show()
+    plt.savefig(f"2.2/visualizaciones/hipergeometrica_rechazo.png", )
+
 
 # -------------------------------
 # MAIN
