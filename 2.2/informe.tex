@@ -125,10 +125,24 @@ P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}
 \end{itemize}
 
 \subsection{Distribución Poisson}
-\textbf{Probabilidad:}
+La distribución de Poisson es una distribución de probabilidad discreta que describe el número de veces que ocurre un evento en un intervalo fijo de tiempo o espacio, bajo las siguientes condiciones:
+
+\item Los eventos ocurren de forma independiente entre sí.
+\item La tasa promedio de ocurrencia (λ) es constante.
+\item No es probable que ocurran dos eventos al mismo tiempo exacto (en un intervalo infinitesimalmente pequeño).
+\textbf{Parámetro de entrada:}
+\begin{itemize}
+λ>0: media esperada de eventos en el intervalo (también es la varianza de la distribución).
+\end{itemize}
+
+\textbf{Función de probabilidad:}
 \begin{equation}
 P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}
 \end{equation}
+donde
+\item X es la variable aleatoria que representa el número de eventos.
+\item λ es la media esperada de ocurrencias por intervalo.
+\item e es la base de los logaritmos naturales (≈2.71828).
 
 \textbf{Algoritmo de Knuth:} Se acumularon productos de variables uniformes hasta que el resultado fue menor que $e^{-\lambda}$.
 
