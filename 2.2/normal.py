@@ -1,33 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# --- Método Box-Muller ---
-def generar_normal_boxmuller(mu, sigma, n):
-    u1 = np.random.random(n // 2)
-    u2 = np.random.random(n // 2)
 
-    z0 = np.sqrt(-2 * np.log(u1)) * np.cos(2 * np.pi * u2)
-    z1 = np.sqrt(-2 * np.log(u1)) * np.sin(2 * np.pi * u2)
-
-    z = np.concatenate((z0, z1))
-    x = mu + sigma * z
-    return x
-
-def test_normal_boxmuller(mu=0, sigma=1, n=10000):
-    datos = generar_normal_boxmuller(mu, sigma, n)
-    media = np.mean(datos)
-    std = np.std(datos)
-    print(f"[Box-Muller] Media estimada: {media:.4f} (esperada: {mu})")
-    print(f"[Box-Muller] Desviación estándar estimada: {std:.4f} (esperada: {sigma})")
-
-    plt.hist(datos, bins=50, density=True, color='plum', edgecolor='black', alpha=0.7)
-    x = np.linspace(mu - 4*sigma, mu + 4*sigma, 1000)
-    plt.plot(x, (1/(sigma*np.sqrt(2*np.pi))) * np.exp(-(x - mu)**2 / (2*sigma**2)), 'r-', lw=2)
-    plt.title(f"Distribución Normal por Box-Muller (μ={mu}, σ={sigma})")
-    plt.xlabel("Valor")
-    plt.ylabel("Densidad")
-    plt.grid(True)
-    plt.show()
 
 
 def f_normal(x):
@@ -61,5 +35,4 @@ def test_normal_rechazo(n=10000):
     plt.show()
 
 if __name__ == "__main__":
-    test_normal_boxmuller(mu=0, sigma=1, n=10000)
     test_normal_rechazo(n=10000)

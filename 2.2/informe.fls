@@ -239,6 +239,7 @@ INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmri9.
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr12.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx12.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx12.tfm
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx10.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\rm-lmr10.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\rm-lmr7.tfm
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\rm-lmr5.tfm
@@ -264,6 +265,8 @@ INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmri10
 INPUT informe.aux
 INPUT .\informe.out
 INPUT .\informe.out
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx10.pfb
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx10.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx12.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx12.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx9.pfb
@@ -284,6 +287,8 @@ INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr17.p
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr17.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr5.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr5.pfb
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr7.pfb
+INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr7.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr9.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr9.pfb
 INPUT C:\Users\renzo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmri10.pfb
