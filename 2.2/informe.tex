@@ -411,33 +411,6 @@ No se aplica, ya que la función de distribución acumulada (CDF) de la binomial
 \subsubsection{Método de Rechazo}
 Se utilizó el método de rechazo para generar muestras de la distribución binomial $B(n=10, p=0.5)$. Se eligió una distribución propuesta uniforme sobre los valores enteros $\{0, 1, ..., n\}$, y se evaluó la razón entre la PMF de la binomial y el valor máximo observado (constante de aceptación $c$).
 
-\textbf{Código:}
-\begin{verbatim}[fontsize=\scriptsize]
-import numpy as np
-from scipy.stats import binom
-
-n = 10
-p = 0.5
-N = 10000
-
-def binomial_pmf(k, n, p):
-    return binom.pmf(k, n, p)
-
-# Constante c
-prob_vals = [binomial_pmf(k, n, p) for k in range(n + 1)]
-c = max(prob_vals)
-
-# Método de rechazo
-samples = []
-while len(samples) < N:
-    k = np.random.randint(0, n + 1)
-    u = np.random.uniform(0, 1)
-    if u < binomial_pmf(k, n, p) / c:
-        samples.append(k)
-
-samples = np.array(samples)
-\end{verbatim}
-
 \textbf{Resultados (para $n=10$, $p=0.5$, $N=10000$):}
 \begin{itemize}
     \item Media empírica: 5.0026 \hfill (esperada: 5.0000)
@@ -450,39 +423,6 @@ samples = np.array(samples)
 \vspace{0.5em}
 \subsubsection{Visualización y Testeo}
 Se generó un histograma de frecuencias relativas junto con la función de masa de probabilidad teórica para verificar visualmente la concordancia. Además, se aplicaron los tests estadísticos de Kolmogorov-Smirnov (KS) y Chi-cuadrado para validar la generación de muestras.
-
-\textbf{Código:}
-\begin{verbatim}[fontsize=\scriptsize]
-import matplotlib.pyplot as plt
-from scipy.stats import chisquare, kstest
-
-# Estadísticas empíricas
-mean_emp = samples.mean()
-var_emp  = samples.var(ddof=0)
-
-# Frecuencias observadas vs esperadas
-observed_freqs = np.bincount(samples, minlength=n+1)
-x = np.arange(0, n + 1)
-expected_freqs = N * binomial_pmf(x, n, p)
-
-# Test Chi-cuadrado
-chi2_stat, p_value_chi2 = chisquare(f_obs=observed_freqs, f_exp=expected_freqs)
-
-# Test KS
-ks_stat, p_value_ks = kstest(samples, cdf=lambda k: binom.cdf(k, n, p))
-
-# Visualización
-plt.figure(figsize=(8, 5))
-plt.hist(samples, bins=np.arange(n + 2), density=True, alpha=0.6,
-         label="Generado", align='left')
-plt.plot(x, binom.pmf(x, n, p), 'o-', label="Binomial teórica")
-plt.xlabel("k")
-plt.ylabel("Probabilidad")
-plt.title("Método de rechazo para $B(10, 0.5)$")
-plt.legend()
-plt.tight_layout()
-plt.savefig("2.2/visualizaciones/binomial_rechazo.png")
-\end{verbatim}
 
 \vspace{0.5em}
 \subsubsection{Análisis Comparativo}

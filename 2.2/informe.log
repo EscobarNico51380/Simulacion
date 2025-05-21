@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.20)  20 MAY 2025 21:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.20)  20 MAY 2025 21:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -658,45 +658,45 @@ Overfull \hbox (100.2171pt too wide) in paragraph at lines 373--373
 []    \T1/lmtt/m/n/10 plt.hist(datos, bins=50, density=True, color='lightblue', edgecolor='black', alpha=0.7, label='Muestras')[] 
  []
 
-[10] [11]
-<visualizaciones/binomial_rechazo.png, id=201, 578.16pt x 361.35pt>
+[10]
+<visualizaciones/binomial_rechazo.png, id=197, 578.16pt x 361.35pt>
 File: visualizaciones/binomial_rechazo.png Graphic file (type png)
 <use visualizaciones/binomial_rechazo.png>
-Package pdftex.def Info: visualizaciones/binomial_rechazo.png  used on input line 497.
+Package pdftex.def Info: visualizaciones/binomial_rechazo.png  used on input line 437.
 (pdftex.def)             Requested size: 283.22162pt x 177.01343pt.
- [12]
+ [11]
 
-LaTeX Warning: File `visualizaciones/mi_imagen.png' not found on input line 515.
-
-
-c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/2.2/informe.tex:515: Package pdftex.def Error: File `visualizaciones/mi_imagen.png' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.515 ...textwidth]{visualizaciones/mi_imagen.png}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[13 <./visualizaciones/binomial_rechazo.png>]
-
-LaTeX Warning: File `visualizaciones/mi_imagen.png' not found on input line 532.
+LaTeX Warning: File `visualizaciones/mi_imagen.png' not found on input line 455.
 
 
-c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/2.2/informe.tex:532: Package pdftex.def Error: File `visualizaciones/mi_imagen.png' not found: using draft setting.
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/2.2/informe.tex:455: Package pdftex.def Error: File `visualizaciones/mi_imagen.png' not found: using draft setting.
 
 See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.532 ...textwidth]{visualizaciones/mi_imagen.png}
+l.455 ...textwidth]{visualizaciones/mi_imagen.png}
                                                   
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[14] [15] (informe.aux
+[12 <./visualizaciones/binomial_rechazo.png>]
+
+LaTeX Warning: File `visualizaciones/mi_imagen.png' not found on input line 472.
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/2.2/informe.tex:472: Package pdftex.def Error: File `visualizaciones/mi_imagen.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.472 ...textwidth]{visualizaciones/mi_imagen.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[13] [14] (informe.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
 )
@@ -712,17 +712,17 @@ Package rerunfilecheck Info: File `informe.out' has not changed.
 (rerunfilecheck)             Checksum: 5AFEFC4FF25C935C6883AC367B85CE83;4092.
  ) 
 Here is how much of TeX's memory you used:
- 17107 strings out of 474486
- 279390 string characters out of 5743755
+ 17106 strings out of 474486
+ 279383 string characters out of 5743755
  1939542 words of memory out of 5000000
  38932 multiletter control sequences out of 15000+600000
  631699 words of font info for 156 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,9n,79p,1053b,649s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx9.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi5.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr5.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr9.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri9.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy5.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on informe.pdf (15 pages, 555631 bytes).
+Output written on informe.pdf (14 pages, 552919 bytes).
 PDF statistics:
- 331 PDF objects out of 1000 (max. 8388607)
- 70 named destinations out of 1000 (max. 500000)
+ 327 PDF objects out of 1000 (max. 8388607)
+ 69 named destinations out of 1000 (max. 500000)
  40157 words of extra memory for PDF output out of 42996 (max. 10000000)
 
