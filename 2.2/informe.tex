@@ -34,7 +34,7 @@ Generadores Pseudoaleatorios de Distribuciones de Probabilidad}
     \and
     Juan Manuel De Elia \\ \texttt{juanmadeelia@gmail.com}
 }
-\date{Mayo 2025}
+\date{21 de Mayo 2025}
 
 \begin{document}
 
@@ -135,23 +135,35 @@ f(x) =
 \]
 
 \subsubsection*{Función de Distribución Acumulada (CDF)}
+
+Partimos de la definición de función de distribución acumulada:
+\[
+F(x) = \mathbb{P}(X \leq x) = \int_{-\infty}^{x} f(t) \, dt
+\]
+
+Como la densidad es constante en el intervalo $[a, b]$, se tiene:
 \[
 F(x) =
 \begin{cases}
-0 & \text{si } x < a \\
-\frac{x - a}{b - a} & \text{si } a \leq x \leq b \\
+0 & \text{si } x < a \\[0.5em]
+\int_a^x \frac{1}{b - a} dt = \frac{x - a}{b - a} & \text{si } a \leq x \leq b \\[0.5em]
 1 & \text{si } x > b
 \end{cases}
 \]
-\subsubsection*{Función Inversa (para la transformada inversa)}
-al invertir la función de distribución acumulada $F(x)$ se obtiene:
 
+\subsubsection*{Función Inversa (para la transformada inversa)}
+
+Se desea generar una variable aleatoria $X \sim U(a,b)$ a partir de una variable $U \sim U(0,1)$. Para ello, se utiliza la función inversa de la CDF.
+
+Dado que para $x \in [a,b]$ se tiene:
 \[
-X = a + (b - a) \cdot U
+F(x) = \frac{x - a}{b - a}
 \]
 
-\subsubsection{Transformada Inversa}
-Este método aprovecha que la función de distribución acumulada (CDF) de la uniforme $U(a,b)$ es invertible fácilmente. La fórmula de transformación consiste en aplicar la función inversa de la CDF a un número aleatorio uniforme $u \sim U(0,1)$.:
+Entonces, despejando $x$:
+\[
+u = \frac{x - a}{b - a} \Rightarrow x = a + (b - a)u
+\]
 
 \textbf{Fórmula:}
 \begin{equation}
@@ -275,6 +287,8 @@ Además, desde un punto de vista visual, los histogramas generados por ambos mé
     \label{fig:uniforme_inversa}
 \end{figure}
 
+
+
 \subsection{Distribución Exponencial}
 
 La distribución exponencial es ampliamente utilizada para modelar tiempos entre eventos en procesos de Poisson. Se caracteriza por una función de densidad decreciente y depende de un único parámetro.
@@ -295,7 +309,21 @@ f(x) =
 \end{cases}
 \]
 
-\subsubsection*{Función de Distribución Acumulada (CDF)}
+\subsubsection*{Obtención de la Función de Distribución Acumulada (CDF)}
+
+La función de distribución acumulada $F(x)$ se obtiene integrando la función de densidad desde 0 hasta $x$:
+
+\[
+F(x) = \int_0^x \lambda e^{-\lambda t} \, dt
+\]
+
+Resolviendo la integral:
+
+\[
+F(x) = \left[ -e^{-\lambda t} \right]_0^x = -e^{-\lambda x} + e^0 = 1 - e^{-\lambda x}
+\]
+
+Entonces, la CDF completa es:
 
 \[
 F(x) =
@@ -305,18 +333,36 @@ F(x) =
 \end{cases}
 \]
 
-\subsubsection*{Función Inversa (para la transformada inversa)}
+\subsubsection*{Obtención de la Transformada Inversa}
 
-Invirtiendo la función de distribución acumulada se obtiene:
+El método de la transformada inversa permite generar variables aleatorias a partir de una distribución conocida, a partir de una variable uniforme $u \sim \mathcal{U}(0,1)$. Para ello, se iguala la CDF a $u$ y se despeja $x$:
 
 \[
-x = -\frac{1}{\lambda} \ln(1 - u), \quad u \sim \mathcal{U}(0,1)
+F(x) = u \Rightarrow 1 - e^{-\lambda x} = u
 \]
 
-Debido a que $1 - u \sim \mathcal{U}(0,1)$, se puede simplificar como:
+Despejando:
 
 \[
-x = -\frac{\ln(u)}{\lambda}
+e^{-\lambda x} = 1 - u
+\]
+
+Aplicando logaritmo natural en ambos lados:
+
+\[
+-\lambda x = \ln(1 - u)
+\]
+
+Finalmente:
+
+\[
+x = -\frac{1}{\lambda} \ln(1 - u)
+\]
+
+Como $1 - u \sim \mathcal{U}(0,1)$, también se puede escribir:
+
+\[
+x = -\frac{\ln(u)}{\lambda}, \quad u \sim \mathcal{U}(0,1)
 \]
 
 \subsubsection{Transformada Inversa}
@@ -348,8 +394,6 @@ El método de rechazo también puede aplicarse a la distribución exponencial. S
   \item KS: D = 0.0070, p-valor = 0.7295
 \end{itemize}
 
-
-
 \subsubsection{Análisis comparativo}
 
 Ambos métodos generan datos que siguen de forma razonable la distribución teórica. La transformada inversa es directa y computacionalmente eficiente, mientras que el método de rechazo resulta más lento por la necesidad de rechazar candidatos.
@@ -368,9 +412,10 @@ En ambos casos, el test de Kolmogorov-Smirnov muestra p-valores elevados, por lo
     \caption{Histograma usando método de rechazo y densidad teórica.}
 \end{figure}
 
-\section{Distribución Gamma}
 
-\subsection{Introducción teórica}
+\subsection{Distribución Gamma}
+
+\subsubsection{Introducción teórica}
 
 La distribución Gamma es una distribución continua de probabilidad con dos parámetros:
 \begin{itemize}
@@ -386,11 +431,39 @@ f(x; k, \theta) = \frac{1}{\Gamma(k)\theta^k} x^{k-1} e^{-x/\theta}, \quad x > 0
 
 donde $\Gamma(k)$ representa la función Gamma evaluada en $k$.
 
+La función de distribución acumulada (CDF) se define como:
+
+\[
+F(x; k, \theta) = \int_0^x f(t; k, \theta) \, dt = \int_0^x \frac{1}{\Gamma(k)\theta^k} t^{k-1} e^{-t/\theta} \, dt
+\]
+
+Aplicamos el cambio de variable \( u = \frac{t}{\theta} \), es decir, \( t = \theta u \) y \( dt = \theta du \), obteniendo:
+
+\[
+F(x; k, \theta) = \int_0^{x/\theta} \frac{1}{\Gamma(k)\theta^k} (\theta u)^{k-1} e^{-u} \cdot \theta \, du
+\]
+
+\[
+= \frac{\theta^k}{\Gamma(k)\theta^k} \int_0^{x/\theta} u^{k-1} e^{-u} \, du = \frac{1}{\Gamma(k)} \int_0^{x/\theta} u^{k-1} e^{-u} \, du
+\]
+
+Esta integral es conocida como la función Gamma incompleta inferior, denotada por:
+
+\[
+\gamma(k, x/\theta) = \int_0^{x/\theta} u^{k-1} e^{-u} \, du
+\]
+
+Por lo tanto, la función de distribución acumulada puede escribirse como:
+
+\[
+F(x; k, \theta) = \frac{\gamma(k, x/\theta)}{\Gamma(k)}
+\]
+
+No existe una expresión cerrada para la función inversa \( F^{-1}(u) \) en términos de funciones elementales. Por esta razón, para la simulación de variables aleatorias con esta distribución se empleó el \textbf{método del rechazo}.
+
 En este experimento se utilizó una distribución Gamma con $k = 2$ y $\theta = 2$.
 
-Como no se dispone de una forma cerrada para la inversa de su función de distribución acumulada (CDF), se optó por el \textbf{método del rechazo} para simular la variable aleatoria.
-
-\subsection{Método del rechazo}
+\subsubsection{Método del rechazo}
 
 Se aplicó el método del rechazo utilizando una distribución uniforme como propuesta en el intervalo $[0, 20]$, cubriendo así prácticamente todo el soporte de la distribución Gamma para los parámetros elegidos.
 
@@ -402,15 +475,17 @@ r_2 \leq \frac{f(x_0)}{c}
 
 donde $x_0$ es una muestra candidata generada uniformemente y $r_2$ es un número aleatorio uniforme en $[0,1]$.
 
-\subsection{Test estadístico y resultados visuales}
+\subsubsection{Test estadístico y resultados visuales}
 
 Se comparó la muestra generada con la distribución Gamma teórica mediante el test de Kolmogorov-Smirnov (KS), obteniendo un \textit{p-value} suficientemente grande, lo que indica que no se rechaza la hipótesis nula de que los datos provienen de una distribución Gamma.
 
 Además, se generó un histograma superpuesto con la curva teórica de la distribución Gamma para confirmar visualmente la adecuación del método.
 
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{2.2/visualizaciones/gamma_rechazo.png}
+    \includegraphics[width=0.8\textwidth]{visualizaciones/gamma_rechazo.png}
 \end{center}
+
+
 
 
 
@@ -432,10 +507,39 @@ f(x) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{x^2}{2}\right)
 \]
 
 \subsubsection*{Función de Distribución Acumulada (CDF)}
-No existe una expresión cerrada elemental para la función de distribución acumulada \(F(x)\), pero está definida como:
-\[
-F(x) = \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{t^2}{2}\right) dt
-\]
+
+La función de distribución acumulada (CDF, por sus siglas en inglés) de la distribución normal estándar nos da la probabilidad de que una variable aleatoria \( X \sim \mathcal{N}(0,1) \) tome un valor menor o igual a \( x \).
+
+\paragraph{Paso a paso del razonamiento:}
+
+\begin{enumerate}
+  \item Partimos de la función de densidad de probabilidad (PDF) de la normal estándar:
+  \[
+  f(t) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{t^2}{2}\right)
+  \]
+  
+  \item Para obtener la CDF, integramos la PDF desde $-\infty$ hasta un valor $x$ dado:
+  \[
+  F(x) = \mathbb{P}(X \leq x) = \int_{-\infty}^{x} f(t)\, dt = \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{t^2}{2}\right) dt
+  \]
+  
+  \item Esta integral representa el área bajo la curva de la campana normal desde $-\infty$ hasta $x$.
+  
+  \item No existe una forma cerrada (con funciones elementales) para resolver esta integral. Por lo tanto, se recurre a funciones especiales o métodos numéricos.
+  
+  \item Una forma común de expresar esta integral es usando la **función error** (denotada como $\operatorname{erf}(x)$), que está relacionada con la integral del exponente cuadrático negativo. La relación es:
+  \[
+  F(x) = \frac{1}{2} \left[1 + \operatorname{erf}\left(\frac{x}{\sqrt{2}}\right)\right]
+  \]
+  
+  \item La función error se define como:
+  \[
+  \operatorname{erf}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{-t^2} dt
+  \]
+  
+
+\end{enumerate}
+
 
 \subsubsection*{Función Inversa (para la transformada inversa)}
 La inversa de la CDF de la normal no tiene forma analítica cerrada, pero puede ser aproximada numéricamente. En Python, puede utilizarse `scipy.stats.norm.ppf(u)` para obtener la inversa.
@@ -554,9 +658,9 @@ Desde el punto de vista visual, ambas distribuciones presentan histogramas ajust
 
 \section{Distribuciones Discretas}
 
-\section{Distribución Pascal (Binomial Negativa)}
+\subsection{Distribución Pascal (Binomial Negativa)}
 
-\subsection{Introducción teórica}
+\subsubsection{Introducción teórica}
 
 La distribución Pascal, también conocida como distribución binomial negativa, modela la cantidad de fracasos antes de obtener $r$ éxitos en una secuencia de ensayos independientes de Bernoulli con probabilidad de éxito $p$. Su función de masa de probabilidad (PMF) está dada por:
 
@@ -577,7 +681,41 @@ La media y varianza teóricas son:
 \mathbb{E}[X] = r \frac{1-p}{p}, \quad \mathrm{Var}(X) = r \frac{1-p}{p^2}.
 \]
 
-\subsection{Método de rechazo y relación con la distribución geométrica}
+\subsubsection{Desarrollo de la función acumulada}
+
+La función de distribución acumulada (CDF) de la distribución Pascal se define como la probabilidad de que ocurran a lo sumo $x$ fracasos antes de alcanzar $r$ éxitos:
+
+\[
+F(x; r, p) = P(X \leq x) = \sum_{k=0}^{x} \binom{k + r - 1}{k} p^r (1 - p)^k
+\]
+
+Esta sumatoria no tiene una forma cerrada elemental, pero se puede expresar en términos de la función regularizada incompleta beta:
+
+\[
+F(x; r, p) = I_p(r, x + 1)
+\]
+
+donde \( I_p(a, b) \) es la función beta incompleta regularizada, definida como:
+
+\[
+I_p(a, b) = \frac{1}{B(a,b)} \int_0^p t^{a - 1} (1 - t)^{b - 1} dt
+\]
+
+y \( B(a, b) \) es la función beta completa:
+
+\[
+B(a, b) = \int_0^1 t^{a - 1} (1 - t)^{b - 1} dt = \frac{\Gamma(a)\Gamma(b)}{\Gamma(a + b)}
+\]
+
+Por lo tanto, también puede escribirse:
+
+\[
+F(x; r, p) = \sum_{k=0}^{x} \binom{k + r - 1}{k} p^r (1 - p)^k = I_p(r, x + 1)
+\]
+
+Este resultado conecta la distribución Pascal con funciones especiales que permiten el cálculo preciso de probabilidades acumuladas, y refuerza por qué no se suele usar la inversa de esta CDF para generar muestras.
+
+\subsubsection{Método de rechazo y relación con la distribución geométrica}
 
 Para generar muestras de la distribución Pascal se utilizó el \textbf{método del rechazo} con una distribución geométrica como propuesta. Esto se justifica porque la distribución geométrica es un caso particular de la distribución Pascal con $r=1$, y además, sus colas son similares para ciertas elecciones de parámetros.
 
@@ -609,17 +747,18 @@ El algoritmo genera candidatos $x$ como muestras geométricas, y se acepta cada 
 
 Este enfoque es eficiente porque la propuesta geométrica es fácil de muestrear y la relación entre ambas distribuciones permite encontrar una constante $c$ adecuada para el rechazo.
 
-\subsection{Resultados}
+\subsubsection{Resultados}
 
 Se generaron $N=10{,}000$ muestras utilizando el método del rechazo. Se calcularon la media y varianza empíricas, que coinciden estrechamente con las esperadas teóricas, validando la correcta simulación.
 
-\subsection{Test visual}
+\subsubsection{Test visual}
 
 Se graficó el histograma de las muestras junto con la PMF teórica de la distribución Pascal, evidenciando un buen ajuste entre ambas.
 
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{/visualizaciones/pascal_rechazo.png}
+    \includegraphics[width=0.8\textwidth]{visualizaciones/pascal_rechazo.png}
 \end{center}
+
 
 \subsection{Distribución Binomial}
 
@@ -637,9 +776,23 @@ P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, 2, ..., n
 \]
 
 \subsubsection*{Función de Distribución Acumulada (CDF)}
+
+Para obtener la función acumulada de la distribución binomial, partimos de la probabilidad de obtener exactamente \(k\) éxitos en \(n\) ensayos, que está dada por la fórmula:
+
 \[
-F(k) = P(X \leq k) = \sum_{i=0}^k \binom{n}{i} p^i (1-p)^{n-i}
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}
 \]
+
+La función acumulada \(F(k)\) nos dice la probabilidad de obtener **hasta** \(k\) éxitos, es decir, la probabilidad de que el número de éxitos sea menor o igual que \(k\).
+
+Esto se calcula sumando las probabilidades de obtener 0 éxitos, 1 éxito, 2 éxitos, y así hasta \(k\):
+
+\[
+F(k) = P(X \leq k) = P(X=0) + P(X=1) + \cdots + P(X=k) = \sum_{i=0}^k \binom{n}{i} p^i (1-p)^{n-i}
+\]
+
+En resumen, para llegar a la función acumulada, simplemente sumamos todas las probabilidades individuales desde 0 hasta \(k\).
+
 
 \subsubsection*{Función Inversa (para la transformada inversa)}
 La distribución binomial no posee una función inversa de forma cerrada (analítica), por lo que **no se puede aplicar directamente la transformada inversa** para generar muestras.
@@ -695,9 +848,33 @@ P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots
 \]
 
 \subsubsection*{Función de Distribución Acumulada (CDF)}
+
+Para obtener la función acumulada de la distribución de Poisson, partimos de la probabilidad de que ocurran exactamente \(k\) eventos en el intervalo, dada por la función masa de probabilidad:
+
 \[
-F(k) = P(X \leq k) = e^{-\lambda} \sum_{i=0}^k \frac{\lambda^i}{i!}
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}
 \]
+
+La función acumulada \(F(k)\) representa la probabilidad de que el número de eventos sea menor o igual a \(k\), es decir,
+
+\[
+F(k) = P(X \leq k) = P(X=0) + P(X=1) + \cdots + P(X=k)
+\]
+
+Esto se calcula sumando las probabilidades individuales desde \(i=0\) hasta \(i=k\):
+
+\[
+F(k) = \sum_{i=0}^k P(X = i) = \sum_{i=0}^k \frac{\lambda^i e^{-\lambda}}{i!}
+\]
+
+Dado que el factor \(e^{-\lambda}\) es común en todos los términos, se puede factorizar fuera de la suma:
+
+\[
+F(k) = e^{-\lambda} \sum_{i=0}^k \frac{\lambda^i}{i!}
+\]
+
+Así, la función acumulada de Poisson se expresa como la suma ponderada de las probabilidades individuales hasta \(k\).
+
 
 \subsubsection*{Función Inversa}
 La función de distribución acumulada de Poisson no tiene una forma cerrada simple inversa, por lo que no es práctica su aplicación directa para generar variables aleatorias por transformada inversa. Por esta razón, se recurre a otros métodos como la simulación directa o el método de rechazo.
@@ -732,7 +909,7 @@ Se visualizó la distribución empírica obtenida mediante el método de rechazo
 
 Para evaluar si las muestras generadas por el método del rechazo siguen adecuadamente una distribución Poisson con parámetro \(\lambda = 4\), se realizaron dos pruebas estadísticas: la prueba de Kolmogorov-Smirnov (KS) y la prueba de Chi-cuadrado.
 
-\subsection{Prueba de Kolmogorov-Smirnov}
+\subsubsection{Prueba de Kolmogorov-Smirnov}
 
 El test KS compara la función de distribución empírica con la distribución teórica acumulada de Poisson. Los resultados obtenidos fueron:
 
@@ -743,7 +920,7 @@ El test KS compara la función de distribución empírica con la distribución t
 
 Dado que el valor p es menor que 0.05, se rechaza la hipótesis nula \(H_0\), por lo que se concluye que, según esta prueba, las muestras no siguen una distribución Poisson. Sin embargo, es importante destacar que esta prueba no es la más adecuada para distribuciones discretas como la Poisson, ya que tiende a ser muy sensible a pequeñas discrepancias en la función de distribución acumulada.
 
-\subsection{Prueba de Chi-cuadrado}
+\subsubsection{Prueba de Chi-cuadrado}
 
 Se compararon las frecuencias observadas con las frecuencias esperadas bajo la distribución Poisson. Para garantizar la validez de la prueba, se agruparon las categorías con frecuencias esperadas menores a 5. Los resultados obtenidos fueron:
 
@@ -754,7 +931,7 @@ Se compararon las frecuencias observadas con las frecuencias esperadas bajo la d
 
 Dado que el valor p es mayor que 0.05, no se rechaza la hipótesis nula \(H_0\). Por lo tanto, se concluye que no hay diferencias significativas entre las frecuencias observadas y las esperadas, y que los datos simulados se ajustan adecuadamente a una distribución Poisson.
 
-\subsection{Conclusión}
+\subsubsection{Conclusión}
 
 Aunque el test de Kolmogorov-Smirnov indica un posible desajuste, esto puede deberse a la naturaleza discreta de los datos y a la sensibilidad del test. En cambio, el test de Chi-cuadrado, más apropiado para este tipo de análisis, respalda la validez del método del rechazo para generar muestras con distribución Poisson(\(\lambda = 4\)).
 
@@ -782,22 +959,18 @@ P(X = k) = \frac{\dbinom{K}{k} \dbinom{N-K}{n-k}}{\dbinom{N}{n}}, \quad \text{pa
 \]
 
 \subsubsection*{Función de Distribución Acumulada (CDF)}
-La función de distribución acumulada $F(x)$ se puede expresar como:
+La función de distribución acumulada $F(x)$ describe la probabilidad de obtener a lo sumo $x$ éxitos en la muestra. Matemáticamente, se define como:
 
 \[
-F(x) = P(X \leq x) = \sum_{k = \max(0, n - (N-K))}^{\lfloor x \rfloor} P(X = k)
+F(x) = P(X \leq x) = \sum_{k = \max(0, n - (N-K))}^{\lfloor x \rfloor} \frac{\dbinom{K}{k} \dbinom{N-K}{n-k}}{\dbinom{N}{n}}
 \]
 
-\subsubsection*{Función Inversa (para la transformada inversa)}
-La función de distribución acumulada de la hipergeométrica no posee una forma analítica invertible sencilla, por lo tanto **no se puede aplicar el método de la transformada inversa** de forma directa. Se requiere utilizar métodos numéricos o alternativos.
+Esta expresión representa la suma de las probabilidades individuales desde el valor mínimo posible hasta $x$, redondeado hacia abajo. Dado que la distribución es discreta, esta forma es la única válida para calcular la acumulada.
 
-\subsubsection{Transformada Inversa}
-No se aplica en este caso ya que la función acumulada de la distribución hipergeométrica no es invertible de forma cerrada. Para generar muestras, se opta por utilizar el método del rechazo.
 
 \vspace{0.5em}
 \subsubsection{Método de Rechazo}
 Se implementó el método de rechazo para simular variables aleatorias con distribución hipergeométrica. Se define el soporte como el conjunto de valores posibles para la cantidad de éxitos y se utiliza la función de masa de probabilidad para aceptar o rechazar candidatos propuestos de manera uniforme.
-
 
 \textbf{Resultados (para $N=100$, $K=40$, $n=20$, $muestras=10000$):}
 \begin{itemize}
@@ -811,7 +984,6 @@ Se implementó el método de rechazo para simular variables aleatorias con distr
 \subsubsection{Visualización y Testeo}
 
 Se graficó el histograma de los datos generados junto con la función de masa de probabilidad (PMF) teórica. También se realizó un test de Kolmogorov-Smirnov adaptado para datos discretos con la distribución hipergeométrica.
-
 
 \begin{figure}[H]
     \centering
@@ -850,13 +1022,14 @@ p_i & \text{si } x = x_i \text{ para algún } i \\
 
 \subsubsection*{Función de Distribución Acumulada (CDF)}
 
+La función de distribución acumulada $F(x)$ representa la probabilidad de que la variable aleatoria discreta $X$ tome un valor menor o igual que $x$. Dado que se trata de una distribución empírica discreta con soporte finito $\{x_1, x_2, \dots, x_n\}$ y probabilidades asociadas $\{p_1, p_2, \dots, p_n\}$, la función acumulada se define como:
+
 \[
-F(x) = \sum_{x_i \leq x} p_i
+F(x) = P(X \leq x) = \sum_{\{i: x_i \leq x\}} p_i
 \]
 
-\subsubsection{Transformada Inversa}
+Es decir, se suman todas las probabilidades correspondientes a los valores $x_i$ que son menores o iguales que $x$. Esta función es no decreciente, por tramos constante, y toma valores en el intervalo $[0, 1]$.
 
-No se aplica el método de la transformada inversa ya que, en general, la función de distribución acumulada no posee una forma analítica invertible. Dado que los valores son discretos y pueden no estar uniformemente distribuidos, se opta por el uso del método del rechazo, que es más general para distribuciones empíricas.
 
 \subsubsection{Método de Rechazo}
 
@@ -905,6 +1078,7 @@ Desde el punto de vista estadístico, la prueba de Chi-Cuadrado confirmó que la
     \caption{Comparación entre la frecuencia observada y la probabilidad teórica de la distribución empírica generada por el método de rechazo.}
     \label{fig:empirica_rechazo}
 \end{figure}
+
 
 
 
