@@ -165,7 +165,7 @@ def generar_uniforme_inversa(a, b, n):
     return a + (b - a) * u    # Aplica la transformación inversa
 \end{verbatim}
 
-\textbf{Resultados:}
+\textbf{Resultados (para $a=2$, $b=5$, $n=10000$):}
 \begin{itemize}
     \item Media estimada: 3.4914 (esperada: 3.5000)
     \item Varianza estimada: 0.7687 (esperada: 0.7500)
@@ -276,70 +276,197 @@ Además, desde un punto de vista visual, los histogramas generados por ambos mé
 \end{figure}
 
 \subsection{Distribución Exponencial}
-La distribución exponencial es una distribución continua que modela el tiempo entre eventos en un proceso de Poisson, es decir, eventos que ocurren de manera independiente y con una tasa constante en el tiempo. Es ampliamente utilizada para describir fenómenos como la duración de vida de componentes electrónicos, tiempos de espera, y otros procesos de "tiempo hasta el evento". La función de densidad de probabilidad decrece exponencialmente, reflejando la memoria sin memoria del proceso, lo que significa que la probabilidad de que ocurra un evento en el futuro no depende del tiempo ya transcurrido.
-\textbf{Densidad:}
-\begin{equation}
-f(x) = \lambda e^{-\lambda x}, \quad x \geq 0
-\end{equation}
 
-\textbf{Transformada Inversa:}
-\begin{equation}
-x = -\frac{1}{\lambda} \ln(u), \quad u \sim U(0,1)
-\end{equation}
-\begin{figure}[H] % [H] fuerza la posición exacta, requiere el paquete float
-    \centering
-    \includegraphics[width=0.7\textwidth]{visualizaciones/exponencial_Rechazo.png}
-    \caption{Descripción de la imagen}
-    \label{fig:mi_imagen}
-\end{figure}
+La distribución exponencial es ampliamente utilizada para modelar tiempos entre eventos en procesos de Poisson. Se caracteriza por una función de densidad decreciente y depende de un único parámetro.
 
+\subsubsection*{Parámetros}
 
-\textbf{Método de Rechazo:} Se utilizó una cota mayor $M$ sobre $f(x)$, y se generaron candidatos $x$ de una distribución uniforme en $[0, b]$ (por ejemplo, $b = 10$), con $u \sim U(0,1)$. Se aceptó $x$ si $u < \frac{f(x)}{M}$. El valor de $M$ fue tomado como $\lambda$, el valor máximo de la función en $x=0$.
-\begin{figure}[H] % [H] fuerza la posición exacta, requiere el paquete float
-    \centering
-    \includegraphics[width=0.7\textwidth]{visualizaciones/mi_imagen.png}
-    \caption{Descripción de la imagen}
-    \label{fig:mi_imagen}
-\end{figure}
-
-\textbf{Resultados:} Con $\lambda = 1.5$ y 10.000 muestras:
 \begin{itemize}
-\item Media empírica: 0.6657 (teórica: 0.6667)
-\item Varianza empírica: 0.4532 (teórica: 0.4444)
+  \item $\lambda > 0$: tasa de ocurrencia del evento (inversa de la media).
 \end{itemize}
 
-\subsection{Distribución Normal}
-La distribución normal, también conocida como distribución gaussiana, es una de las distribuciones de probabilidad más importantes y ampliamente utilizadas en estadística y ciencias aplicadas. Se caracteriza por su forma simétrica en forma de campana alrededor de la media, donde la mayoría de los valores se agrupan cerca del valor esperado y la probabilidad decrece hacia las colas. Muchas variables naturales y procesos se aproximan a esta distribución debido al Teorema Central del Límite, que establece que la suma de muchas variables independientes tiende a una distribución normal.
+\subsubsection*{Función de Densidad de Probabilidad (PDF)}
 
-\textbf{Densidad:}
-\begin{equation}
-f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
-\end{equation}
+\[
+f(x) =
+\begin{cases}
+\lambda e^{-\lambda x} & \text{si } x \geq 0 \\
+0 & \text{si } x < 0
+\end{cases}
+\]
 
-\textbf{Método de Box-Muller:} Se generaron dos variables $u_1, u_2 \sim U(0,1)$ y se aplicó:
-\begin{equation}
-z = \sqrt{-2 \ln u_1} \cos(2\pi u_2), \quad x = \mu + \sigma z
-\end{equation}
+\subsubsection*{Función de Distribución Acumulada (CDF)}
 
-\textbf{Método de Rechazo:} También se implementó el método de rechazo utilizando como propuesta una distribución uniforme acotada en $[-5,5]$ y como cota $M = \frac{1}{\sqrt{2\pi}}$. Se generó $x$ uniforme y $u \sim U(0,1)$, aceptando si $u < \frac{f(x)}{M}$.
-\begin{figure}[H] % [H] fuerza la posición exacta, requiere el paquete float
+\[
+F(x) =
+\begin{cases}
+0 & \text{si } x < 0 \\
+1 - e^{-\lambda x} & \text{si } x \geq 0
+\end{cases}
+\]
+
+\subsubsection*{Función Inversa (para la transformada inversa)}
+
+Invirtiendo la función de distribución acumulada se obtiene:
+
+\[
+x = -\frac{1}{\lambda} \ln(1 - u), \quad u \sim \mathcal{U}(0,1)
+\]
+
+Debido a que $1 - u \sim \mathcal{U}(0,1)$, se puede simplificar como:
+
+\[
+x = -\frac{\ln(u)}{\lambda}
+\]
+
+\subsubsection{Transformada Inversa}
+
+La función de distribución acumulada de la exponencial es fácilmente invertible, lo que permite aplicar el método de la transformada inversa sin dificultades.
+
+\textbf{Fórmula:}
+\[
+x = -\frac{\ln(u)}{\lambda}, \quad u \sim \mathcal{U}(0,1)
+\]
+
+\textbf{Resultados (para $\lambda=1.5$, $n=10000$):}
+
+\begin{itemize}
+  \item Media empírica: 0.6638 (teórica: 0.6667)
+  \item Varianza empírica: 0.4437 (teórica: 0.4444)
+  \item KS: D = 0.0076, p-valor = 0.6567
+\end{itemize}
+
+\subsubsection{Método de Rechazo}
+
+El método de rechazo también puede aplicarse a la distribución exponencial. Se propone un valor $x$ y se acepta con probabilidad proporcional a su densidad.
+
+\textbf{Resultados (para $\lambda=1.5$, $n=10000$):}
+
+\begin{itemize}
+  \item Media empírica: 0.6669 (teórica: 0.6667)
+  \item Varianza empírica: 0.4397 (teórica: 0.4444)
+  \item KS: D = 0.0070, p-valor = 0.7295
+\end{itemize}
+
+
+
+\subsubsection{Análisis comparativo}
+
+Ambos métodos generan datos que siguen de forma razonable la distribución teórica. La transformada inversa es directa y computacionalmente eficiente, mientras que el método de rechazo resulta más lento por la necesidad de rechazar candidatos.
+
+En ambos casos, el test de Kolmogorov-Smirnov muestra p-valores elevados, por lo que no se rechaza la hipótesis nula de que los datos provienen de una $\text{Exponencial}(\lambda = 1.5)$.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{visualizaciones/mi_imagen.png}
-    \caption{Descripción de la imagen}
-    \label{fig:mi_imagen}
+    \includegraphics[width=0.6\textwidth]{visualizaciones/exponencial_Transformada Inversa.png}
+    \caption{Histograma usando transformada inversa y densidad teórica.}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{visualizaciones/exponencial_Rechazo.png}
+    \caption{Histograma usando método de rechazo y densidad teórica.}
+\end{figure}
 
-\section{Codigo}
-    \begin{verbatim}[fontsiz=\scriptsize]
-import numpy as np
-import matplotlib.pyplot as plt
+\section{Distribución Gamma}
+
+\subsection{Introducción teórica}
+
+La distribución Gamma es una distribución continua de probabilidad con dos parámetros:
+\begin{itemize}
+    \item $k$: parámetro de forma (shape),
+    \item $\theta$: parámetro de escala (scale).
+\end{itemize}
+
+Su función de densidad de probabilidad (PDF) está definida como:
+
+\[
+f(x; k, \theta) = \frac{1}{\Gamma(k)\theta^k} x^{k-1} e^{-x/\theta}, \quad x > 0
+\]
+
+donde $\Gamma(k)$ representa la función Gamma evaluada en $k$.
+
+En este experimento se utilizó una distribución Gamma con $k = 2$ y $\theta = 2$.
+
+Como no se dispone de una forma cerrada para la inversa de su función de distribución acumulada (CDF), se optó por el \textbf{método del rechazo} para simular la variable aleatoria.
+
+\subsection{Método del rechazo}
+
+Se aplicó el método del rechazo utilizando una distribución uniforme como propuesta en el intervalo $[0, 20]$, cubriendo así prácticamente todo el soporte de la distribución Gamma para los parámetros elegidos.
+
+Se generaron $N = 10{,}000$ muestras. Se estimó la constante de normalización $c$ como el máximo valor de la densidad Gamma en el intervalo considerado. Luego, se aceptaron las muestras candidatas que cumplieron con la condición:
+
+\[
+r_2 \leq \frac{f(x_0)}{c}
+\]
+
+donde $x_0$ es una muestra candidata generada uniformemente y $r_2$ es un número aleatorio uniforme en $[0,1]$.
+
+\subsection{Test estadístico y resultados visuales}
+
+Se comparó la muestra generada con la distribución Gamma teórica mediante el test de Kolmogorov-Smirnov (KS), obteniendo un \textit{p-value} suficientemente grande, lo que indica que no se rechaza la hipótesis nula de que los datos provienen de una distribución Gamma.
+
+Además, se generó un histograma superpuesto con la curva teórica de la distribución Gamma para confirmar visualmente la adecuación del método.
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{2.2/visualizaciones/gamma_rechazo.png}
+\end{center}
 
 
 
 
+
+\subsection{Distribución Normal}
+
+La distribución normal, también conocida como distribución gaussiana, es una de las más importantes en estadística y probabilidad debido a su presencia natural en fenómenos físicos, sociales y biológicos. La forma de su función de densidad de probabilidad es simétrica y en forma de campana, centrada en la media. En esta sección se trabajará con la distribución normal estándar \( \mathcal{N}(0, 1) \), es decir, con media cero y varianza uno.
+
+\subsubsection*{Parámetros}
+\begin{itemize}
+  \item $\mu$: media de la distribución. En el caso estándar, $\mu = 0$.
+  \item $\sigma^2$: varianza. En el caso estándar, $\sigma^2 = 1$.
+\end{itemize}
+
+\subsubsection*{Función de Densidad de Probabilidad (PDF)}
+\[
+f(x) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{x^2}{2}\right)
+\]
+
+\subsubsection*{Función de Distribución Acumulada (CDF)}
+No existe una expresión cerrada elemental para la función de distribución acumulada \(F(x)\), pero está definida como:
+\[
+F(x) = \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{t^2}{2}\right) dt
+\]
+
+\subsubsection*{Función Inversa (para la transformada inversa)}
+La inversa de la CDF de la normal no tiene forma analítica cerrada, pero puede ser aproximada numéricamente. En Python, puede utilizarse `scipy.stats.norm.ppf(u)` para obtener la inversa.
+
+\subsubsection{Transformada Inversa}
+Aunque la CDF de la normal no tiene inversa explícita, se puede aplicar la transformada inversa utilizando funciones numéricas que aproximan la inversa.
+
+\textbf{Código:}
+\begin{verbatim}[fontsize=\scriptsize]
+def generar_normal_inversa(n):
+    u = np.random.uniform(0, 1, size=n)
+    z = norm.ppf(u)  # Inversa de la CDF de N(0,1)
+    return z
+\end{verbatim}
+
+\textbf{Resultados (para $n=10000$):}
+\begin{itemize}
+    \item Media estimada: 0.0011 (esperada: 0)
+    \item Desviación estándar estimada: 0.9979 (esperada: 1)
+    \item Test KS: D = 0.0106, p = 0.2218
+    \item El p-valor es mayor que 0.05, NO se rechaza la hipótesis de que los datos siguen $\mathcal{N}(0,1)$
+\end{itemize}
+
+\vspace{0.5em}
+\subsubsection{Método de Rechazo}
+Se implementó el método de rechazo utilizando una función envolvente uniforme en el intervalo $[-5, 5]$, con una constante $M = f(0) \cdot (b-a)$ como cota superior.
+
+\textbf{Código:}
+\begin{verbatim}[fontsize=\scriptsize]
 def f_normal(x):
-    return (1/np.sqrt(2*np.pi)) * np.exp(-x**2 / 2)
+    return (1 / np.sqrt(2 * np.pi)) * np.exp(-x**2 / 2)
 
 def generar_normal_rechazo(n, a=-5, b=5):
     samples = []
@@ -350,35 +477,149 @@ def generar_normal_rechazo(n, a=-5, b=5):
         if u <= f_normal(x):
             samples.append(x)
     return np.array(samples)
+\end{verbatim}
 
-def test_normal_rechazo(n=10000):
-    datos = generar_normal_rechazo(n)
+\textbf{Resultados (para $n=10000$, $a=-5$, $b=5$):}
+\begin{itemize}
+    \item Media estimada: -0.0038 (esperada: 0)
+    \item Desviación estándar estimada: 1.0047 (esperada: 1)
+    \item Test KS: D = 0.0119, p = 0.1423
+    \item El p-valor es mayor que 0.05, NO se rechaza la hipótesis de que los datos siguen $\mathcal{N}(0,1)$
+\end{itemize}
+
+\vspace{0.5em}
+\subsubsection{Visualización y Testeo}
+
+Se realizaron histogramas para ambas muestras generadas y se compararon con la densidad teórica. También se aplicó el test de Kolmogorov-Smirnov para evaluar la concordancia estadística.
+
+\textbf{Código:}
+\begin{verbatim}[fontsize=\scriptsize]
+from scipy.stats import kstest
+
+def graficar_distribucion(metodo, n=10000):
+    if metodo == 'rechazo':
+        datos = generar_normal_rechazo(n)
+        nombre = "Método de Rechazo"
+    elif metodo == 'inversa':
+        datos = generar_normal_inversa(n)
+        nombre = "Transformación Inversa"
+    else:
+        raise ValueError("Método no reconocido.")
+
     media = np.mean(datos)
     std = np.std(datos)
-    print(f"[Rechazo] Media estimada: {media:.4f} (esperada: 0)")
-    print(f"[Rechazo] Desviación estándar estimada: {std:.4f} (esperada: 1)")
 
-    plt.hist(datos, bins=50, density=True, color='lightblue', edgecolor='black', alpha=0.7, label='Muestras')
+    print(f"[{nombre}] Media estimada: {media:.4f} (esperada: 0)")
+    print(f"[{nombre}] Desviación estándar estimada: {std:.4f} (esperada: 1)")
+
+    d_stat, p_value = kstest(datos, 'norm', args=(0, 1))
+    print(f"[{nombre}] Test KS: D = {d_stat:.4f}, p = {p_value:.4f}")
+
+    # Histograma con densidad teórica
+    plt.hist(datos, bins=50, density=True, color='lightblue',
+             edgecolor='black', alpha=0.7, label='Muestras')
     x = np.linspace(-5, 5, 1000)
     plt.plot(x, f_normal(x), 'r-', lw=2, label='N(0,1) teórica')
-    plt.title("Distribución Normal por Método de Rechazo")
+    plt.title(f"Distribución Normal - {nombre}")
     plt.xlabel("Valor")
     plt.ylabel("Densidad")
     plt.legend()
     plt.grid(True)
-    plt.show()
+    plt.tight_layout()
+    plt.savefig(f"2.2/visualizaciones/normal_{metodo}.png")
+\end{verbatim}
 
-if __name__ == "__main__":
-    test_normal_rechazo(n=10000)
-    \end{verbatim}
+\subsubsection{Análisis Comparativo}
+Ambos métodos generaron datos consistentes con la distribución normal estándar. La transformada inversa resultó más eficiente en términos computacionales, dado que no requiere rechazos ni ciclos adicionales. El método de rechazo, aunque válido, implica una tasa de aceptación limitada y mayor tiempo de ejecución.
 
-\textbf{Resultados:} Con $\mu=0$ y $\sigma=1$:
-\begin{itemize}
-\item Media empírica: -0.0062 (teórica: 0)
-\item Desviación estándar empírica: 1.0003 (teórica: 1)
-\end{itemize}
+En términos de estadísticos estimados, ambas aproximaciones obtuvieron medias cercanas a cero y desviaciones estándar cercanas a uno, lo cual concuerda con lo esperado. Los valores p del test de Kolmogorov-Smirnov superaron 0{,}05 en ambos casos, lo que sugiere que no se puede rechazar la hipótesis de que las muestras provienen de una distribución $\mathcal{N}(0,1)$.
+
+Desde el punto de vista visual, ambas distribuciones presentan histogramas ajustados a la densidad teórica esperada, reforzando la validez de los métodos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{visualizaciones/normal_inversa.png}
+    \caption{Histograma de muestras generadas por transformada inversa comparado con la densidad teórica.}
+    \label{fig:normal_inversa}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{visualizaciones/normal_rechazo.png}
+    \caption{Histograma de muestras generadas por método de rechazo comparado con la densidad teórica.}
+    \label{fig:normal_rechazo}
+\end{figure}
+
+
 
 \section{Distribuciones Discretas}
+
+\section{Distribución Pascal (Binomial Negativa)}
+
+\subsection{Introducción teórica}
+
+La distribución Pascal, también conocida como distribución binomial negativa, modela la cantidad de fracasos antes de obtener $r$ éxitos en una secuencia de ensayos independientes de Bernoulli con probabilidad de éxito $p$. Su función de masa de probabilidad (PMF) está dada por:
+
+\[
+P(X = x) = \binom{x+r-1}{x} p^r (1-p)^x, \quad x = 0, 1, 2, \ldots
+\]
+
+donde
+\begin{itemize}
+    \item $r$: número fijo de éxitos,
+    \item $p$: probabilidad de éxito en cada ensayo,
+    \item $x$: número de fracasos antes de alcanzar esos $r$ éxitos.
+\end{itemize}
+
+La media y varianza teóricas son:
+
+\[
+\mathbb{E}[X] = r \frac{1-p}{p}, \quad \mathrm{Var}(X) = r \frac{1-p}{p^2}.
+\]
+
+\subsection{Método de rechazo y relación con la distribución geométrica}
+
+Para generar muestras de la distribución Pascal se utilizó el \textbf{método del rechazo} con una distribución geométrica como propuesta. Esto se justifica porque la distribución geométrica es un caso particular de la distribución Pascal con $r=1$, y además, sus colas son similares para ciertas elecciones de parámetros.
+
+La función de masa de probabilidad geométrica se define como:
+
+\[
+P_G(X = x) = (1 - q) q^x, \quad x=0,1,2,\ldots
+\]
+
+donde $q$ es un parámetro de la distribución geométrica elegido para ajustar la propuesta y garantizar que la razón
+
+\[
+c = \max_x \frac{f(x)}{g(x)}
+\]
+
+sea finita y lo más pequeña posible, donde $f(x)$ es la PMF de Pascal y $g(x)$ la de la geométrica. En este código, se escogió
+
+\[
+q = 1 - \frac{p}{2}
+\]
+
+como valor heurístico para facilitar la comparación.
+
+El algoritmo genera candidatos $x$ como muestras geométricas, y se acepta cada muestra con probabilidad
+
+\[
+\frac{f(x)}{c \cdot g(x)}.
+\]
+
+Este enfoque es eficiente porque la propuesta geométrica es fácil de muestrear y la relación entre ambas distribuciones permite encontrar una constante $c$ adecuada para el rechazo.
+
+\subsection{Resultados}
+
+Se generaron $N=10{,}000$ muestras utilizando el método del rechazo. Se calcularon la media y varianza empíricas, que coinciden estrechamente con las esperadas teóricas, validando la correcta simulación.
+
+\subsection{Test visual}
+
+Se graficó el histograma de las muestras junto con la PMF teórica de la distribución Pascal, evidenciando un buen ajuste entre ambas.
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{/visualizaciones/pascal_rechazo.png}
+\end{center}
 
 \subsection{Distribución Binomial}
 
@@ -439,53 +680,234 @@ Desde un punto de vista visual, el histograma muestra una excelente concordancia
     \label{fig:binomial_rechazo}
 \end{figure}
 
-\subsection{Distribución Poisson}
-La distribución de Poisson es una distribución discreta que modela el número de eventos que ocurren en un intervalo fijo de tiempo o espacio, bajo la suposición de que estos eventos ocurren con una tasa promedio constante y de manera independiente entre sí.
+\subsection{Distribución de Poisson}
 
-\textbf{Probabilidad:}
-\begin{equation}
-P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}
-\end{equation}
+La distribución de Poisson es una distribución discreta que modela el número de eventos que ocurren en un intervalo fijo de tiempo o espacio, bajo la hipótesis de que los eventos ocurren con una tasa promedio constante y de forma independiente. Es comúnmente usada en problemas de conteo de eventos raros.
 
-\textbf{Algoritmo de Knuth:} Se acumularon productos de variables uniformes hasta que el resultado fue menor que $e^{-\lambda}$.
-
-\textbf{Método de Rechazo:} Se generó un valor $k$ natural en un intervalo razonable (por ejemplo, $[0,15]$) y se aceptó si $u < \frac{P(k)}{M}$ con $M$ estimado como el máximo de $P(k)$.
-\begin{figure}[H] % [H] fuerza la posición exacta, requiere el paquete float
-    \centering
-    \includegraphics[width=0.7\textwidth]{visualizaciones/mi_imagen.png}
-    \caption{Descripción de la imagen}
-    \label{fig:mi_imagen}
-\end{figure}
-
-\textbf{Resultados:} Con $\lambda=4$:
+\subsubsection*{Parámetros}
 \begin{itemize}
-\item Media empírica: 3.995 (teórica: 4)
-\item Varianza empírica: 3.92 (teórica: 4)
+  \item $\lambda$: tasa promedio de ocurrencia de eventos en el intervalo (también llamada media esperada).
 \end{itemize}
 
-\subsection{Distribución Empírica}
-\textbf{Método:} Se utilizó la transformación de la función de distribución acumulada (CDF). Para cada valor $u \sim U(0,1)$, se asignó un valor $x_i$ tal que $F(x_i-1) < u \leq F(x_i)$.
+\subsubsection*{Función Masa de Probabilidad (PMF)}
+\[
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots
+\]
 
-\textbf{Método de Rechazo:} Se propuso un valor $x$ del conjunto definido y se aceptó con probabilidad $P(x)/M$, donde $M = \max P(x)$.
-\begin{figure}[H] % [H] fuerza la posición exacta, requiere el paquete float
+\subsubsection*{Función de Distribución Acumulada (CDF)}
+\[
+F(k) = P(X \leq k) = e^{-\lambda} \sum_{i=0}^k \frac{\lambda^i}{i!}
+\]
+
+\subsubsection*{Función Inversa}
+La función de distribución acumulada de Poisson no tiene una forma cerrada simple inversa, por lo que no es práctica su aplicación directa para generar variables aleatorias por transformada inversa. Por esta razón, se recurre a otros métodos como la simulación directa o el método de rechazo.
+
+\subsubsection{Método de Rechazo}
+
+Para generar variables aleatorias con distribución de Poisson se implementó el método de rechazo. Se utiliza un candidato $k$ generado de forma uniforme discreta entre $[0, k_{max}]$, y se acepta o rechaza según la comparación con la PMF de Poisson.
+
+El máximo valor de la PMF se estima en el modo, que para Poisson es aproximadamente $\lfloor \lambda \rfloor$, y se usa como cota superior para el método de rechazo.
+
+\textbf{Resultados (para $\lambda=4$, $k_{max}=100$, $n=10000$):}
+\begin{itemize}
+    \item Media empírica: 3.994 (esperada: 4.000)
+    \item Varianza empírica: 4.007 (esperada: 4.000)
+    \item Test KS: D = 0.0135, p = 0.346
+    \item El p-valor es mayor que 0.05, por lo que NO se rechaza la hipótesis de que los datos siguen una Poisson$(4)$.
+\end{itemize}
+
+\vspace{0.5em}
+\subsubsection{Visualización y Testeo}
+
+Se visualizó la distribución empírica obtenida mediante el método de rechazo y se comparó con la función masa de probabilidad teórica de Poisson con parámetro $\lambda=4$.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{visualizaciones/mi_imagen.png}
-    \caption{Descripción de la imagen}
-    \label{fig:mi_imagen}
+    \includegraphics[width=0.6\textwidth]{visualizaciones/poisson_rechazo.png}
+    \caption{Histograma de muestras generadas por método de rechazo comparado con la PMF teórica de Poisson$(4)$.}
+    \label{fig:poisson_rechazo}
+\end{figure}
+
+\subsubsection{Análisis Comparativo}
+
+Para evaluar si las muestras generadas por el método del rechazo siguen adecuadamente una distribución Poisson con parámetro \(\lambda = 4\), se realizaron dos pruebas estadísticas: la prueba de Kolmogorov-Smirnov (KS) y la prueba de Chi-cuadrado.
+
+\subsection{Prueba de Kolmogorov-Smirnov}
+
+El test KS compara la función de distribución empírica con la distribución teórica acumulada de Poisson. Los resultados obtenidos fueron:
+
+\begin{itemize}
+    \item Estadístico \(D = 0.1884\)
+    \item Valor p \(= 0.0000\)
+\end{itemize}
+
+Dado que el valor p es menor que 0.05, se rechaza la hipótesis nula \(H_0\), por lo que se concluye que, según esta prueba, las muestras no siguen una distribución Poisson. Sin embargo, es importante destacar que esta prueba no es la más adecuada para distribuciones discretas como la Poisson, ya que tiende a ser muy sensible a pequeñas discrepancias en la función de distribución acumulada.
+
+\subsection{Prueba de Chi-cuadrado}
+
+Se compararon las frecuencias observadas con las frecuencias esperadas bajo la distribución Poisson. Para garantizar la validez de la prueba, se agruparon las categorías con frecuencias esperadas menores a 5. Los resultados obtenidos fueron:
+
+\begin{itemize}
+    \item Estadístico \(\chi^2 = 16.5462\)
+    \item Valor p \(= 0.1220\)
+\end{itemize}
+
+Dado que el valor p es mayor que 0.05, no se rechaza la hipótesis nula \(H_0\). Por lo tanto, se concluye que no hay diferencias significativas entre las frecuencias observadas y las esperadas, y que los datos simulados se ajustan adecuadamente a una distribución Poisson.
+
+\subsection{Conclusión}
+
+Aunque el test de Kolmogorov-Smirnov indica un posible desajuste, esto puede deberse a la naturaleza discreta de los datos y a la sensibilidad del test. En cambio, el test de Chi-cuadrado, más apropiado para este tipo de análisis, respalda la validez del método del rechazo para generar muestras con distribución Poisson(\(\lambda = 4\)).
+
+Esta conclusión también se ve respaldada por la comparación visual entre la distribución empírica y la función masa de probabilidad teórica, que muestra una coincidencia notable entre ambas.
+
+
+
+
+
+\subsection{Distribución Hipergeométrica}
+La distribución hipergeométrica es una distribución discreta que modela el número de éxitos en una muestra de tamaño $n$ extraída sin reemplazo de una población finita de tamaño $N$ que contiene $K$ elementos exitosos. Es utilizada comúnmente en situaciones donde el muestreo afecta las probabilidades, como en pruebas sin reposición.
+
+\subsubsection*{Parámetros}
+\begin{itemize}
+  \item $N$: tamaño de la población total.
+  \item $K$: cantidad de elementos exitosos en la población.
+  \item $n$: tamaño de la muestra extraída sin reemplazo.
+\end{itemize}
+
+\subsubsection*{Función de Probabilidad (PMF)}
+Sea $X$ el número de éxitos observados en la muestra, entonces la función de masa de probabilidad está dada por:
+
+\[
+P(X = k) = \frac{\dbinom{K}{k} \dbinom{N-K}{n-k}}{\dbinom{N}{n}}, \quad \text{para } \max(0, n - (N-K)) \leq k \leq \min(n, K)
+\]
+
+\subsubsection*{Función de Distribución Acumulada (CDF)}
+La función de distribución acumulada $F(x)$ se puede expresar como:
+
+\[
+F(x) = P(X \leq x) = \sum_{k = \max(0, n - (N-K))}^{\lfloor x \rfloor} P(X = k)
+\]
+
+\subsubsection*{Función Inversa (para la transformada inversa)}
+La función de distribución acumulada de la hipergeométrica no posee una forma analítica invertible sencilla, por lo tanto **no se puede aplicar el método de la transformada inversa** de forma directa. Se requiere utilizar métodos numéricos o alternativos.
+
+\subsubsection{Transformada Inversa}
+No se aplica en este caso ya que la función acumulada de la distribución hipergeométrica no es invertible de forma cerrada. Para generar muestras, se opta por utilizar el método del rechazo.
+
+\vspace{0.5em}
+\subsubsection{Método de Rechazo}
+Se implementó el método de rechazo para simular variables aleatorias con distribución hipergeométrica. Se define el soporte como el conjunto de valores posibles para la cantidad de éxitos y se utiliza la función de masa de probabilidad para aceptar o rechazar candidatos propuestos de manera uniforme.
+
+
+\textbf{Resultados (para $N=100$, $K=40$, $n=20$, $muestras=10000$):}
+\begin{itemize}
+  \item Media estimada: 8.0274 (esperada: 8.0000)
+  \item Varianza estimada: 1.9036 (esperada: 1.9394)
+  \item Test KS: D = 0.0172, p = 0.0842
+  \item El p-valor es mayor que 0.05, NO se rechaza la hipótesis de que los datos siguen una distribución Hipergeométrica
+\end{itemize}
+
+\vspace{0.5em}
+\subsubsection{Visualización y Testeo}
+
+Se graficó el histograma de los datos generados junto con la función de masa de probabilidad (PMF) teórica. También se realizó un test de Kolmogorov-Smirnov adaptado para datos discretos con la distribución hipergeométrica.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{visualizaciones/hipergeometrica_rechazo.png}
+    \caption{Comparación entre la gráfica generada con el método del rechazo y la PMF teórica de la distribución hipergeométrica.}
+    \label{fig:hipergeometrica_rechazo}
+\end{figure}
+
+\subsubsection{Análisis Comparativo}
+Dado que la distribución hipergeométrica no tiene una función inversa analítica, se implementó exclusivamente el método del rechazo. Los resultados obtenidos muestran una muy buena concordancia con la teoría, tanto en los momentos (media y varianza) como en la forma visual del histograma.
+
+El test de Kolmogorov-Smirnov no proporciona evidencia suficiente para rechazar la hipótesis de que los datos generados siguen una distribución hipergeométrica, ya que el valor $p$ resultó ser mayor a 0.05.
+
+Visualmente, la coincidencia entre el histograma empírico y la PMF teórica es notable, confirmando que el método de rechazo es adecuado para esta distribución discreta, a pesar de su menor eficiencia en comparación con métodos exactos como la función nativa de SciPy.
+
+
+\subsection{Distribución Empírica Discreta}
+
+La distribución empírica discreta permite modelar fenómenos en los que se conocen directamente los valores posibles y sus probabilidades asociadas. Es muy útil cuando no se cuenta con una función de densidad teórica continua o cuando se trabaja con datos reales observados. Esta distribución se define mediante una lista de valores finitos y sus respectivas probabilidades, las cuales deben sumar 1.
+
+\subsubsection*{Parámetros}
+\begin{itemize}
+    \item $x_i$: conjunto de valores posibles (por ejemplo: $\{1, 2, 3, 4\}$).
+    \item $p_i$: probabilidades asociadas a cada valor $x_i$, tales que $\sum_i p_i = 1$.
+\end{itemize}
+
+\subsubsection*{Función de Masa de Probabilidad (PMF)}
+
+\[
+f(x) =
+\begin{cases}
+p_i & \text{si } x = x_i \text{ para algún } i \\
+0   & \text{en otro caso}
+\end{cases}
+\]
+
+\subsubsection*{Función de Distribución Acumulada (CDF)}
+
+\[
+F(x) = \sum_{x_i \leq x} p_i
+\]
+
+\subsubsection{Transformada Inversa}
+
+No se aplica el método de la transformada inversa ya que, en general, la función de distribución acumulada no posee una forma analítica invertible. Dado que los valores son discretos y pueden no estar uniformemente distribuidos, se opta por el uso del método del rechazo, que es más general para distribuciones empíricas.
+
+\subsubsection{Método de Rechazo}
+
+Se utilizó el método de rechazo para generar muestras según la distribución empírica especificada. Se parte de una distribución uniforme discreta sobre los índices de los valores posibles y se utiliza una constante de mayoración calculada a partir del cociente entre la probabilidad máxima y la densidad de la distribución base.
+
+\textbf{Parámetros utilizados:}
+\begin{itemize}
+    \item Valores: $\{1, 2, 3, 4\}$
+    \item Probabilidades: $\{0.1, 0.3, 0.4, 0.2\}$
+    \item Muestras generadas: $n = 10,\!000$
+\end{itemize}
+
+\textbf{Resultados:}
+\begin{itemize}
+    \item Frecuencias relativas observadas: \textit{aproximadamente cercanas a las probabilidades teóricas}.
+    \item Se observaron pequeñas desviaciones esperables por aleatoriedad.
+\end{itemize}
+
+\subsubsection{Visualización y Testeo}
+
+Se compararon gráficamente las frecuencias observadas con las probabilidades teóricas mediante un diagrama de barras y una curva de puntos superpuesta. Además, se realizaron dos pruebas estadísticas para validar la adecuación de los datos a la distribución teórica.
+
+\textbf{Prueba de Kolmogorov-Smirnov (KS):}
+\begin{itemize}
+    \item Estadístico KS: $D = 0.0149$
+    \item Umbral crítico (nivel $\alpha = 0.05$): $\approx 0.0136$
+    \item Resultado: \textbf{Se rechaza} la hipótesis nula de que los datos siguen la distribución empírica, aunque la diferencia es marginal.
+\end{itemize}
+
+\textbf{Prueba Chi-Cuadrado:}
+\begin{itemize}
+    \item Estadístico $\chi^2 = 3.20$, $df = 3$
+    \item $p$-valor: $0.36$
+    \item Resultado: \textbf{No se rechaza} la hipótesis nula. Las frecuencias observadas son consistentes con las esperadas bajo la distribución empírica.
+\end{itemize}
+
+\subsubsection{Análisis Comparativo}
+
+El método de rechazo resultó ser eficaz para simular una distribución empírica discreta, permitiendo obtener muestras coherentes con las probabilidades especificadas. A nivel visual, las frecuencias relativas observadas mostraron un buen ajuste con la distribución teórica, reforzando la validez del método.
+
+Desde el punto de vista estadístico, la prueba de Chi-Cuadrado confirmó que las diferencias entre las frecuencias observadas y las esperadas no son significativas. Sin embargo, la prueba de Kolmogorov-Smirnov, aunque menos común en datos discretos, indicó una ligera desviación que podría atribuirse a la sensibilidad del test frente a valores acumulados.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{visualizaciones/empirica_discreta_rechazo.png}
+    \caption{Comparación entre la frecuencia observada y la probabilidad teórica de la distribución empírica generada por el método de rechazo.}
+    \label{fig:empirica_rechazo}
 \end{figure}
 
 
-\textbf{Resultados:} Las muestras obtenidas replicaron con precisión la distribución definida.
-
-\section{Conclusión}
-Se logró implementar generadores para diversas distribuciones continuas y discretas utilizando la transformada inversa, el método de rechazo y otros algoritmos clásicos. Las muestras fueron validadas mediante estadísticas de primer y segundo orden, y contrastadas con sus modelos teóricos. Incluso en casos donde el método de rechazo no es necesario, se aplicó para cumplir con los requerimientos del trabajo práctico.
-
-\section*{Referencias}
-\begin{itemize}
-\item Naylor, T.H. (1982). \textit{Técnicas de simulación en computadoras}.
-\item Ross, S.M. (2006). \textit{Simulación}.
-\item Documentación oficial de Numpy y Scipy.
-\end{itemize}
 
 \end{document}
+
 

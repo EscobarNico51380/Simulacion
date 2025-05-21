@@ -2,15 +2,11 @@ import random
 from collections import Counter
 import matplotlib.pyplot as plt
 import numpy as np
-
+from scipy.stats import chisquare
 
 def rechazo_empirico_discreto(valores, probabilidades):
     """
     Genera un valor de una distribución empírica discreta usando el método de rechazo.
-    
-    :param valores: lista de valores posibles
-    :param probabilidades: lista de probabilidades asociadas
-    :return: un valor aleatorio según la distribución dada
     """
     if not (len(valores) == len(probabilidades)):
         raise ValueError("Las listas de valores y probabilidades deben tener la misma longitud.")
@@ -23,7 +19,7 @@ def rechazo_empirico_discreto(valores, probabilidades):
     c = max(probabilidades) / g  # constante de mayoración
 
     while True:
-        i = random.randint(0, n - 1)  # índice según g(x) = uniforme
+        i = random.randint(0, n - 1)  # índice según g(x)
         u = random.uniform(0, c * g)
 
         if u <= probabilidades[i]:
@@ -49,5 +45,61 @@ plt.ylabel("Frecuencia")
 plt.legend()
 plt.grid(True)
 plt.show()
-#plt.savefig("2.2/visualizaciones/empirica_discreta_rechazo.png", )
 
+# ========================
+# TEST KS (manual)
+# ========================
+# Calcular F(x) empírica y F(x) teórica acumuladas
+valores_ordenados = sorted(valores)
+n = len(muestras)
+empirical_cdf = []
+theoretical_cdf = []
+cum_empirical = 0
+cum_theoretical = 0
+
+for v in valores_ordenados:
+    freq = conteo[v]
+    p = probabilidades[valores.index(v)]
+    cum_empirical += freq / n
+    cum_theoretical += p
+    empirical_cdf.append(cum_empirical)
+    theoretical_cdf.append(cum_theoretical)
+
+# Estadístico KS
+D = max(abs(e - t) for e, t in zip(empirical_cdf, theoretical_cdf))
+print(f"Test KS (manual): estadístico D = {D:.4f}")
+# No se puede calcular un p-valor exacto aquí sin una tabla, pero podemos usar el umbral de significancia aproximado
+ks_threshold = 1.36 / np.sqrt(n)  # para alfa = 0.05
+
+if D < ks_threshold:
+    print("✅ No se rechaza H0: los datos siguen la distribución empírica especificada.")
+else:
+    print("❌ Se rechaza H0: los datos NO siguen la distribución empírica especificada.")
+
+# ========================
+# TEST CHI-CUADRADO
+# ========================
+# Frecuencias observadas y esperadas
+obs = [conteo[v] for v in valores]
+exp = [p * len(muestras) for p in probabilidades]
+
+# Agrupamiento si alguna frecuencia esperada < 5
+while any(e < 5 for e in exp):
+    # fusionar dos últimos
+    exp[-2] += exp[-1]
+    obs[-2] += obs[-1]
+    exp = exp[:-1]
+    obs = obs[:-1]
+
+# Normalización por redondeo
+exp = np.array(exp)
+obs = np.array(obs)
+exp = exp * (obs.sum() / exp.sum())
+
+stat_chi, p_value_chi = chisquare(f_obs=obs, f_exp=exp)
+
+print(f"Test Chi-cuadrado: estadístico χ² = {stat_chi:.4f}, p-valor = {p_value_chi:.4f}")
+if p_value_chi > 0.05:
+    print("✅ No se rechaza H0: los datos siguen la distribución empírica especificada.")
+else:
+    print("❌ Se rechaza H0: los datos NO siguen la distribución empírica especificada.")
