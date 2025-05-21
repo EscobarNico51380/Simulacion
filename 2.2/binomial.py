@@ -13,14 +13,14 @@ def binomial_pmf(k, n, p):
 
 # --- Cálculo de c para el método de rechazo ---
 prob_vals = [binomial_pmf(k, n, p) for k in range(n + 1)]
-c = (n + 1) * max(prob_vals)
+c = max(prob_vals)
 
 # --- Generación de muestras vía método de rechazo ---
 samples = []
 while len(samples) < N:
     k = np.random.randint(0, n + 1)    # propuesta uniforme en {0,...,n}
     u = np.random.uniform(0, 1)        # U(0,1)
-    if u < (n + 1) * binomial_pmf(k, n, p) / c:
+    if u <  binomial_pmf(k, n, p) / c:
         samples.append(k)
 
 samples = np.array(samples)

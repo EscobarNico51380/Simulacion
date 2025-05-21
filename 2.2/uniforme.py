@@ -2,6 +2,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import random
+from scipy.stats import kstest
 
 # Transformada inversa
 
@@ -37,7 +38,7 @@ def graficar_uniforme(metodo, a, b, n=10000):
         datos = generar_uniforme_rechazo(a, b, n)
         nombre = "Método de Rechazo"
     else:
-        raise ValueError("Método no reconocido. Usa 'inversa' o 'rechazo'.")
+        raise ValueError("Método no reconocido.")
 
     media = np.mean(datos)
     varianza = np.var(datos)
@@ -47,7 +48,16 @@ def graficar_uniforme(metodo, a, b, n=10000):
     print(f"[{nombre}] Media estimada: {media:.4f} (esperada: {media_teo:.4f})")
     print(f"[{nombre}] Varianza estimada: {varianza:.4f} (esperada: {var_teo:.4f})")
 
-    # Histograma con densidad teórica
+    # Test de Kolmogorov-Smirnov
+    d_stat, p_value = kstest(datos, 'uniform', args=(a, b - a))
+    print(f"[{nombre}] Test KS: D = {d_stat:.4f}, p = {p_value:.4f}")
+
+    if p_value < 0.05:
+        print(f"[{nombre}] El p-valor es menor que {0.05}, se RECHAZA la hipótesis de que los datos siguen U({a},{b})")
+    else:
+        print(f"[{nombre}] El p-valor es mayor que {0.05}, NO se rechaza la hipótesis de que los datos siguen U({a},{b})")
+
+    # Histograma y densidad teórica
     plt.figure(figsize=(8, 5))
     plt.hist(datos, bins=30, range=(a, b), density=True,
              color='cornflowerblue' if metodo == 'rechazo' else 'mediumseagreen',
@@ -62,7 +72,7 @@ def graficar_uniforme(metodo, a, b, n=10000):
     plt.grid(True, linestyle='--', linewidth=0.5)
     plt.legend()
     plt.tight_layout()
-    plt.savefig(f"2.2/visualizaciones/uniforme_{metodo}.png", )
+    plt.savefig(f"2.2/visualizaciones/uniforme_{metodo}.png")
 
 
 if __name__ == "__main__":

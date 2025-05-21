@@ -47,9 +47,13 @@ Este trabajo desarrolla la implementación de generadores de números pseudoalea
 \section{Introducción}
 La generación de números pseudoaleatorios que sigan una distribución de probabilidad específica es un aspecto clave en simulación computacional. A partir de un generador uniforme confiable, se pueden construir generadores para cualquier distribución mediante distintas transformaciones. En este trabajo se presentan los generadores para distribuciones seleccionadas, junto a su justificación teórica, construcción algorítmica y evaluación empírica.
 
-\section{Conceptos teóricos utilizados}
+\section{Marco teórico}
 
-\subsection{Transformada inversa}
+\subsection{Métodos de transformación de distribuciones}
+
+Existen varios métodos para transformar variables aleatorias uniformes en variables con distribuciones específicas. Los más destacados son la transformada inversa y el método de rechazo.
+
+\subsubsection{Transformada inversa}
 
 La \textbf{transformada inversa} es un método fundamental para generar variables aleatorias con una distribución de probabilidad deseada, partiendo de variables aleatorias uniformes en el intervalo $[0,1]$. Sea $X$ una variable aleatoria con función de distribución acumulada (FDA) $F_X(x)$ estrictamente creciente y continua. Si $U \sim U(0,1)$, entonces la variable
 \begin{equation}
@@ -59,7 +63,7 @@ tiene distribución $F_X$.
 
 Este método aprovecha la propiedad de que la función acumulada es una transformación que mapea valores reales en el intervalo $[0,1]$. Al invertir esta función, podemos transformar un número uniforme en una variable con la distribución deseada.
 
-\subsection{Método de Rechazo}
+\subsubsection{Método de Rechazo}
 
 El \textbf{método de rechazo} es una técnica más general que permite generar variables aleatorias de distribuciones complejas para las cuales la transformada inversa no es práctica o no existe de forma explícita.
 
@@ -82,7 +86,8 @@ El procedimiento es el siguiente:
 
 Este método garantiza que las muestras aceptadas siguen la distribución objetivo $f(x)$. Su eficiencia depende del valor de $c$, donde un $c$ más pequeño implica una mayor tasa de aceptación.
 
-\subsection{Test de Kolmogorov-Smirnov}
+\subsection{Tests utilizados}
+\subsubsection{Test de Kolmogorov-Smirnov}
 En este trabajo se implementa el \textbf{Test de Kolmogorov-Smirnov (K-S)} como una herramienta estadística para evaluar la calidad de los generadores de números pseudoaleatorios construidos para distintas distribuciones de probabilidad.
 
 El objetivo del test es contrastar si las muestras generadas por los algoritmos de simulación se ajustan adecuadamente a las distribuciones teóricas correspondientes. El test compara la función de distribución acumulada empírica (\emph{ECDF}) de la muestra generada con la función de distribución acumulada teórica (\emph{CDF}) de la distribución objetivo. El estadístico se define como:
@@ -112,88 +117,163 @@ Cabe destacar que si bien el test K-S está formalmente diseñado para variables
 \section{Distribuciones Continuas}
 
 \subsection{Distribución Uniforme}
-La distribución uniforme continua es una de las distribuciones más sencillas y fundamentales en probabilidad y estadística. Se caracteriza porque todos los valores dentro del intervalo $[a, b]$ tienen la misma probabilidad de ocurrencia. Esta distribución es utilizada frecuentemente como base para generar números aleatorios y para modelar situaciones donde no hay sesgo hacia ningún valor particular dentro del rango.
+La distribución uniforme continua es una de las más simples y fundamentales. Se caracteriza porque todos los valores dentro del intervalo $[a, b]$ tienen la misma probabilidad de ocurrencia. Es comúnmente utilizada para generar números aleatorios y modelar situaciones sin sesgo hacia ningún valor dentro del rango.
 
-\textbf{Densidad:}
-\begin{equation}
-f(x) = \frac{1}{b-a}, \quad a \leq x \leq b
-\end{equation}
+\subsubsection*{Parámetros}
+\begin{itemize}
+  \item $a$: límite inferior del intervalo.
+  \item $b$: límite superior del intervalo.
+\end{itemize}
 
-\textbf{Transformada Inversa:}
+\subsubsection*{Función de Densidad de Probabilidad (PDF)}
+\[
+f(x) =
+\begin{cases}
+\frac{1}{b - a} & \text{si } a \leq x \leq b \\
+0 & \text{en otro caso}
+\end{cases}
+\]
+
+\subsubsection*{Función de Distribución Acumulada (CDF)}
+\[
+F(x) =
+\begin{cases}
+0 & \text{si } x < a \\
+\frac{x - a}{b - a} & \text{si } a \leq x \leq b \\
+1 & \text{si } x > b
+\end{cases}
+\]
+\subsubsection*{Función Inversa (para la transformada inversa)}
+al invertir la función de distribución acumulada $F(x)$ se obtiene:
+
+\[
+X = a + (b - a) \cdot U
+\]
+
+\subsubsection{Transformada Inversa}
+Este método aprovecha que la función de distribución acumulada (CDF) de la uniforme $U(a,b)$ es invertible fácilmente. La fórmula de transformación consiste en aplicar la función inversa de la CDF a un número aleatorio uniforme $u \sim U(0,1)$.:
+
+\textbf{Fórmula:}
 \begin{equation}
 x = a + (b-a)u, \quad u \sim U(0,1)
-
 \end{equation}
 
-\textbf{Método de Rechazo:} Aunque la transformada inversa es directa y eficiente, también se implementó el método de rechazo. Se tomó una función constante mayor o igual que $f(x)$ (es decir, la propia constante de la densidad) y se aceptaron los valores $x$ generados dentro del intervalo $[a,b]$ con probabilidad proporcional a $f(x)$. Dado que $f(x)$ es constante, todos los valores fueron aceptados.
-
-
-\section{Codigo}
-    \begin{verbatim}[fontsiz=\scriptsize]
-import numpy as np
-import math
-import matplotlib.pyplot as plt
-import random
-
-# Transformada inversa
-
+\textbf{Código:}
+\begin{verbatim}[fontsize=\scriptsize]
 def generar_uniforme_inversa(a, b, n):
-    u = np.random.random(n)
-    return a + (b - a) * u
+    u = np.random.random(n)  # Genera n valores de U(0,1)
+    return a + (b - a) * u    # Aplica la transformación inversa
+\end{verbatim}
 
-def generar_uniforme_rechazo(a, b, c=1.1):
-    if a >= b:
-        raise ValueError("El límite inferior 'a' debe ser menor que el límite superior 'b'")
-    if c <= 1:
-        raise ValueError("La constante 'c' debe ser mayor que 1")
+\textbf{Resultados:}
+\begin{itemize}
+    \item Media estimada: 3.4914 (esperada: 3.5000)
+    \item Varianza estimada: 0.7687 (esperada: 0.7500)
+    \item Test KS: D = 0.0124, p = 0.0924
+    \item El p-valor es mayor que 0.05, NO se rechaza la hipótesis de que los datos siguen U(2,5)
+\end{itemize}
 
-    f = 1 / (b - a)  
+\vspace{0.5em}
+\subsubsection{Método de Rechazo}
+Aunque la inversa es directa, también se implementó el método de rechazo. En este caso, la densidad $f(x) = \frac{1}{b-a}$ es constante, por lo que todos los valores generados dentro del intervalo son aceptados. No obstante, el código sigue el procedimiento general por claridad.
 
-    while True:
-        x = random.uniform(a, b)           # candidato x ~ g(x)
-        u = random.uniform(0, c * f)       # u ~ U(0, c*f(x))
+\textbf{Código:}
+\begin{verbatim}[fontsize=\scriptsize]
+def generar_uniforme_rechazo(a, b, n, c=1.1):
+    f = 1 / (b - a)          # Valor de la densidad constante
+    results = []
+    for _ in range(n):
+        while True:
+            x = random.uniform(a, b)     # Propone un valor en [a,b]
+            u = random.uniform(0, c*f)   # Propone altura en [0, c*f]
+            if u <= f:                   # Acepta si está bajo la curva
+                results.append(x)
+                break
+    return np.array(results)
+\end{verbatim}
 
-        if u <= f:
-            return x  
+\textbf{Resultados:}
+\begin{itemize}
+    \item Media estimada: 3.5112 (esperada: 3.5000)
+    \item Varianza estimada: 0.7486 (esperada: 0.7500)
+    \item Test KS: D = 0.0111, p = 0.1674
+    \item El p-valor es mayor que 0.05, NO se rechaza la hipótesis de que los datos siguen U(2,5)
+\end{itemize}
 
+\vspace{0.5em}
+\subsubsection{Visualización y Testeo}
 
-def test_uniforme(a, b, n=10000):
-    datos = generar_uniforme_inversa(a, b, n)
+Se utilizó una función para visualizar las muestras y comparar con la densidad teórica visualmente. Además, se agregó el test de Kolmogorov-Smirnov (KS) para cuantificar la concordancia con la distribución teórica estadísticamente.
+
+\textbf{Código:}
+\begin{verbatim}[fontsize=\scriptsize]
+from scipy.stats import kstest
+
+def graficar_uniforme(metodo, a, b, n=10000):
+    if metodo == 'inversa':
+        datos = generar_uniforme_inversa(a, b, n)
+        nombre = "Transformada Inversa"
+    elif metodo == 'rechazo':
+        datos = generar_uniforme_rechazo(a, b, n)
+        nombre = "Método de Rechazo"
+    else:
+        raise ValueError("Método no reconocido.")
+
     media = np.mean(datos)
     varianza = np.var(datos)
-    print(f"Media estimada: {media:.4f} (esperada: {(a + b)/2:.4f})")
-    print(f"Varianza estimada: {varianza:.4f} (esperada: {(b - a)**2 / 12:.4f})")
+    media_teo = (a + b) / 2
+    var_teo = (b - a) ** 2 / 12
 
-    # Histograma con ajustes estéticos
+    print(f"[{nombre}] Media estimada: {media:.4f} (esperada: {media_teo:.4f})")
+    print(f"[{nombre}] Varianza estimada: {varianza:.4f} (esperada: {var_teo:.4f})")
+
+    # Test de Kolmogorov-Smirnov
+    d_stat, p_value = kstest(datos, 'uniform', args=(a, b - a))
+    print(f"[{nombre}] Test KS: D = {d_stat:.4f}, p = {p_value:.4f}")
+
+    if p_value < 0.05:
+        print(f"[{nombre}] El p-valor es menor que {0.05}, se RECHAZA la hipótesis de que los datos siguen U({a},{b})")
+    else:
+        print(f"[{nombre}] El p-valor es mayor que {0.05}, NO se rechaza la hipótesis de que los datos siguen U({a},{b})")
+
+    # Histograma y densidad teórica
     plt.figure(figsize=(8, 5))
-    count, bins, ignored = plt.hist(
-        datos, bins=30, range=(a, b), density=True,
-        color='mediumseagreen', edgecolor='black', alpha=0.75, label="Histograma"
-    )
+    plt.hist(datos, bins=30, range=(a, b), density=True,
+             color='cornflowerblue' if metodo == 'rechazo' else 'mediumseagreen',
+             edgecolor='black', alpha=0.75, label="Histograma")
 
-    # Densidad teórica uniforme
-    plt.hlines(1 / (b - a), xmin=a, xmax=b, colors='red', linestyles='dashed', label='Densidad teórica')
+    plt.hlines(1 / (b - a), xmin=a, xmax=b,
+               colors='red', linestyles='dashed', label='Densidad teórica')
 
-    plt.title(f'Distribución Uniforme U({a},{b}) - Transformada Inversa')
+    plt.title(f'Distribución Uniforme U({a},{b}) - {nombre}')
     plt.xlabel("Valor")
     plt.ylabel("Densidad")
     plt.grid(True, linestyle='--', linewidth=0.5)
     plt.legend()
     plt.tight_layout()
-    plt.show()
+    plt.savefig(f"2.2/visualizaciones/uniforme_{metodo}.png")
+\end{verbatim}
 
+\subsubsection{Análisis Comparativo}
+Ambos métodos producen resultados coherentes con la distribución uniforme esperada, tanto en términos de media como de varianza. La transformada inversa es más eficiente computacionalmente, ya que no requiere rechazos, mientras que el método de rechazo es menos eficiente aunque también válido.
 
+En cuanto al test KS, ambos métodos mostraron valores $p$ mayores a 0{,}05, lo que indica que no hay evidencia suficiente para rechazar la hipótesis de que los datos provienen de una distribución uniforme $U(2,5)$. Esto sugiere que ambos métodos generan datos consistentes con la distribución teórica.
 
+Además, desde un punto de vista visual, los histogramas generados por ambos métodos presentan una forma muy cercana a la densidad teórica, lo que refuerza la validez de los resultados obtenidos.
 
-if __name__ == "__main__":
-    test_uniforme(a=2, b=5, n=10000)
-    \end{verbatim}
-\textbf{Resultados:} Con $a=2$, $b=5$ y 10.000 muestras:
-\begin{itemize}
-\item Media empírica: 3.4951 (teórica: 3.5)
-\item Varianza empírica: 0.7568 (teórica: 0.75)
-\end{itemize}
-\subsection{Testeo}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{visualizaciones/uniforme_rechazo.png}
+    \caption{Comparación entre la gráfica generada con el método del rechazo y la gráfica teórica esperada.}
+    \label{fig:uniforme_rechazo}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{visualizaciones/uniforme_inversa.png}
+    \caption{Comparación entre la gráfica generada con el método de la transformada inversa y la gráfica teórica esperada.}
+    \label{fig:uniforme_inversa}
+\end{figure}
 
 \subsection{Distribución Exponencial}
 La distribución exponencial es una distribución continua que modela el tiempo entre eventos en un proceso de Poisson, es decir, eventos que ocurren de manera independiente y con una tasa constante en el tiempo. Es ampliamente utilizada para describir fenómenos como la duración de vida de componentes electrónicos, tiempos de espera, y otros procesos de "tiempo hasta el evento". La función de densidad de probabilidad decrece exponencialmente, reflejando la memoria sin memoria del proceso, lo que significa que la probabilidad de que ocurra un evento en el futuro no depende del tiempo ya transcurrido.
@@ -301,28 +381,123 @@ if __name__ == "__main__":
 \section{Distribuciones Discretas}
 
 \subsection{Distribución Binomial}
-a distribución binomial modela el número de éxitos en una secuencia de $n$ ensayos independientes y mutuamente excluyentes, donde cada ensayo tiene una probabilidad fija $p$ de éxito. Es una distribución discreta que se utiliza frecuentemente para describir fenómenos donde se cuenta la cantidad de eventos favorables dentro de un número determinado de pruebas.
-\textbf{Probabilidad:}
-\begin{equation}
-P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}
-\end{equation}
 
-\textbf{Método de Bernoulli:} Se generaron $n$ ensayos de Bernoulli con probabilidad $p$, sumando los éxitos.
+La distribución binomial discreta modela el número de éxitos en $n$ ensayos independientes, donde cada ensayo tiene una probabilidad $p$ de éxito. Es ampliamente utilizada para representar fenómenos de conteo donde los resultados posibles son éxito o fracaso (ensayos de Bernoulli). De hecho, la distribución binomial puede considerarse como la suma de $n$ variables aleatorias independientes con distribución Bernoulli$(p)$.
 
-\textbf{Método de Rechazo:} Se generó un valor $x$ entre $0$ y $n$ y un número uniforme $u$. Se aceptó $x$ si $u < \frac{P(x)}{M}$, con $M = \max P(x)$ precomputado.
-\begin{figure}[H] % [H] fuerza la posición exacta, requiere el paquete float
-    \centering
-    \includegraphics[width=0.7\textwidth]{visualizaciones/mi_imagen.png}
-    \caption{Descripción de la imagen}
-    \label{fig:mi_imagen}
-\end{figure}
-
-
-\textbf{Resultados:} Con $n=10$, $p=0.5$:
+\subsubsection*{Parámetros}
 \begin{itemize}
-\item Media empírica: 5.012 (teórica: 5)
-\item Varianza empírica: 2.48 (teórica: 2.5)
+  \item $n$: número de ensayos.
+  \item $p$: probabilidad de éxito en cada ensayo.
 \end{itemize}
+
+\subsubsection*{Función de Distribución de Probabilidad (PDF)}
+\[
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, 2, ..., n
+\]
+
+\subsubsection*{Función de Distribución Acumulada (CDF)}
+\[
+F(k) = P(X \leq k) = \sum_{i=0}^k \binom{n}{i} p^i (1-p)^{n-i}
+\]
+
+\subsubsection*{Función Inversa (para la transformada inversa)}
+La distribución binomial no posee una función inversa de forma cerrada (analítica), por lo que **no se puede aplicar directamente la transformada inversa** para generar muestras.
+
+\vspace{0.5em}
+\subsubsection{Transformada Inversa}
+No se aplica, ya que la función de distribución acumulada (CDF) de la binomial no es invertible de forma explícita. En su lugar, se opta por el **método de rechazo**, el cual es más adecuado para distribuciones discretas cuando se conoce la PDF.
+
+\vspace{0.5em}
+\subsubsection{Método de Rechazo}
+Se utilizó el método de rechazo para generar muestras de la distribución binomial $B(n=10, p=0.5)$. Se eligió una distribución propuesta uniforme sobre los valores enteros $\{0, 1, ..., n\}$, y se evaluó la razón entre la PMF de la binomial y el valor máximo observado (constante de aceptación $c$).
+
+\textbf{Código:}
+\begin{verbatim}[fontsize=\scriptsize]
+import numpy as np
+from scipy.stats import binom
+
+n = 10
+p = 0.5
+N = 10000
+
+def binomial_pmf(k, n, p):
+    return binom.pmf(k, n, p)
+
+# Constante c
+prob_vals = [binomial_pmf(k, n, p) for k in range(n + 1)]
+c = max(prob_vals)
+
+# Método de rechazo
+samples = []
+while len(samples) < N:
+    k = np.random.randint(0, n + 1)
+    u = np.random.uniform(0, 1)
+    if u < binomial_pmf(k, n, p) / c:
+        samples.append(k)
+
+samples = np.array(samples)
+\end{verbatim}
+
+\textbf{Resultados (para $n=10$, $p=0.5$, $N=10000$):}
+\begin{itemize}
+    \item Media empírica: 5.0026 \hfill (esperada: 5.0000)
+    \item Varianza empírica: 2.5051 \hfill (esperada: 2.5000)
+    \item Test Chi-cuadrado: $\chi^2 = 9.48$, $p = 0.3045$
+    \item Test KS: $D = 0.0173$, $p = 0.1057$
+    \item Ambos tests indican que NO se rechaza la hipótesis de que los datos siguen una distribución $B(10, 0.5)$
+\end{itemize}
+
+\vspace{0.5em}
+\subsubsection{Visualización y Testeo}
+Se generó un histograma de frecuencias relativas junto con la función de masa de probabilidad teórica para verificar visualmente la concordancia. Además, se aplicaron los tests estadísticos de Kolmogorov-Smirnov (KS) y Chi-cuadrado para validar la generación de muestras.
+
+\textbf{Código:}
+\begin{verbatim}[fontsize=\scriptsize]
+import matplotlib.pyplot as plt
+from scipy.stats import chisquare, kstest
+
+# Estadísticas empíricas
+mean_emp = samples.mean()
+var_emp  = samples.var(ddof=0)
+
+# Frecuencias observadas vs esperadas
+observed_freqs = np.bincount(samples, minlength=n+1)
+x = np.arange(0, n + 1)
+expected_freqs = N * binomial_pmf(x, n, p)
+
+# Test Chi-cuadrado
+chi2_stat, p_value_chi2 = chisquare(f_obs=observed_freqs, f_exp=expected_freqs)
+
+# Test KS
+ks_stat, p_value_ks = kstest(samples, cdf=lambda k: binom.cdf(k, n, p))
+
+# Visualización
+plt.figure(figsize=(8, 5))
+plt.hist(samples, bins=np.arange(n + 2), density=True, alpha=0.6,
+         label="Generado", align='left')
+plt.plot(x, binom.pmf(x, n, p), 'o-', label="Binomial teórica")
+plt.xlabel("k")
+plt.ylabel("Probabilidad")
+plt.title("Método de rechazo para $B(10, 0.5)$")
+plt.legend()
+plt.tight_layout()
+plt.savefig("2.2/visualizaciones/binomial_rechazo.png")
+\end{verbatim}
+
+\vspace{0.5em}
+\subsubsection{Análisis Comparativo}
+Debido a que la función de distribución acumulada de la binomial no es invertible de forma explícita, se implementó únicamente el método de rechazo. Este método fue efectivo para generar muestras válidas, aunque es menos eficiente que la transformada inversa en distribuciones continuas, ya que requiere múltiples intentos por muestra aceptada.
+
+Los resultados obtenidos con $n=10$, $p=0.5$ y $N=10000$ muestras fueron muy cercanos a los valores teóricos de media y varianza. Además, tanto el test de Kolmogorov-Smirnov como el de Chi-cuadrado arrojaron p-valores mayores a 0.05, lo que indica que no se puede rechazar la hipótesis de que los datos provienen de una distribución binomial.
+
+Desde un punto de vista visual, el histograma muestra una excelente concordancia con la distribución teórica, reforzando la validez del método implementado para simular $B(10, 0.5)$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{visualizaciones/binomial_rechazo.png}
+    \caption{Comparación entre la gráfica generada y la gráfica teórica esperada.}
+    \label{fig:binomial_rechazo}
+\end{figure}
 
 \subsection{Distribución Poisson}
 La distribución de Poisson es una distribución discreta que modela el número de eventos que ocurren en un intervalo fijo de tiempo o espacio, bajo la suposición de que estos eventos ocurren con una tasa promedio constante y de manera independiente entre sí.

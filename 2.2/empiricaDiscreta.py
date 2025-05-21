@@ -1,6 +1,7 @@
 import random
 from collections import Counter
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def rechazo_empirico_discreto(valores, probabilidades):
@@ -14,7 +15,7 @@ def rechazo_empirico_discreto(valores, probabilidades):
     if not (len(valores) == len(probabilidades)):
         raise ValueError("Las listas de valores y probabilidades deben tener la misma longitud.")
 
-    if not abs(sum(probabilidades) - 1.0) < 1e-6:
+    if not np.isclose(sum(probabilidades), 1.0):
         raise ValueError("Las probabilidades deben sumar 1.")
 
     n = len(valores)
@@ -47,5 +48,6 @@ plt.title("Distribución generada por rechazo")
 plt.ylabel("Frecuencia")
 plt.legend()
 plt.grid(True)
-plt.savefig("2.2/visualizaciones/empirica_discreta_rechazo.png", )
+plt.show()
+#plt.savefig("2.2/visualizaciones/empirica_discreta_rechazo.png", )
 
