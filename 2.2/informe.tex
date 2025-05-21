@@ -333,9 +333,13 @@ F(x) =
 \end{cases}
 \]
 
+
+
+\subsubsection{Transformada Inversa}
+
 \subsubsection*{Obtención de la Transformada Inversa}
 
-El método de la transformada inversa permite generar variables aleatorias a partir de una distribución conocida, a partir de una variable uniforme $u \sim \mathcal{U}(0,1)$. Para ello, se iguala la CDF a $u$ y se despeja $x$:
+Para ello, se iguala la CDF a $u$ y se despeja $x$:
 
 \[
 F(x) = u \Rightarrow 1 - e^{-\lambda x} = u
@@ -365,14 +369,6 @@ Como $1 - u \sim \mathcal{U}(0,1)$, también se puede escribir:
 x = -\frac{\ln(u)}{\lambda}, \quad u \sim \mathcal{U}(0,1)
 \]
 
-\subsubsection{Transformada Inversa}
-
-La función de distribución acumulada de la exponencial es fácilmente invertible, lo que permite aplicar el método de la transformada inversa sin dificultades.
-
-\textbf{Fórmula:}
-\[
-x = -\frac{\ln(u)}{\lambda}, \quad u \sim \mathcal{U}(0,1)
-\]
 
 \textbf{Resultados (para $\lambda=1.5$, $n=10000$):}
 
@@ -1083,5 +1079,7 @@ Desde el punto de vista estadístico, la prueba de Chi-Cuadrado confirmó que la
 
 
 \end{document}
+
+
 
 
