@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.20)  21 MAY 2025 17:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.3) (preloaded format=pdflatex 2025.4.20)  21 MAY 2025 21:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -618,17 +618,18 @@ Package pdftex.def Info: visualizaciones/uniforme_inversa.png  used on input lin
 
 
 [6 <./visualizaciones/uniforme_rechazo.png> <./visualizaciones/uniforme_inversa.png>]
-
-[7]
-<visualizaciones/exponencial_Transformada Inversa.png, id=282, 462.528pt x 346.896pt>
+<visualizaciones/exponencial_Transformada Inversa.png, id=276, 462.528pt x 346.896pt>
 File: visualizaciones/exponencial_Transformada Inversa.png Graphic file (type png)
 <use visualizaciones/exponencial_Transformada Inversa.png>
-Package pdftex.def Info: visualizaciones/exponencial_Transformada Inversa.png  used on input line 405.
+Package pdftex.def Info: visualizaciones/exponencial_Transformada Inversa.png  used on input line 401.
 (pdftex.def)             Requested size: 283.22162pt x 212.42668pt.
+
+
+[7]
 <visualizaciones/exponencial_Rechazo.png, id=283, 462.528pt x 346.896pt>
 File: visualizaciones/exponencial_Rechazo.png Graphic file (type png)
 <use visualizaciones/exponencial_Rechazo.png>
-Package pdftex.def Info: visualizaciones/exponencial_Rechazo.png  used on input line 411.
+Package pdftex.def Info: visualizaciones/exponencial_Rechazo.png  used on input line 407.
 (pdftex.def)             Requested size: 283.22162pt x 212.42668pt.
 
 
@@ -636,7 +637,7 @@ Package pdftex.def Info: visualizaciones/exponencial_Rechazo.png  used on input 
 <visualizaciones/gamma_rechazo.png, id=292, 462.528pt x 346.896pt>
 File: visualizaciones/gamma_rechazo.png Graphic file (type png)
 <use visualizaciones/gamma_rechazo.png>
-Package pdftex.def Info: visualizaciones/gamma_rechazo.png  used on input line 485.
+Package pdftex.def Info: visualizaciones/gamma_rechazo.png  used on input line 481.
 (pdftex.def)             Requested size: 377.62642pt x 283.23383pt.
 
 
@@ -650,12 +651,12 @@ Package pdftex.def Info: visualizaciones/gamma_rechazo.png  used on input line 4
 <visualizaciones/normal_inversa.png, id=322, 462.528pt x 346.896pt>
 File: visualizaciones/normal_inversa.png Graphic file (type png)
 <use visualizaciones/normal_inversa.png>
-Package pdftex.def Info: visualizaciones/normal_inversa.png  used on input line 645.
+Package pdftex.def Info: visualizaciones/normal_inversa.png  used on input line 641.
 (pdftex.def)             Requested size: 283.22162pt x 212.42668pt.
 <visualizaciones/normal_rechazo.png, id=323, 462.528pt x 346.896pt>
 File: visualizaciones/normal_rechazo.png Graphic file (type png)
 <use visualizaciones/normal_rechazo.png>
-Package pdftex.def Info: visualizaciones/normal_rechazo.png  used on input line 652.
+Package pdftex.def Info: visualizaciones/normal_rechazo.png  used on input line 648.
 (pdftex.def)             Requested size: 283.22162pt x 212.42668pt.
 
 
@@ -665,7 +666,7 @@ Package pdftex.def Info: visualizaciones/normal_rechazo.png  used on input line 
 <visualizaciones/pascal_rechazo.png, id=337, 462.528pt x 346.896pt>
 File: visualizaciones/pascal_rechazo.png Graphic file (type png)
 <use visualizaciones/pascal_rechazo.png>
-Package pdftex.def Info: visualizaciones/pascal_rechazo.png  used on input line 759.
+Package pdftex.def Info: visualizaciones/pascal_rechazo.png  used on input line 755.
 (pdftex.def)             Requested size: 377.62642pt x 283.23383pt.
 
 
@@ -675,7 +676,7 @@ Package pdftex.def Info: visualizaciones/pascal_rechazo.png  used on input line 
 <visualizaciones/binomial_rechazo.png, id=350, 578.16pt x 361.35pt>
 File: visualizaciones/binomial_rechazo.png Graphic file (type png)
 <use visualizaciones/binomial_rechazo.png>
-Package pdftex.def Info: visualizaciones/binomial_rechazo.png  used on input line 831.
+Package pdftex.def Info: visualizaciones/binomial_rechazo.png  used on input line 827.
 (pdftex.def)             Requested size: 283.22162pt x 177.01343pt.
 
 
@@ -685,7 +686,7 @@ Package pdftex.def Info: visualizaciones/binomial_rechazo.png  used on input lin
 <visualizaciones/poisson_rechazo.png, id=365, 462.528pt x 346.896pt>
 File: visualizaciones/poisson_rechazo.png Graphic file (type png)
 <use visualizaciones/poisson_rechazo.png>
-Package pdftex.def Info: visualizaciones/poisson_rechazo.png  used on input line 903.
+Package pdftex.def Info: visualizaciones/poisson_rechazo.png  used on input line 899.
 (pdftex.def)             Requested size: 283.22162pt x 212.42668pt.
 
 
@@ -695,7 +696,7 @@ Package pdftex.def Info: visualizaciones/poisson_rechazo.png  used on input line
 <visualizaciones/hipergeometrica_rechazo.png, id=380, 462.528pt x 346.896pt>
 File: visualizaciones/hipergeometrica_rechazo.png Graphic file (type png)
 <use visualizaciones/hipergeometrica_rechazo.png>
-Package pdftex.def Info: visualizaciones/hipergeometrica_rechazo.png  used on input line 990.
+Package pdftex.def Info: visualizaciones/hipergeometrica_rechazo.png  used on input line 986.
 (pdftex.def)             Requested size: 283.22162pt x 212.42668pt.
 
 
@@ -705,7 +706,7 @@ Package pdftex.def Info: visualizaciones/hipergeometrica_rechazo.png  used on in
 <visualizaciones/empirica_discreta_rechazo.png, id=396, 462.528pt x 346.896pt>
 File: visualizaciones/empirica_discreta_rechazo.png Graphic file (type png)
 <use visualizaciones/empirica_discreta_rechazo.png>
-Package pdftex.def Info: visualizaciones/empirica_discreta_rechazo.png  used on input line 1077.
+Package pdftex.def Info: visualizaciones/empirica_discreta_rechazo.png  used on input line 1073.
 (pdftex.def)             Requested size: 283.22162pt x 212.42668pt.
 
 
@@ -729,7 +730,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  75i,9n,79p,1046b,643s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx9.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi5.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi7.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr5.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr9.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri9.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/renzo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on informe.pdf (23 pages, 825217 bytes).
+Output written on informe.pdf (23 pages, 824872 bytes).
 PDF statistics:
  520 PDF objects out of 1000 (max. 8388607)
  126 named destinations out of 1000 (max. 500000)
