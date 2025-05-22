@@ -1,22 +1,80 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import random
+from scipy.stats import kstest
 
-def generar_uniforme(a, b, n):
+# Transformada inversa
+
+def generar_uniforme_inversa(a, b, n):
     u = np.random.random(n)
     return a + (b - a) * u
 
-def test_uniforme(a, b, n=10000):
-    datos = generar_uniforme(a, b, n)
-    media = np.mean(datos)
-    print(f"Media estimada: {media:.4f} (esperada: {(a + b)/2:.4f})")
+def generar_uniforme_rechazo(a, b, n, c=1.1):
+    if a >= b:
+        raise ValueError("El límite inferior 'a' debe ser menor que el límite superior 'b'")
+    if c <= 1:
+        raise ValueError("La constante 'c' debe ser mayor que 1")
 
-    plt.hist(datos, bins=50, density=True, color='lightgreen', edgecolor='black')
-    plt.title(f"Histograma Uniforme U({a},{b})")
+    f = 1 / (b - a)
+    results = []
+
+    for _ in range(n):
+        while True:
+            x = random.uniform(a, b)
+            u = random.uniform(0, c * f)
+            if u <= f:
+                results.append(x)
+                break
+
+    return np.array(results)
+
+
+def graficar_uniforme(metodo, a, b, n=10000):
+    if metodo == 'inversa':
+        datos = generar_uniforme_inversa(a, b, n)
+        nombre = "Transformada Inversa"
+    elif metodo == 'rechazo':
+        datos = generar_uniforme_rechazo(a, b, n)
+        nombre = "Método de Rechazo"
+    else:
+        raise ValueError("Método no reconocido.")
+
+    media = np.mean(datos)
+    varianza = np.var(datos)
+    media_teo = (a + b) / 2
+    var_teo = (b - a) ** 2 / 12
+
+    print(f"[{nombre}] Media estimada: {media:.4f} (esperada: {media_teo:.4f})")
+    print(f"[{nombre}] Varianza estimada: {varianza:.4f} (esperada: {var_teo:.4f})")
+
+    # Test de Kolmogorov-Smirnov
+    d_stat, p_value = kstest(datos, 'uniform', args=(a, b - a))
+    print(f"[{nombre}] Test KS: D = {d_stat:.4f}, p = {p_value:.4f}")
+
+    if p_value < 0.05:
+        print(f"[{nombre}] El p-valor es menor que {0.05}, se RECHAZA la hipótesis de que los datos siguen U({a},{b})")
+    else:
+        print(f"[{nombre}] El p-valor es mayor que {0.05}, NO se rechaza la hipótesis de que los datos siguen U({a},{b})")
+
+    # Histograma y densidad teórica
+    plt.figure(figsize=(8, 5))
+    plt.hist(datos, bins=30, range=(a, b), density=True,
+             color='cornflowerblue' if metodo == 'rechazo' else 'mediumseagreen',
+             edgecolor='black', alpha=0.75, label="Histograma")
+
+    plt.hlines(1 / (b - a), xmin=a, xmax=b,
+               colors='red', linestyles='dashed', label='Densidad teórica')
+
+    plt.title(f'Distribución Uniforme U({a},{b}) - {nombre}')
     plt.xlabel("Valor")
     plt.ylabel("Densidad")
-    plt.grid(True)
-    plt.show()
+    plt.grid(True, linestyle='--', linewidth=0.5)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(f"2.2/visualizaciones/uniforme_{metodo}.png")
+
 
 if __name__ == "__main__":
-    test_uniforme(a=2, b=5, n=10000)
+    graficar_uniforme(metodo='inversa', a=2, b=5, n=10000)
+    graficar_uniforme(metodo='rechazo', a=2, b=5, n=10000)
