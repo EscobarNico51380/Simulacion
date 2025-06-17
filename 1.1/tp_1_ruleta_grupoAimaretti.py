@@ -81,6 +81,7 @@ def main():
     graficar(x,vv, varianzaEsperada, f"Una sola corrida  - Varianza respecto al valor esperado", "Varianza", f"grafica_varianza")
 
     print("Simulación finalizada. Gráficos guardados.")
+    print(frn[-1])
 
     # Preparar listas para almacenar resultados de todas las corridas
     todas_frn = []

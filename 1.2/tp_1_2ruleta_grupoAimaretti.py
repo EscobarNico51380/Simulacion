@@ -85,6 +85,7 @@ def jugar(tiradas, numero_elegido, tipo_estrategia, capital_tipo, capital_inicia
     banca_rota = False
 
     for i in range(tiradas):
+
         if capital >= apuesta or capital_tipo == 'i':
             resultado = simular_ruleta()
             gano = False
@@ -136,6 +137,8 @@ def jugar(tiradas, numero_elegido, tipo_estrategia, capital_tipo, capital_inicia
 
         capital_historial.append(capital)
 
+
+
     while len(capital_historial) < tiradas:
         capital_historial.append(capital)
 
@@ -154,6 +157,7 @@ def jugar(tiradas, numero_elegido, tipo_estrategia, capital_tipo, capital_inicia
                 aciertos += 1
             #Agrega la frecuencia relativa de aciertos de la tirada i al arreglo
             frsa.append(aciertos / (i + 1))
+    print(frsa[4])
     return capital_historial, banca_rota, frsa
 
 def graficar_capital(capital_historial, titulo, nombre_archivo):
