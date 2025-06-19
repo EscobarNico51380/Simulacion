@@ -3,15 +3,15 @@
 \contentsline {section}{\numberline {2}Modelo M/M/1}{2}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Marco Teórico}{2}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Implementación en Python}{3}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Simulación en AnyLogic}{4}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Resultados}{6}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Probabilidad de Denegación de Servicio (Cola Finita)}{6}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Conclusiones del Modelo M/M/1}{9}{subsection.3.2}%
-\contentsline {section}{\numberline {4}Modelo de Inventario (s, S)}{13}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Marco Teórico}{13}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Implementación en Python}{13}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Simulación en AnyLogic}{14}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Resultados y Gráficas}{14}{subsection.4.4}%
-\contentsline {subsection}{\numberline {4.5}Conclusiones del Modelo de Inventario}{14}{subsection.4.5}%
-\contentsline {section}{\numberline {5}Conclusiones Generales}{14}{section.5}%
-\contentsline {section}{\numberline {A}Apéndice: Código Fuente Python}{15}{appendix.Alph1}%
+\contentsline {subsection}{\numberline {2.3}Simulación en AnyLogic}{7}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Resultados}{9}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Probabilidad de Denegación de Servicio (Cola Finita)}{9}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Conclusiones del Modelo M/M/1}{18}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Modelo de Inventario (s, S)}{22}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Marco Teórico}{22}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Implementación en Python}{22}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Simulación en AnyLogic}{26}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Resultados y Gráficas}{29}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Conclusiones del Modelo de Inventario}{30}{subsection.4.5}%
+\contentsline {section}{\numberline {5}Conclusiones Generales}{30}{section.5}%
+\contentsline {section}{\numberline {A}Apéndice: Código Fuente Python}{30}{appendix.Alph1}%

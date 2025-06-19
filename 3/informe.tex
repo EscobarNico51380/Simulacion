@@ -133,6 +133,158 @@ Se realizaron múltiples corridas por configuración para obtener promedios esta
 \begin{verbatim}
 python3 sim-mm1k.py --mu 10 --t 1000 --k 5 --c 30
 \end{verbatim}
+\textbf{Codigo de la simulacion M/M/1/K:}
+
+\begin{verbatim}
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import argparse
+    from collections import deque
+    import os
+    
+    
+    # Función que simula un sistema M/M/1 con cola finita o infinita
+    def simular_mm1(tasa_arribo, tasa_servicio, tamaño_maximo_cola=np.inf, tiempo_simulacion=1000):
+        tiempo_ocupado = 0  # Tiempo total en el que el servidor estuvo ocupado
+        t = 0  # Tiempo actual de simulación
+        cola = deque()  # Cola de espera (estructura eficiente tipo FIFO)
+        servidor_ocupado = False  # Estado del servidor: True si está atendiendo
+        proxima_llegada = np.random.exponential(1 / tasa_arribo)  # Tiempo hasta la próxima llegada (distribución exponencial)
+        proxima_salida = np.inf  # No hay salida programada al principio
+        area_en_sistema = 0  # Área bajo la curva de "clientes en el sistema", para el promedio
+        area_en_cola = 0  # Área bajo la curva de "clientes en cola", para el promedio
+        tiempo_ultimo_evento = 0
+        rechazados = 0  # Contador de clientes rechazados por cola llena
+        tiempos_en_sistema = []  # Lista de los tiempos individuales que cada cliente pasó en el sistema
+    
+        # Bucle principal de simulación, avanza el tiempo hasta que se completa la simulación
+        while t < tiempo_simulacion:
+            # Avanza el tiempo al siguiente evento: llegada o salida
+            t = min(proxima_llegada, proxima_salida)
+    
+            # Acumula el área (para obtener promedios al final)
+            area_en_sistema += len(cola) * (t - tiempo_ultimo_evento)
+            # Si el servidor está ocupado, hay un cliente menos en cola (el que está siendo atendido)
+            area_en_cola += (len(cola) - (1 if servidor_ocupado else 0)) * (t - tiempo_ultimo_evento)
+            if servidor_ocupado:
+                tiempo_ocupado += t - tiempo_ultimo_evento
+    
+            tiempo_ultimo_evento = t
+    
+            # Si el evento es una llegada
+            if t == proxima_llegada:
+                # Si hay espacio en la cola, se agrega el cliente
+                if len(cola) < tamaño_maximo_cola:
+                    cola.append(t)  # Guardamos el tiempo de llegada del cliente
+                    # Si el servidor está libre, se atiende inmediatamente
+                    if not servidor_ocupado:
+                        servidor_ocupado = True
+                        proxima_salida = t + np.random.exponential(1 / tasa_servicio)
+                else:
+                    # Si la cola está llena, se rechaza al cliente
+                    rechazados += 1
+                # Se programa la próxima llegada
+                proxima_llegada = t + np.random.exponential(1 / tasa_arribo)
+    
+            else:  # Si el evento es una salida del sistema
+                tiempo_llegada = cola.popleft()  # Se saca al cliente que estaba primero en la cola
+                demora = t - tiempo_llegada  # Tiempo total que estuvo en el sistema
+                tiempos_en_sistema.append(demora)
+    
+                # Si hay más clientes esperando, se programa la siguiente salida
+                if len(cola) > 0:
+                    proxima_salida = t + np.random.exponential(1 / tasa_servicio)
+                else:
+                    # Si no hay nadie esperando, el servidor queda libre
+                    servidor_ocupado = False
+                    proxima_salida = np.inf
+    
+        # Cálculo de la utilización del servidor (tiempo que estuvo ocupado / tiempo total)
+        utilizacion = tiempo_ocupado / tiempo_simulacion
+    
+    
+        # Devolvemos las métricas principales como un diccionario
+        return {
+            "promedio_en_sistema": area_en_sistema / tiempo_simulacion,
+            "promedio_en_cola": area_en_cola / tiempo_simulacion,
+            "tiempo_promedio_sistema": np.mean(tiempos_en_sistema) if tiempos_en_sistema else 0,
+            "tiempo_promedio_cola": (area_en_cola / tiempo_simulacion) / tasa_arribo if tasa_arribo > 0 else 0,
+            "utilizacion": utilizacion,
+            "probabilidad_rechazo": rechazados / (rechazados + len(tiempos_en_sistema)) if (rechazados + len(tiempos_en_sistema)) > 0 else 0
+        }
+    
+    # Función para correr varios experimentos variando la tasa de arribo
+    def correr_experimentos(mu=1.0, tiempo_simulacion=1000, K=np.inf, cantidad_corridas=50):
+        factores_de_carga = [0.25, 0.5, 0.75, 1.0, 1.25]  # λ / μ
+        resultados = {}
+    
+        for factor in factores_de_carga:
+            lam = factor * mu  # Calculamos λ a partir del factor
+            # Ejecutamos varias corridas y guardamos los resultados
+            corridas = [simular_mm1(lam, mu, tamaño_maximo_cola=K, tiempo_simulacion=tiempo_simulacion) for _ in range(cantidad_corridas)]
+            # Promediamos los resultados obtenidos
+            promedio = {clave: np.mean([corrida[clave] for corrida in corridas]) for clave in corridas[0]}
+            resultados[factor] = promedio  # Guardamos el resultado bajo el factor correspondiente
+    
+        return resultados
+    
+    # Función para graficar los resultados
+    def graficar_resultados(resultados,mu,k):
+        factores = sorted([float(f) for f in resultados.keys()])  # Asegurarse de que estén ordenados como floats
+        metricas = list(resultados[factores[0]].keys())  # Tomamos las métricas disponibles
+    
+        if not os.path.exists('graficas'):
+            os.makedirs('graficas')  # Crear carpeta si no existe
+    
+        for metrica in metricas:
+            if metrica == "utilizacion":
+                # Para la utilización, graficamos como porcentaje
+                valores_y = [resultados[f][metrica] * 100 for f in factores]
+    
+            else:
+                valores_y = [resultados[f][metrica] for f in factores]
+    
+            plt.figure()
+            plt.plot(factores, valores_y, marker='o', linestyle='-', color='royalblue')
+            plt.xlabel('Carga del Sistema (λ / μ)', fontsize=12)
+            plt.ylabel(metrica.replace("_", " ").title(), fontsize=12)
+            if k != -1:
+                plt.title(f'{metrica.replace("_", " ").title()} (μ={mu}, K={k})', fontsize=14)
+            else:
+                plt.title(f'{metrica.replace("_", " ").title()} (μ={mu}, K=∞)', fontsize=14)
+            plt.xticks(factores)  # Marcar los puntos del eje X con los factores directamente
+            plt.grid(True)
+            plt.tight_layout()
+            if not os.path.exists('graficas/mm1k'):
+                os.makedirs('graficas/mm1k')
+            # Guardar antes de mostrar para que no se limpie la figura
+            plt.savefig(f'graficas/mm1k/{metrica}.png')
+    
+    
+    
+    
+    # Función principal del script
+    def main():
+        # Parser de argumentos para poder correr el script desde consola con distintos parámetros
+        parser = argparse.ArgumentParser(description="Simulación M/M/1 con cola finita o infinita")
+        parser.add_argument('--mu', type=float, default=1.0, help="Tasa de servicio μ")
+        parser.add_argument('--t', type=int, default=1000, help="Tiempo total de simulación")
+        parser.add_argument('--k', type=int, default=-1, help="Tamaño máximo de la cola (-1 para infinito)")
+        parser.add_argument('--c', type=int, default=10, help="Cantidad de corridas por experimento")
+    
+        args = parser.parse_args()
+        # Si k es -1, se interpreta como cola infinita
+        K = np.inf if args.k == -1 else args.k
+    
+        # Ejecutamos los experimentos y graficamos los resultados
+        resultados = correr_experimentos(mu=args.mu, tiempo_simulacion=args.t, K=K, cantidad_corridas=args.c)
+        graficar_resultados(resultados, args.mu,args.k)
+    
+    # Punto de entrada del programa
+    if __name__ == "__main__":
+        main()
+    #python3 sim-mm1k.py --mu 10 --t 1000 --k 2 --c 10   
+\end{verbatim}
 
 
 %-------------------------------------
@@ -218,6 +370,65 @@ A continuación se presentan los gráficos de la \textbf{probabilidad de rechazo
     \caption{Probabilidad de rechazo simulada para distintos valores de \( K \)}
 \end{figure}
 
+\textbf{Graficas de promedio en cola: }:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_0/promedio_en_cola.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_2/promedio_en_cola.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_5/promedio_en_cola.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_10/promedio_en_cola.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_50/promedio_en_cola.png}
+    \caption{Promedio de clientes en cola simulado para distintos valores de \( K \)}
+\end{figure}
+
+
+\textbf{Graficas de promedio en sistema: }:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_0/promedio_en_sistema.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_2/promedio_en_sistema.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_5/promedio_en_sistema.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_10/promedio_en_sistema.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_50/promedio_en_sistema.png}
+    \caption{Promedio de clientes en el sistema simulado para distintos valores de \( K \)}
+\end{figure}
+
+\textbf{Graficas de tiempo promedio en cola: }:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_0/tiempo_promedio_cola.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_2/tiempo_promedio_cola.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_5/tiempo_promedio_cola.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_10/tiempo_promedio_cola.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_50/tiempo_promedio_cola.png}
+    \caption{Promedio de tiempo en cola simulado para distintos valores de \( K \)}
+\end{figure}
+
+
+\textbf{Graficas de tiempo promedio en sistema: }:
+\begin{figure}[H]
+    \centering
+
+\includegraphics[width=0.48\textwidth]{graficas/mm1k/k_0/tiempo_promedio_sistema.png}
+\includegraphics[width=0.48\textwidth]{graficas/mm1k/k_2/tiempo_promedio_sistema.png}
+\includegraphics[width=0.48\textwidth]{graficas/mm1k/k_5/tiempo_promedio_sistema.png}
+\includegraphics[width=0.48\textwidth]{graficas/mm1k/k_10/tiempo_promedio_sistema.png}
+\includegraphics[width=0.48\textwidth]{graficas/mm1k/k_50/tiempo_promedio_sistema.png}
+\caption{Promedio de tiempo en sistema simulado para distintos valores de \( K \)}
+\end{figure}
+
+\textbf{Graficas de utilizacion sistema: }:
+\begin{figure}[H]
+    \centering
+
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_0/utilizacion.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_2/utilizacion.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_5/utilizacion.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_10/utilizacion.png}
+    \includegraphics[width=0.48\textwidth]{graficas/mm1k/k_50/utilizacion.png}
+    \caption{Utilizacion del sistema simulado para distintos valores de \( K \)}
+\end{figure}
+
 \subsubsection*{(b) Resultados Teóricos}
 
 Los valores teóricos de la probabilidad de rechazo para el modelo M/M/1/K se calcularon utilizando la fórmula:
@@ -234,11 +445,11 @@ Los resultados obtenidos se resumen en la siguiente tabla:
 \hline
 \( \rho \) & \( K=0 \) & \( K=2 \) & \( K=5 \) & \( K=10 \) & \( K=50 \) \\
 \hline
-0.25 & ... & ... & ... & ... & ... \\
-0.50 & ... & ... & ... & ... & ... \\
-0.75 & ... & ... & ... & ... & ... \\
-1.00 & ... & ... & ... & ... & ... \\
-1.25 & ... & ... & ... & ... & ... \\
+0.25 & 0 & 0.5 & 1.25 & 2.5 & 12.5 \\
+0.50 & 0 & 1 & 2.5 & 5 & 25 \\
+0.75 & 0 & 1.5 & 3.75 & 7.5 & 37.5 \\
+1.00 & 0 & 2 & 5 & 10 & 50 \\
+1.25 & 0 & 2.5 & 6.25 & 12.5 & 62.5 \\
 \hline
 \end{tabular}
 \caption{Probabilidad teórica de rechazo \( P_K \) para distintos valores de \( \rho \) y \( K \)}
@@ -248,15 +459,44 @@ Los resultados obtenidos se resumen en la siguiente tabla:
 
 Se implementó un modelo equivalente en \textbf{AnyLogic} utilizando bloques estándar del entorno (Source, Queue, Server, Sink), parametrizados para replicar los valores de \( \lambda \), \( \mu \) y \( K \).
 
-Se realizaron simulaciones independientes para cada configuración, obteniendo como salida la métrica "probabilidad de rechazo" registrada desde el bloque \texttt{Source}.
+Para la comparación, se eligió una carga representativa del sistema: \( \rho = \lambda / \mu = 0.75 \), con \( \lambda = 3.75 \), \( \mu = 5 \).
+
+A continuación se muestran los gráficos obtenidos para distintos valores de \( K \):
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{figs/anylogic_rechazo_K2.png}
-    \caption{Probabilidad de rechazo en AnyLogic para \( K = 2 \)}
+    \fbox{\parbox{0.7\textwidth}{
+        \textbf{Nota:} No se presenta el gráfico para \( K = 0 \), ya que el modelo en AnyLogic no genera datos útiles bajo esta condición. Al no existir capacidad de cola ni disponibilidad inicial del servidor, el sistema no procesa clientes durante la simulación.
+    }}
+    \caption{Simulación no ejecutada para \( K = 0 \)}
 \end{figure}
 
-% Repetí esto por cada K que simules, o bien agrupá todo en una figura con subfiguras.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{./graficas/mm1k/anylogic/k_2.png}
+    \caption{Resultados de AnyLogic para \( K = 2 \), con \( \lambda = 3.75 \)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{./graficas/mm1k/anylogic/k_5.png}
+    \caption{Resultados de AnyLogic para \( K = 5 \), con \( \lambda = 3.75 \)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{./graficas/mm1k/anylogic/k_10.png}
+    \caption{Resultados de AnyLogic para \( K = 10 \), con \( \lambda = 3.75 \)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{./graficas/mm1k/anylogic/k_50.png}
+    \caption{Resultados de AnyLogic para \( K = 50 \), con \( \lambda = 3.75 \)}
+\end{figure}
+
+
 
 \subsubsection*{(d) Comparación General}
 
@@ -369,23 +609,27 @@ Dicha comparación valida la correcta implementación del modelo y la fidelidad 
 \subsection{Marco Teórico}
 
 El modelo de inventario $(s, S)$ es una política de revisión periódica en la que:
+
 \begin{itemize}
     \item Se monitorea diariamente el inventario disponible.
-    \item Si el nivel baja a $s$ o menos, se realiza un pedido para reabastecer hasta el nivel $S$.
-    \item La demanda diaria sigue una distribución de Poisson.
-    \item El pedido llega después de un \textit{lead time} (tiempo de entrega) de duración fija.
+    \item Si el nivel baja a $s$ o menos y no hay un pedido pendiente, se ordena la cantidad necesaria para alcanzar el nivel $S$.
+    \item La demanda diaria sigue una distribución de Poisson con media \( \lambda \).
+    \item El pedido llega luego de un \textit{lead time} constante \( l \).
 \end{itemize}
+
+No se considera acumulación de faltantes (backordering): la demanda no satisfecha se pierde y genera un costo inmediato.
 
 \textbf{Costos involucrados:}
 \begin{itemize}
-    \item \textbf{Costo de orden} ($C_o$): asociado a emitir un pedido.
-    \item \textbf{Costo de mantenimiento} ($C_m$): por unidad almacenada por día.
-    \item \textbf{Costo de faltante} ($C_f$): por unidad de demanda insatisfecha.
+    \item \textbf{Costo de orden} ($C_{\text{orden}}$): se incurre cada vez que se emite un pedido.
+    \item \textbf{Costo de mantenimiento} ($C_{\text{mant}}$): proporcional a las unidades almacenadas por día.
+    \item \textbf{Costo de faltante} ($C_{\text{falt}}$): proporcional a las unidades no satisfechas.
 \end{itemize}
 
-El objetivo es minimizar el costo total esperado durante el horizonte de simulación, que se calcula como:
+El costo total acumulado durante el horizonte de simulación se calcula como:
+
 \[
-C_{total} = C_o + C_m + C_f
+C_{\text{total}} = \sum_{t=1}^{T} \left( C_{\text{orden}}(t) + C_{\text{mant}}(t) + C_{\text{falt}}(t) \right)
 \]
 
 
@@ -418,16 +662,242 @@ Se desarrolló una simulación basada en pasos discretos diarios. En cada día:
 \begin{verbatim}
 python3 sim-modelo-inventario.py --s 20 --S 80 --d 6 --t 365 --co 100 --cm 0.5 --cf 10 --l 2 --c 30
 \end{verbatim}
+\textbf{Codigo de la simulacion en Python:}
+
+\begin{verbatim}
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import argparse
+    import os
+    from typing import List, Dict, Tuple
+    
+    
+    def simular_inventario(
+        s: int, S: int, demanda_media: float, tiempo_simulacion: int,
+        costo_orden: float, costo_mantener: float, costo_faltante: float,
+        lead_time: int
+    ) -> Dict[str, float | List[int]]:
+        """
+        Simula una corrida del modelo de inventario (s, S) con demanda Poisson.
+        """
+        inventario = S
+        orden_pendiente, tiempo_orden = None, None
+    
+        costos = {"orden": 0, "mantener": 0, "faltante": 0}
+        historial = []
+    
+        for t in range(tiempo_simulacion):
+            if orden_pendiente is not None and t == tiempo_orden:
+                inventario += orden_pendiente
+                orden_pendiente, tiempo_orden = None, None
+    
+            demanda = np.random.poisson(demanda_media)
+            inventario -= demanda
+    
+            if inventario < 0:
+                costos["faltante"] += abs(inventario) * costo_faltante
+                inventario = 0
+    
+            costos["mantener"] += inventario * costo_mantener
+    
+            if inventario <= s and orden_pendiente is None:
+                cantidad = S - inventario
+                orden_pendiente = cantidad
+                tiempo_orden = t + lead_time
+                costos["orden"] += costo_orden
+    
+            historial.append(inventario)
+    
+        costos["total"] = sum(costos.values())
+        costos["historial"] = historial
+        return costos
+    
+    
+    def correr_experimentos(
+        s: int, S: int, demanda_media: float, tiempo_simulacion: int,
+        costo_orden: float, costo_mantener: float, costo_faltante: float,
+        lead_time: int, corridas: int
+    ) -> Tuple[Dict[str, float], List[Dict]]:
+    
+        resultados = [
+            simular_inventario(s, S, demanda_media, tiempo_simulacion,
+                               costo_orden, costo_mantener, costo_faltante, lead_time)
+            for _ in range(corridas)
+        ]
+    
+        promedio = {
+            k: np.mean([r[k] for r in resultados]) for k in ["orden", "mantener", "faltante", "total"]
+        }
+    
+        return promedio, resultados
+    
+    
+    
+    
+    
+    
+    def graficar_inventario(historial: List[int]):
+        plt.figure(figsize=(10, 5))
+        plt.plot(historial, color="teal", linewidth=2)
+        plt.title("Evolución del Inventario (1ª corrida)")
+        plt.xlabel("Período")
+        plt.ylabel("Unidades")
+        plt.grid(True)
+        plt.tight_layout()
+        if not os.path.exists("graficas/inventario"):
+            os.makedirs("graficas/inventario")
+        plt.savefig("graficas/inventario/evolucion_inventario.png")
+        plt.close()
+    
+    
+    def graficar_costos_promedio(promedios: Dict[str, float]):
+        categorias = ["orden", "mantener", "faltante"]
+        valores = [promedios[c] for c in categorias]
+    
+        plt.figure(figsize=(8, 5))
+        plt.bar(categorias, valores, color=["orange", "steelblue", "crimson"])
+        plt.title("Costo Promedio por Categoría")
+        plt.ylabel("Costo")
+        plt.tight_layout()
+        if not os.path.exists("graficas/costos"):
+            os.makedirs("graficas/costos")
+        plt.savefig("graficas/costos/costos_promedio.png")
+        plt.close()
+    
+    
+    def graficar_costos_por_corrida(resultados: List[Dict[str, float]]):
+        corridas = range(len(resultados))
+        for metrica, color in zip(["orden", "mantener", "faltante", "total"],
+                                  ["darkorange", "royalblue", "firebrick", "forestgreen"]):
+            plt.figure(figsize=(10, 4))
+            plt.plot(corridas, [r[metrica] for r in resultados], marker="o", color=color)
+            plt.title(f"{metrica.capitalize()} por Corrida")
+            plt.xlabel("Corrida")
+            plt.ylabel("Costo")
+            plt.grid(True)
+            plt.tight_layout()
+            if not os.path.exists("graficas/costos"):
+                os.makedirs("graficas/costos")
+            plt.savefig(f"graficas/costos/{metrica}_por_corrida.png")
+            plt.close()
+    
+    
+    
+    def main():
+        parser = argparse.ArgumentParser(description="Simulación del modelo de inventario (s, S)")
+    
+        parser.add_argument("--s", type=int, default=20, help="Punto de reorden (s)")
+        parser.add_argument("--S", type=int, default=80, help="Nivel objetivo de inventario (S)")
+        parser.add_argument("--d", type=float, default=5.0, help="Demanda media")
+        parser.add_argument("--t", type=int, default=100, help="Períodos de simulación")
+        parser.add_argument("--co", type=float, default=50.0, help="Costo por orden")
+        parser.add_argument("--cm", type=float, default=1.0, help="Costo de mantenimiento")
+        parser.add_argument("--cf", type=float, default=10.0, help="Costo por faltante")
+        parser.add_argument("--l", type=int, default=2, help="Lead time (períodos)")
+        parser.add_argument("--c", type=int, default=10, help="Cantidad de corridas")
+    
+        args = parser.parse_args()
+    
+        if args.s > args.S:
+            raise ValueError("El valor de s no puede ser mayor que S")
+    
+        promedio, resultados = correr_experimentos(
+            args.s, args.S, args.d, args.t, args.co, args.cm, args.cf, args.l, args.c
+        )
+    
+        print("RESULTADOS PROMEDIO")
+        for clave, valor in promedio.items():
+            print(f"  {clave.capitalize():<10}: ${valor:.2f}")
+    
+        graficar_inventario(resultados[0]["historial"])
+        graficar_costos_promedio(promedio)
+        graficar_costos_por_corrida(resultados)
+    
+    
+    if __name__ == "__main__":
+        main()
+    # python3 sim-modelo-inventario.py --s 20 --S 100 --d 7 --t 365 --co 100 --cm 0.2 --cf 5 --l 3 --c 30
+       
+\end{verbatim}
 
 
 %-------------------------------------
 \subsection{Simulación en AnyLogic}
 %-------------------------------------
+
+Con el objetivo de validar los resultados obtenidos mediante la simulación en Python, se desarrolló una versión equivalente del modelo de inventario $(s, S)$ en la plataforma de simulación \textbf{AnyLogic}.
+
+El modelo fue construido utilizando componentes estándar del entorno de simulación de eventos discretos, y refleja fielmente la dinámica del sistema bajo análisis, incorporando la demanda diaria, los pedidos con \textit{lead time}, y la evaluación de los niveles de inventario.
+
+\subsubsection*{Estructura del modelo}
+
+La estructura principal del modelo en AnyLogic incluye los siguientes bloques:
+
 \begin{itemize}
-    \item Explicación del modelo implementado en AnyLogic.
-    \item Capturas del modelo.
-    \item Detalles de parámetros y eventos utilizados.
+    \item \texttt{Source}: genera una entidad por día, representando un paso del tiempo.
+    \item \texttt{Delay} (bloque de tiempo): simula el proceso diario y permite ejecutar la lógica de simulación al ritmo de un día por entidad.
+    \item \texttt{SelectOutput}: ramifica el flujo para aplicar la lógica de reorden.
+    \item \texttt{Queue / Delay / Release}: representan el ciclo de entrega de los pedidos.
+    \item Variables auxiliares: controlan el inventario, el pedido pendiente y los costos acumulados.
 \end{itemize}
+
+\vspace{0.5em}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/modelo_anylogic.png}
+    \caption{Estructura del modelo $(s, S)$ implementado en AnyLogic.}
+\end{figure}
+
+\subsubsection*{Justificación de parámetros utilizados}
+
+Se definieron los siguientes valores de referencia para realizar la simulación:
+
+\begin{itemize}
+    \item Punto de reorden: \( s = 20 \)
+    \item Nivel máximo: \( S = 80 \)
+    \item Demanda diaria media: \( \lambda = 6 \)
+    \item Lead time: \( l = 2 \) días
+    \item Horizonte de simulación: \( T = 365 \) días
+\end{itemize}
+
+Estos parámetros coinciden con los utilizados en la simulación en Python, permitiendo una comparación directa de resultados.
+
+\subsubsection*{Eventos y variables clave}
+
+El modelo incluye las siguientes variables y eventos personalizados:
+
+\begin{itemize}
+    \item \texttt{inventario} (int): representa el inventario disponible día a día.
+    \item \texttt{pedidoPendiente} (boolean): indica si hay un pedido en curso.
+    \item \texttt{diasParaEntrega} (int): cuenta regresiva para el arribo del pedido.
+    \item \texttt{demandaDiaria}: generada con distribución de Poisson.
+    \item \texttt{costosAcumulados}: incluye costos de orden, mantenimiento y faltantes.
+\end{itemize}
+
+La lógica de reorden se implementa dentro de un bloque de código ejecutado cada día, que evalúa si el inventario cayó por debajo del punto de reorden y, en ese caso, genera un pedido cuya llegada se programa a \( t + l \) días.
+
+\subsubsection*{Captura de resultados}
+
+Durante la simulación se registran las métricas clave de interés:
+
+\begin{itemize}
+    \item Evolución del inventario.
+    \item Costo total acumulado.
+    \item Costos individuales (orden, mantenimiento, faltantes).
+    \item Cantidad de pedidos emitidos.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/inventario_anylogic.png}
+    \caption{Gráfico de evolución del inventario simulado en AnyLogic.}
+\end{figure}
+
+\subsubsection*{Comparación con resultados en Python}
+
+Los valores obtenidos con AnyLogic se utilizaron como validación de los resultados generados en Python. Las curvas de inventario y los costos totales se mantuvieron consistentes bajo múltiples corridas, lo que respalda la correcta implementación del modelo en ambos entornos.
+
+
 
 %-------------------------------------
 \subsection{Resultados y Gráficas}

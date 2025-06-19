@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.20)  18 JUN 2025 22:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.5.20)  18 JUN 2025 22:54
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -459,61 +459,630 @@ LaTeX Info: Redefining \% on input line 1.
  [1
 
 {C:/Users/nicoe/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2] [3]
-LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 171.
+Overfull \hbox (139.29407pt too wide) in paragraph at lines 287--287
+[]    \OT1/cmtt/m/n/12 def simular_mm1(tasa_arribo, tasa_servicio, tama~no_maximo_cola=np.inf, tiempo_simulacion=1000):[] 
+ []
+
+
+Overfull \hbox (15.794pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 tiempo_ocupado = 0  # Tiempo total en el que el servidor estuvo ocupado[] 
+ []
+
+
+Overfull \hbox (21.96901pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 servidor_ocupado = False  # Estado del servidor: True si est^^Sa atendiendo[] 
+ []
+
+
+Overfull \hbox (306.01915pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 proxima_llegada = np.random.exponential(1 / tasa_arribo)  # Tiempo hasta la pr^^Soxima llegada (distribuci^^Son exponencial)[] 
+ []
+
+
+Overfull \hbox (114.59406pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 area_en_sistema = 0  # []Area bajo la curva de "clientes en el sistema", para el promedio[] 
+ []
+
+
+Overfull \hbox (59.01903pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 area_en_cola = 0  # []Area bajo la curva de "clientes en cola", para el promedio[] 
+ []
+
+
+Overfull \hbox (170.16908pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 tiempos_en_sistema = []  # Lista de los tiempos individuales que cada cliente pas^^So en el sistema[] 
+ []
+
+
+Overfull \hbox (102.24405pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 # Bucle principal de simulaci^^Son, avanza el tiempo hasta que se completa la simulaci^^Son[] 
+ []
+
+[4]
+Overfull \hbox (151.64407pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 # Si el servidor est^^Sa ocupado, hay un cliente menos en cola (el que est^^Sa siendo atendido)[] 
+ []
+
+
+Overfull \hbox (151.64407pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 area_en_cola += (len(cola) - (1 if servidor_ocupado else 0)) * (t - tiempo_ultimo_evento)[] 
+ []
+
+
+Overfull \hbox (21.96901pt too wide) in paragraph at lines 287--287
+[]                    \OT1/cmtt/m/n/12 cola.append(t)  # Guardamos el tiempo de llegada del cliente[] 
+ []
+
+
+Overfull \hbox (52.84402pt too wide) in paragraph at lines 287--287
+[]                        \OT1/cmtt/m/n/12 proxima_salida = t + np.random.exponential(1 / tasa_servicio)[] 
+ []
+
+
+Overfull \hbox (139.29407pt too wide) in paragraph at lines 287--287
+[]                \OT1/cmtt/m/n/12 tiempo_llegada = cola.popleft()  # Se saca al cliente que estaba primero en la cola[] 
+ []
+
+
+Overfull \hbox (46.66902pt too wide) in paragraph at lines 287--287
+[]                \OT1/cmtt/m/n/12 demora = t - tiempo_llegada  # Tiempo total que estuvo en el sistema[] 
+ []
+
+
+Overfull \hbox (21.96901pt too wide) in paragraph at lines 287--287
+[]                \OT1/cmtt/m/n/12 # Si hay m^^Sas clientes esperando, se programa la siguiente salida[] 
+ []
+
+
+Overfull \hbox (28.14401pt too wide) in paragraph at lines 287--287
+[]                    \OT1/cmtt/m/n/12 proxima_salida = t + np.random.exponential(1 / tasa_servicio)[] 
+ []
+
+
+Overfull \hbox (89.89404pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 # C^^Salculo de la utilizaci^^Son del servidor (tiempo que estuvo ocupado / tiempo total)[] 
+ []
+
+[5]
+Overfull \hbox (120.76906pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 "tiempo_promedio_sistema": np.mean(tiempos_en_sistema) if tiempos_en_sistema else 0,[] 
+ []
+
+
+Overfull \hbox (213.3941pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 "tiempo_promedio_cola": (area_en_cola / tiempo_simulacion) / tasa_arribo if tasa_arribo > 0 else 0,[] 
+ []
+
+
+Overfull \hbox (392.4692pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 "probabilidad_rechazo": rechazados / (rechazados + len(tiempos_en_sistema)) if (rechazados + len(tiempos_en_sistema)) > 0 else 0[] 
+ []
+
+
+Overfull \hbox (96.06905pt too wide) in paragraph at lines 287--287
+[]    \OT1/cmtt/m/n/12 def correr_experimentos(mu=1.0, tiempo_simulacion=1000, K=np.inf, cantidad_corridas=50):[] 
+ []
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:287: LaTeX Error: Unicode character λ (U+03BB)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \end{verbatim}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:287: LaTeX Error: Unicode character μ (U+03BC)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \end{verbatim}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:287: LaTeX Error: Unicode character λ (U+03BB)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \end{verbatim}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (380.11919pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 corridas = [simular_mm1(lam, mu, tama~no_maximo_cola=K, tiempo_simulacion=tiempo_simulacion) for _ in range(cantidad_corridas)][] 
+ []
+
+
+Overfull \hbox (182.51909pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 promedio = {clave: np.mean([corrida[clave] for corrida in corridas]) for clave in corridas[0]}[] 
+ []
+
+
+Overfull \hbox (133.11906pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 resultados[factor] = promedio  # Guardamos el resultado bajo el factor correspondiente[] 
+ []
+
+
+Overfull \hbox (225.74411pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 factores = sorted([float(f) for f in resultados.keys()])  # Asegurarse de que est^^Sen ordenados como floats[] 
+ []
+
+
+Overfull \hbox (89.89404pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 metricas = list(resultados[factores[0]].keys())  # Tomamos las m^^Setricas disponibles[] 
+ []
+
+
+Overfull \hbox (65.19403pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 plt.plot(factores, valores_y, marker='o', linestyle='-', color='royalblue')[] 
+ []
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:287: LaTeX Error: Unicode character λ (U+03BB)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \end{verbatim}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:287: LaTeX Error: Unicode character μ (U+03BC)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \end{verbatim}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:287: LaTeX Error: Unicode character μ (U+03BC)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \end{verbatim}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (102.24405pt too wide) in paragraph at lines 287--287
+[]                \OT1/cmtt/m/n/12 plt.title(f'{metrica.replace("_", " ").title()} (={mu}, K={k})', fontsize=14)[] 
+ []
+
+[6]
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:287: LaTeX Error: Unicode character μ (U+03BC)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \end{verbatim}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:287: LaTeX Error: Unicode character ∞ (U+221E)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \end{verbatim}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (83.71904pt too wide) in paragraph at lines 287--287
+[]                \OT1/cmtt/m/n/12 plt.title(f'{metrica.replace("_", " ").title()} (={mu}, K=)', fontsize=14)[] 
+ []
+
+
+Overfull \hbox (102.24405pt too wide) in paragraph at lines 287--287
+[]            \OT1/cmtt/m/n/12 plt.xticks(factores)  # Marcar los puntos del eje X con los factores directamente[] 
+ []
+
+
+Overfull \hbox (126.94406pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 # Parser de argumentos para poder correr el script desde consola con distintos par^^Sametros[] 
+ []
+
+
+Overfull \hbox (139.29407pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 parser = argparse.ArgumentParser(description="Simulaci^^Son M/M/1 con cola finita o infinita")[] 
+ []
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:287: LaTeX Error: Unicode character μ (U+03BC)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.287 \end{verbatim}
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (59.01903pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 parser.add_argument('--mu', type=float, default=1.0, help="Tasa de servicio ")[] 
+ []
+
+
+Overfull \hbox (102.24405pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 parser.add_argument('--t', type=int, default=1000, help="Tiempo total de simulaci^^Son")[] 
+ []
+
+
+Overfull \hbox (194.8691pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 parser.add_argument('--k', type=int, default=-1, help="Tama~no m^^Saximo de la cola (-1 para infinito)")[] 
+ []
+
+
+Overfull \hbox (151.64407pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 parser.add_argument('--c', type=int, default=10, help="Cantidad de corridas por experimento")[] 
+ []
+
+
+Overfull \hbox (201.0441pt too wide) in paragraph at lines 287--287
+[]        \OT1/cmtt/m/n/12 resultados = correr_experimentos(mu=args.mu, tiempo_simulacion=args.t, K=K, cantidad_corridas=args.c)[] 
+ []
+
+[7]
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 323.
  (C:\Users\nicoe\AppData\Local\Programs\MiKTeX\tex/latex/base\omscmr.fd
 File: omscmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 171.
- [4] [5]
-<graficas/mm1k/k_0/probabilidad_rechazo.png, id=118, 462.528pt x 346.896pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 323.
+ [8]
+<graficas/mm1k/k_0/probabilidad_rechazo.png, id=131, 462.528pt x 346.896pt>
 File: graficas/mm1k/k_0/probabilidad_rechazo.png Graphic file (type png)
 <use graficas/mm1k/k_0/probabilidad_rechazo.png>
-Package pdftex.def Info: graficas/mm1k/k_0/probabilidad_rechazo.png  used on input line 213.
+Package pdftex.def Info: graficas/mm1k/k_0/probabilidad_rechazo.png  used on input line 365.
 (pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
-<graficas/mm1k/k_2/probabilidad_rechazo.png, id=120, 462.528pt x 346.896pt>
+<graficas/mm1k/k_2/probabilidad_rechazo.png, id=133, 462.528pt x 346.896pt>
 File: graficas/mm1k/k_2/probabilidad_rechazo.png Graphic file (type png)
 <use graficas/mm1k/k_2/probabilidad_rechazo.png>
-Package pdftex.def Info: graficas/mm1k/k_2/probabilidad_rechazo.png  used on input line 214.
+Package pdftex.def Info: graficas/mm1k/k_2/probabilidad_rechazo.png  used on input line 366.
 (pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
-<graficas/mm1k/k_5/probabilidad_rechazo.png, id=121, 462.528pt x 346.896pt>
+<graficas/mm1k/k_5/probabilidad_rechazo.png, id=134, 462.528pt x 346.896pt>
 File: graficas/mm1k/k_5/probabilidad_rechazo.png Graphic file (type png)
 <use graficas/mm1k/k_5/probabilidad_rechazo.png>
-Package pdftex.def Info: graficas/mm1k/k_5/probabilidad_rechazo.png  used on input line 215.
+Package pdftex.def Info: graficas/mm1k/k_5/probabilidad_rechazo.png  used on input line 367.
 (pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
-<graficas/mm1k/k_10/probabilidad_rechazo.png, id=122, 462.528pt x 346.896pt>
+<graficas/mm1k/k_10/probabilidad_rechazo.png, id=135, 462.528pt x 346.896pt>
 File: graficas/mm1k/k_10/probabilidad_rechazo.png Graphic file (type png)
 <use graficas/mm1k/k_10/probabilidad_rechazo.png>
-Package pdftex.def Info: graficas/mm1k/k_10/probabilidad_rechazo.png  used on input line 216.
+Package pdftex.def Info: graficas/mm1k/k_10/probabilidad_rechazo.png  used on input line 368.
 (pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
-<graficas/mm1k/k_50/probabilidad_rechazo.png, id=123, 462.528pt x 346.896pt>
+<graficas/mm1k/k_50/probabilidad_rechazo.png, id=136, 462.528pt x 346.896pt>
 File: graficas/mm1k/k_50/probabilidad_rechazo.png Graphic file (type png)
 <use graficas/mm1k/k_50/probabilidad_rechazo.png>
-Package pdftex.def Info: graficas/mm1k/k_50/probabilidad_rechazo.png  used on input line 217.
+Package pdftex.def Info: graficas/mm1k/k_50/probabilidad_rechazo.png  used on input line 369.
 (pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
- [6] [7 <./graficas/mm1k/k_0/probabilidad_rechazo.png> <./graficas/mm1k/k_2/probabilidad_rechazo.png> <./graficas/mm1k/k_5/probabilidad_rechazo.png> <./graficas/mm1k/k_10/probabilidad_rechazo.png> <./graficas/mm1k/k_50/probabilidad_rechazo.png>]
+ [9]
+<graficas/mm1k/k_0/promedio_en_cola.png, id=142, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_0/promedio_en_cola.png Graphic file (type png)
+<use graficas/mm1k/k_0/promedio_en_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_0/promedio_en_cola.png  used on input line 376.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_2/promedio_en_cola.png, id=143, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_2/promedio_en_cola.png Graphic file (type png)
+<use graficas/mm1k/k_2/promedio_en_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_2/promedio_en_cola.png  used on input line 377.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_5/promedio_en_cola.png, id=144, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_5/promedio_en_cola.png Graphic file (type png)
+<use graficas/mm1k/k_5/promedio_en_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_5/promedio_en_cola.png  used on input line 378.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_10/promedio_en_cola.png, id=145, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_10/promedio_en_cola.png Graphic file (type png)
+<use graficas/mm1k/k_10/promedio_en_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_10/promedio_en_cola.png  used on input line 379.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_50/promedio_en_cola.png, id=146, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_50/promedio_en_cola.png Graphic file (type png)
+<use graficas/mm1k/k_50/promedio_en_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_50/promedio_en_cola.png  used on input line 380.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+ [10 <./graficas/mm1k/k_0/probabilidad_rechazo.png> <./graficas/mm1k/k_2/probabilidad_rechazo.png> <./graficas/mm1k/k_5/probabilidad_rechazo.png> <./graficas/mm1k/k_10/probabilidad_rechazo.png> <./graficas/mm1k/k_50/probabilidad_rechazo.png>]
+<graficas/mm1k/k_0/promedio_en_sistema.png, id=157, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_0/promedio_en_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_0/promedio_en_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_0/promedio_en_sistema.png  used on input line 388.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_2/promedio_en_sistema.png, id=158, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_2/promedio_en_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_2/promedio_en_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_2/promedio_en_sistema.png  used on input line 389.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_5/promedio_en_sistema.png, id=159, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_5/promedio_en_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_5/promedio_en_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_5/promedio_en_sistema.png  used on input line 390.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_10/promedio_en_sistema.png, id=160, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_10/promedio_en_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_10/promedio_en_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_10/promedio_en_sistema.png  used on input line 391.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_50/promedio_en_sistema.png, id=161, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_50/promedio_en_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_50/promedio_en_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_50/promedio_en_sistema.png  used on input line 392.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+ [11 <./graficas/mm1k/k_0/promedio_en_cola.png> <./graficas/mm1k/k_2/promedio_en_cola.png> <./graficas/mm1k/k_5/promedio_en_cola.png> <./graficas/mm1k/k_10/promedio_en_cola.png> <./graficas/mm1k/k_50/promedio_en_cola.png>]
+<graficas/mm1k/k_0/tiempo_promedio_cola.png, id=172, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_0/tiempo_promedio_cola.png Graphic file (type png)
+<use graficas/mm1k/k_0/tiempo_promedio_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_0/tiempo_promedio_cola.png  used on input line 399.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_2/tiempo_promedio_cola.png, id=173, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_2/tiempo_promedio_cola.png Graphic file (type png)
+<use graficas/mm1k/k_2/tiempo_promedio_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_2/tiempo_promedio_cola.png  used on input line 400.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_5/tiempo_promedio_cola.png, id=174, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_5/tiempo_promedio_cola.png Graphic file (type png)
+<use graficas/mm1k/k_5/tiempo_promedio_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_5/tiempo_promedio_cola.png  used on input line 401.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_10/tiempo_promedio_cola.png, id=175, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_10/tiempo_promedio_cola.png Graphic file (type png)
+<use graficas/mm1k/k_10/tiempo_promedio_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_10/tiempo_promedio_cola.png  used on input line 402.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_50/tiempo_promedio_cola.png, id=176, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_50/tiempo_promedio_cola.png Graphic file (type png)
+<use graficas/mm1k/k_50/tiempo_promedio_cola.png>
+Package pdftex.def Info: graficas/mm1k/k_50/tiempo_promedio_cola.png  used on input line 403.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+ [12 <./graficas/mm1k/k_0/promedio_en_sistema.png> <./graficas/mm1k/k_2/promedio_en_sistema.png> <./graficas/mm1k/k_5/promedio_en_sistema.png> <./graficas/mm1k/k_10/promedio_en_sistema.png> <./graficas/mm1k/k_50/promedio_en_sistema.png>]
+<graficas/mm1k/k_0/tiempo_promedio_sistema.png, id=187, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_0/tiempo_promedio_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_0/tiempo_promedio_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_0/tiempo_promedio_sistema.png  used on input line 412.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_2/tiempo_promedio_sistema.png, id=188, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_2/tiempo_promedio_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_2/tiempo_promedio_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_2/tiempo_promedio_sistema.png  used on input line 413.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_5/tiempo_promedio_sistema.png, id=189, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_5/tiempo_promedio_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_5/tiempo_promedio_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_5/tiempo_promedio_sistema.png  used on input line 414.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_10/tiempo_promedio_sistema.png, id=190, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_10/tiempo_promedio_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_10/tiempo_promedio_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_10/tiempo_promedio_sistema.png  used on input line 415.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_50/tiempo_promedio_sistema.png, id=191, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_50/tiempo_promedio_sistema.png Graphic file (type png)
+<use graficas/mm1k/k_50/tiempo_promedio_sistema.png>
+Package pdftex.def Info: graficas/mm1k/k_50/tiempo_promedio_sistema.png  used on input line 416.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+ [13 <./graficas/mm1k/k_0/tiempo_promedio_cola.png> <./graficas/mm1k/k_2/tiempo_promedio_cola.png> <./graficas/mm1k/k_5/tiempo_promedio_cola.png> <./graficas/mm1k/k_10/tiempo_promedio_cola.png> <./graficas/mm1k/k_50/tiempo_promedio_cola.png>]
+<graficas/mm1k/k_0/utilizacion.png, id=203, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_0/utilizacion.png Graphic file (type png)
+<use graficas/mm1k/k_0/utilizacion.png>
+Package pdftex.def Info: graficas/mm1k/k_0/utilizacion.png  used on input line 424.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_2/utilizacion.png, id=204, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_2/utilizacion.png Graphic file (type png)
+<use graficas/mm1k/k_2/utilizacion.png>
+Package pdftex.def Info: graficas/mm1k/k_2/utilizacion.png  used on input line 425.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_5/utilizacion.png, id=205, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_5/utilizacion.png Graphic file (type png)
+<use graficas/mm1k/k_5/utilizacion.png>
+Package pdftex.def Info: graficas/mm1k/k_5/utilizacion.png  used on input line 426.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_10/utilizacion.png, id=206, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_10/utilizacion.png Graphic file (type png)
+<use graficas/mm1k/k_10/utilizacion.png>
+Package pdftex.def Info: graficas/mm1k/k_10/utilizacion.png  used on input line 427.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+<graficas/mm1k/k_50/utilizacion.png, id=207, 462.528pt x 346.896pt>
+File: graficas/mm1k/k_50/utilizacion.png Graphic file (type png)
+<use graficas/mm1k/k_50/utilizacion.png>
+Package pdftex.def Info: graficas/mm1k/k_50/utilizacion.png  used on input line 428.
+(pdftex.def)             Requested size: 226.57297pt x 169.93288pt.
+ [14 <./graficas/mm1k/k_0/tiempo_promedio_sistema.png> <./graficas/mm1k/k_2/tiempo_promedio_sistema.png> <./graficas/mm1k/k_5/tiempo_promedio_sistema.png> <./graficas/mm1k/k_10/tiempo_promedio_sistema.png> <./graficas/mm1k/k_50/tiempo_promedio_sistema.png>] [15 <./graficas/mm1k/k_0/utilizacion.png> <./graficas/mm1k/k_2/utilizacion.png> <./graficas/mm1k/k_5/utilizacion.png> <./graficas/mm1k/k_10/utilizacion.png> <./graficas/mm1k/k_50/utilizacion.png>]
+<./graficas/mm1k/anylogic/k_2.png, id=229, 1261.71375pt x 627.09282pt>
+File: ./graficas/mm1k/anylogic/k_2.png Graphic file (type png)
+<use ./graficas/mm1k/anylogic/k_2.png>
+Package pdftex.def Info: ./graficas/mm1k/anylogic/k_2.png  used on input line 477.
+(pdftex.def)             Requested size: 354.02342pt x 175.95796pt.
+<./graficas/mm1k/anylogic/k_5.png, id=230, 1270.7475pt x 621.07031pt>
+File: ./graficas/mm1k/anylogic/k_5.png Graphic file (type png)
+<use ./graficas/mm1k/anylogic/k_5.png>
+Package pdftex.def Info: ./graficas/mm1k/anylogic/k_5.png  used on input line 483.
+(pdftex.def)             Requested size: 354.02342pt x 173.02663pt.
+ [16 <./graficas/mm1k/anylogic/k_2.png>]
+<./graficas/mm1k/anylogic/k_10.png, id=240, 1279.78125pt x 629.35126pt>
+File: ./graficas/mm1k/anylogic/k_10.png Graphic file (type png)
+<use ./graficas/mm1k/anylogic/k_10.png>
+Package pdftex.def Info: ./graficas/mm1k/anylogic/k_10.png  used on input line 489.
+(pdftex.def)             Requested size: 354.02342pt x 174.09486pt.
+<./graficas/mm1k/anylogic/k_50.png, id=241, 1263.21938pt x 623.32875pt>
+File: ./graficas/mm1k/anylogic/k_50.png Graphic file (type png)
+<use ./graficas/mm1k/anylogic/k_50.png>
+Package pdftex.def Info: ./graficas/mm1k/anylogic/k_50.png  used on input line 495.
+(pdftex.def)             Requested size: 354.02342pt x 174.69255pt.
+ [17 <./graficas/mm1k/anylogic/k_5.png> <./graficas/mm1k/anylogic/k_10.png> <./graficas/mm1k/anylogic/k_50.png>] [18] [19] [20] [21] [22]
+Overfull \hbox (139.29407pt too wide) in paragraph at lines 664--664
+[]\OT1/cmtt/m/n/12 python3 sim-modelo-inventario.py --s 20 --S 80 --d 6 --t 365 --co 100 --cm 0.5 --cf 10 --l 2 --c 30[] 
+ []
 
-LaTeX Warning: File `figs/anylogic_rechazo_K2.png' not found on input line 255.
+
+Overfull \hbox (15.794pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 Simula una corrida del modelo de inventario (s, S) con demanda Poisson.[] 
+ []
+
+[23]
+Overfull \hbox (59.01903pt too wide) in paragraph at lines 821--821
+[]                               \OT1/cmtt/m/n/12 costo_orden, costo_mantener, costo_faltante, lead_time)[] 
+ []
 
 
-c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:255: Package pdftex.def Error: File `figs/anylogic_rechazo_K2.png' not found: using draft setting.
+Overfull \hbox (157.81908pt too wide) in paragraph at lines 821--821
+[]            \OT1/cmtt/m/n/12 k: np.mean([r[k] for r in resultados]) for k in ["orden", "mantener", "faltante", "total"][] 
+ []
+
+LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 821.
+(C:\Users\nicoe\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmtt.fd
+File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+) [24]
+Overfull \hbox (9.619pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 plt.bar(categorias, valores, color=["orange", "steelblue", "crimson"])[] 
+ []
+
+
+Overfull \hbox (3.444pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 for metrica, color in zip(["orden", "mantener", "faltante", "total"],[] 
+ []
+
+
+Overfull \hbox (89.89404pt too wide) in paragraph at lines 821--821
+[]                                  \OT1/cmtt/m/n/12 ["darkorange", "royalblue", "firebrick", "forestgreen"]):[] 
+ []
+
+
+Overfull \hbox (77.54404pt too wide) in paragraph at lines 821--821
+[]            \OT1/cmtt/m/n/12 plt.plot(corridas, [r[metrica] for r in resultados], marker="o", color=color)[] 
+ []
+
+
+Overfull \hbox (133.11906pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser = argparse.ArgumentParser(description="Simulaci^^Son del modelo de inventario (s, S)")[] 
+ []
+
+
+Overfull \hbox (52.84402pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser.add_argument("--s", type=int, default=20, help="Punto de reorden (s)")[] 
+ []
+
+
+Overfull \hbox (126.94406pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser.add_argument("--S", type=int, default=80, help="Nivel objetivo de inventario (S)")[] 
+ []
+
+
+Overfull \hbox (28.14401pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser.add_argument("--d", type=float, default=5.0, help="Demanda media")[] 
+ []
+
+[25]
+Overfull \hbox (71.36903pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser.add_argument("--t", type=int, default=100, help="Per^^S^^Podos de simulaci^^Son")[] 
+ []
+
+
+Overfull \hbox (52.84402pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser.add_argument("--co", type=float, default=50.0, help="Costo por orden")[] 
+ []
+
+
+Overfull \hbox (89.89404pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser.add_argument("--cm", type=float, default=1.0, help="Costo de mantenimiento")[] 
+ []
+
+
+Overfull \hbox (71.36903pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser.add_argument("--cf", type=float, default=10.0, help="Costo por faltante")[] 
+ []
+
+
+Overfull \hbox (46.66902pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser.add_argument("--l", type=int, default=2, help="Lead time (per^^S^^Podos)")[] 
+ []
+
+
+Overfull \hbox (52.84402pt too wide) in paragraph at lines 821--821
+[]        \OT1/cmtt/m/n/12 parser.add_argument("--c", type=int, default=10, help="Cantidad de corridas")[] 
+ []
+
+
+Overfull \hbox (52.84402pt too wide) in paragraph at lines 821--821
+[]            \OT1/cmtt/m/n/12 args.s, args.S, args.d, args.t, args.co, args.cm, args.cf, args.l, args.c[] 
+ []
+
+
+Overfull \hbox (176.34409pt too wide) in paragraph at lines 821--821
+[]    \OT1/cmtt/m/n/12 # python3 sim-modelo-inventario.py --s 20 --S 100 --d 7 --t 365 --co 100 --cm 0.2 --cf 5 --l 3 --c 30[] 
+ []
+
+[26]
+
+LaTeX Warning: File `figs/modelo_anylogic.png' not found on input line 847.
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:847: Package pdftex.def Error: File `figs/modelo_anylogic.png' not found: using draft setting.
 
 See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.255 ...\textwidth]{figs/anylogic_rechazo_K2.png}
+l.847 ...=0.9\textwidth]{figs/modelo_anylogic.png}
                                                   
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[8] [9] [10] [11] [12]
-Overfull \hbox (139.29407pt too wide) in paragraph at lines 420--420
-[]\OT1/cmtt/m/n/12 python3 sim-modelo-inventario.py --s 20 --S 80 --d 6 --t 365 --co 100 --cm 0.5 --cf 10 --l 2 --c 30[] 
- []
+[27]
 
-[13] [14]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 479.
+LaTeX Warning: File `figs/inventario_anylogic.png' not found on input line 892.
+
+
+c:/Users/nicoe/PROYECTOS/4to-año/Simulacion/3/informe.tex:892: Package pdftex.def Error: File `figs/inventario_anylogic.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.892 ...\textwidth]{figs/inventario_anylogic.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[28] [29]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 949.
  (sim-mm1k.py
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 1.
@@ -638,6 +1207,7 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
+[30]
 
 sim-mm1k.py:14: LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter).
 
@@ -968,7 +1538,6 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
-[15]
 
 sim-mm1k.py:41: LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter).
 
@@ -1059,6 +1628,7 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
+[31]
 
 sim-mm1k.py:56: LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter).
 
@@ -1269,7 +1839,6 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
-[16]
 
 sim-mm1k.py:84: LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@).
 
@@ -1360,6 +1929,7 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
+[32]
 
 sim-mm1k.py:95: LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter).
 
@@ -1600,7 +2170,6 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
-[17]
 
 sim-mm1k.py:128: LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter).
 
@@ -1811,7 +2380,7 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
-) (sim-modelo-inventario.py [18] [19]
+[33]) (sim-modelo-inventario.py [34]
 
 sim-modelo-inventario.py:75: LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter).
 
@@ -1902,6 +2471,7 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
+[35]
 
 sim-modelo-inventario.py:92: LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter).
 
@@ -1962,7 +2532,6 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
-[20]
 
 sim-modelo-inventario.py:125: LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter).
 
@@ -2053,10 +2622,7 @@ or specify an encoding such as \usepackage [latin1]{inputenc}
 in the document preamble.
 Alternatively, save the file in UTF-8 using your editor or another tool
 
-LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 143.
-(C:\Users\nicoe\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmtt.fd
-File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-)) [21] (informe.aux
+[36]) [37] (informe.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
 )
@@ -2068,17 +2634,17 @@ Package rerunfilecheck Info: File `informe.out' has not changed.
 (rerunfilecheck)             Checksum: 3990F2ED50B4A1CBB62F59F298D54559;2837.
  ) 
 Here is how much of TeX's memory you used:
- 15585 strings out of 474486
- 246900 string characters out of 5743755
- 2344542 words of memory out of 5000000
- 37323 multiletter control sequences out of 15000+600000
- 570343 words of font info for 84 fonts, out of 8000000 for 9000
+ 15851 strings out of 474486
+ 257603 string characters out of 5743755
+ 2383542 words of memory out of 5000000
+ 37556 multiletter control sequences out of 15000+600000
+ 570640 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,79p,858b,2239s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\nicoe\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tctt1000.pk> <C:\Users\nicoe\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmitt10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on informe.pdf (21 pages, 452071 bytes).
+ <C:\Users\nicoe\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tctt1000.pk> <C:\Users\nicoe\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tctt1200.pk> <C:\Users\nicoe\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmitt10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/nicoe/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on informe.pdf (37 pages, 1408089 bytes).
 PDF statistics:
- 666 PDF objects out of 1000 (max. 8388607)
- 355 named destinations out of 1000 (max. 500000)
- 154 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 825 PDF objects out of 1000 (max. 8388607)
+ 387 named destinations out of 1000 (max. 500000)
+ 299 words of extra memory for PDF output out of 10000 (max. 10000000)
 
