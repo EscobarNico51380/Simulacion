@@ -43,7 +43,6 @@ Simulación de un modelo MM1 e Inventario}
 \begin{document}
 
 \maketitle
-\tableofcontents
 \newpage
 
 \begin{abstract}
@@ -132,158 +131,6 @@ Se realizaron múltiples corridas por configuración para obtener promedios esta
 \textbf{Ejemplo de ejecución desde consola:}
 \begin{verbatim}
 python3 sim-mm1k.py --mu 10 --t 1000 --k 5 --c 30
-\end{verbatim}
-\textbf{Codigo de la simulacion M/M/1/K:}
-
-\begin{verbatim}
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import argparse
-    from collections import deque
-    import os
-    
-    
-    # Función que simula un sistema M/M/1 con cola finita o infinita
-    def simular_mm1(tasa_arribo, tasa_servicio, tamaño_maximo_cola=np.inf, tiempo_simulacion=1000):
-        tiempo_ocupado = 0  # Tiempo total en el que el servidor estuvo ocupado
-        t = 0  # Tiempo actual de simulación
-        cola = deque()  # Cola de espera (estructura eficiente tipo FIFO)
-        servidor_ocupado = False  # Estado del servidor: True si está atendiendo
-        proxima_llegada = np.random.exponential(1 / tasa_arribo)  # Tiempo hasta la próxima llegada (distribución exponencial)
-        proxima_salida = np.inf  # No hay salida programada al principio
-        area_en_sistema = 0  # Área bajo la curva de "clientes en el sistema", para el promedio
-        area_en_cola = 0  # Área bajo la curva de "clientes en cola", para el promedio
-        tiempo_ultimo_evento = 0
-        rechazados = 0  # Contador de clientes rechazados por cola llena
-        tiempos_en_sistema = []  # Lista de los tiempos individuales que cada cliente pasó en el sistema
-    
-        # Bucle principal de simulación, avanza el tiempo hasta que se completa la simulación
-        while t < tiempo_simulacion:
-            # Avanza el tiempo al siguiente evento: llegada o salida
-            t = min(proxima_llegada, proxima_salida)
-    
-            # Acumula el área (para obtener promedios al final)
-            area_en_sistema += len(cola) * (t - tiempo_ultimo_evento)
-            # Si el servidor está ocupado, hay un cliente menos en cola (el que está siendo atendido)
-            area_en_cola += (len(cola) - (1 if servidor_ocupado else 0)) * (t - tiempo_ultimo_evento)
-            if servidor_ocupado:
-                tiempo_ocupado += t - tiempo_ultimo_evento
-    
-            tiempo_ultimo_evento = t
-    
-            # Si el evento es una llegada
-            if t == proxima_llegada:
-                # Si hay espacio en la cola, se agrega el cliente
-                if len(cola) < tamaño_maximo_cola:
-                    cola.append(t)  # Guardamos el tiempo de llegada del cliente
-                    # Si el servidor está libre, se atiende inmediatamente
-                    if not servidor_ocupado:
-                        servidor_ocupado = True
-                        proxima_salida = t + np.random.exponential(1 / tasa_servicio)
-                else:
-                    # Si la cola está llena, se rechaza al cliente
-                    rechazados += 1
-                # Se programa la próxima llegada
-                proxima_llegada = t + np.random.exponential(1 / tasa_arribo)
-    
-            else:  # Si el evento es una salida del sistema
-                tiempo_llegada = cola.popleft()  # Se saca al cliente que estaba primero en la cola
-                demora = t - tiempo_llegada  # Tiempo total que estuvo en el sistema
-                tiempos_en_sistema.append(demora)
-    
-                # Si hay más clientes esperando, se programa la siguiente salida
-                if len(cola) > 0:
-                    proxima_salida = t + np.random.exponential(1 / tasa_servicio)
-                else:
-                    # Si no hay nadie esperando, el servidor queda libre
-                    servidor_ocupado = False
-                    proxima_salida = np.inf
-    
-        # Cálculo de la utilización del servidor (tiempo que estuvo ocupado / tiempo total)
-        utilizacion = tiempo_ocupado / tiempo_simulacion
-    
-    
-        # Devolvemos las métricas principales como un diccionario
-        return {
-            "promedio_en_sistema": area_en_sistema / tiempo_simulacion,
-            "promedio_en_cola": area_en_cola / tiempo_simulacion,
-            "tiempo_promedio_sistema": np.mean(tiempos_en_sistema) if tiempos_en_sistema else 0,
-            "tiempo_promedio_cola": (area_en_cola / tiempo_simulacion) / tasa_arribo if tasa_arribo > 0 else 0,
-            "utilizacion": utilizacion,
-            "probabilidad_rechazo": rechazados / (rechazados + len(tiempos_en_sistema)) if (rechazados + len(tiempos_en_sistema)) > 0 else 0
-        }
-    
-    # Función para correr varios experimentos variando la tasa de arribo
-    def correr_experimentos(mu=1.0, tiempo_simulacion=1000, K=np.inf, cantidad_corridas=50):
-        factores_de_carga = [0.25, 0.5, 0.75, 1.0, 1.25]  # λ / μ
-        resultados = {}
-    
-        for factor in factores_de_carga:
-            lam = factor * mu  # Calculamos λ a partir del factor
-            # Ejecutamos varias corridas y guardamos los resultados
-            corridas = [simular_mm1(lam, mu, tamaño_maximo_cola=K, tiempo_simulacion=tiempo_simulacion) for _ in range(cantidad_corridas)]
-            # Promediamos los resultados obtenidos
-            promedio = {clave: np.mean([corrida[clave] for corrida in corridas]) for clave in corridas[0]}
-            resultados[factor] = promedio  # Guardamos el resultado bajo el factor correspondiente
-    
-        return resultados
-    
-    # Función para graficar los resultados
-    def graficar_resultados(resultados,mu,k):
-        factores = sorted([float(f) for f in resultados.keys()])  # Asegurarse de que estén ordenados como floats
-        metricas = list(resultados[factores[0]].keys())  # Tomamos las métricas disponibles
-    
-        if not os.path.exists('graficas'):
-            os.makedirs('graficas')  # Crear carpeta si no existe
-    
-        for metrica in metricas:
-            if metrica == "utilizacion":
-                # Para la utilización, graficamos como porcentaje
-                valores_y = [resultados[f][metrica] * 100 for f in factores]
-    
-            else:
-                valores_y = [resultados[f][metrica] for f in factores]
-    
-            plt.figure()
-            plt.plot(factores, valores_y, marker='o', linestyle='-', color='royalblue')
-            plt.xlabel('Carga del Sistema (λ / μ)', fontsize=12)
-            plt.ylabel(metrica.replace("_", " ").title(), fontsize=12)
-            if k != -1:
-                plt.title(f'{metrica.replace("_", " ").title()} (μ={mu}, K={k})', fontsize=14)
-            else:
-                plt.title(f'{metrica.replace("_", " ").title()} (μ={mu}, K=∞)', fontsize=14)
-            plt.xticks(factores)  # Marcar los puntos del eje X con los factores directamente
-            plt.grid(True)
-            plt.tight_layout()
-            if not os.path.exists('graficas/mm1k'):
-                os.makedirs('graficas/mm1k')
-            # Guardar antes de mostrar para que no se limpie la figura
-            plt.savefig(f'graficas/mm1k/{metrica}.png')
-    
-    
-    
-    
-    # Función principal del script
-    def main():
-        # Parser de argumentos para poder correr el script desde consola con distintos parámetros
-        parser = argparse.ArgumentParser(description="Simulación M/M/1 con cola finita o infinita")
-        parser.add_argument('--mu', type=float, default=1.0, help="Tasa de servicio μ")
-        parser.add_argument('--t', type=int, default=1000, help="Tiempo total de simulación")
-        parser.add_argument('--k', type=int, default=-1, help="Tamaño máximo de la cola (-1 para infinito)")
-        parser.add_argument('--c', type=int, default=10, help="Cantidad de corridas por experimento")
-    
-        args = parser.parse_args()
-        # Si k es -1, se interpreta como cola infinita
-        K = np.inf if args.k == -1 else args.k
-    
-        # Ejecutamos los experimentos y graficamos los resultados
-        resultados = correr_experimentos(mu=args.mu, tiempo_simulacion=args.t, K=K, cantidad_corridas=args.c)
-        graficar_resultados(resultados, args.mu,args.k)
-    
-    # Punto de entrada del programa
-    if __name__ == "__main__":
-        main()
-    #python3 sim-mm1k.py --mu 10 --t 1000 --k 2 --c 10   
 \end{verbatim}
 
 
@@ -662,163 +509,6 @@ Se desarrolló una simulación basada en pasos discretos diarios. En cada día:
 \begin{verbatim}
 python3 sim-modelo-inventario.py --s 20 --S 80 --d 6 --t 365 --co 100 --cm 0.5 --cf 10 --l 2 --c 30
 \end{verbatim}
-\textbf{Codigo de la simulacion en Python:}
-
-\begin{verbatim}
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import argparse
-    import os
-    from typing import List, Dict, Tuple
-    
-    
-    def simular_inventario(
-        s: int, S: int, demanda_media: float, tiempo_simulacion: int,
-        costo_orden: float, costo_mantener: float, costo_faltante: float,
-        lead_time: int
-    ) -> Dict[str, float | List[int]]:
-        """
-        Simula una corrida del modelo de inventario (s, S) con demanda Poisson.
-        """
-        inventario = S
-        orden_pendiente, tiempo_orden = None, None
-    
-        costos = {"orden": 0, "mantener": 0, "faltante": 0}
-        historial = []
-    
-        for t in range(tiempo_simulacion):
-            if orden_pendiente is not None and t == tiempo_orden:
-                inventario += orden_pendiente
-                orden_pendiente, tiempo_orden = None, None
-    
-            demanda = np.random.poisson(demanda_media)
-            inventario -= demanda
-    
-            if inventario < 0:
-                costos["faltante"] += abs(inventario) * costo_faltante
-                inventario = 0
-    
-            costos["mantener"] += inventario * costo_mantener
-    
-            if inventario <= s and orden_pendiente is None:
-                cantidad = S - inventario
-                orden_pendiente = cantidad
-                tiempo_orden = t + lead_time
-                costos["orden"] += costo_orden
-    
-            historial.append(inventario)
-    
-        costos["total"] = sum(costos.values())
-        costos["historial"] = historial
-        return costos
-    
-    
-    def correr_experimentos(
-        s: int, S: int, demanda_media: float, tiempo_simulacion: int,
-        costo_orden: float, costo_mantener: float, costo_faltante: float,
-        lead_time: int, corridas: int
-    ) -> Tuple[Dict[str, float], List[Dict]]:
-    
-        resultados = [
-            simular_inventario(s, S, demanda_media, tiempo_simulacion,
-                               costo_orden, costo_mantener, costo_faltante, lead_time)
-            for _ in range(corridas)
-        ]
-    
-        promedio = {
-            k: np.mean([r[k] for r in resultados]) for k in ["orden", "mantener", "faltante", "total"]
-        }
-    
-        return promedio, resultados
-    
-    
-    
-    
-    
-    
-    def graficar_inventario(historial: List[int]):
-        plt.figure(figsize=(10, 5))
-        plt.plot(historial, color="teal", linewidth=2)
-        plt.title("Evolución del Inventario (1ª corrida)")
-        plt.xlabel("Período")
-        plt.ylabel("Unidades")
-        plt.grid(True)
-        plt.tight_layout()
-        if not os.path.exists("graficas/inventario"):
-            os.makedirs("graficas/inventario")
-        plt.savefig("graficas/inventario/evolucion_inventario.png")
-        plt.close()
-    
-    
-    def graficar_costos_promedio(promedios: Dict[str, float]):
-        categorias = ["orden", "mantener", "faltante"]
-        valores = [promedios[c] for c in categorias]
-    
-        plt.figure(figsize=(8, 5))
-        plt.bar(categorias, valores, color=["orange", "steelblue", "crimson"])
-        plt.title("Costo Promedio por Categoría")
-        plt.ylabel("Costo")
-        plt.tight_layout()
-        if not os.path.exists("graficas/costos"):
-            os.makedirs("graficas/costos")
-        plt.savefig("graficas/costos/costos_promedio.png")
-        plt.close()
-    
-    
-    def graficar_costos_por_corrida(resultados: List[Dict[str, float]]):
-        corridas = range(len(resultados))
-        for metrica, color in zip(["orden", "mantener", "faltante", "total"],
-                                  ["darkorange", "royalblue", "firebrick", "forestgreen"]):
-            plt.figure(figsize=(10, 4))
-            plt.plot(corridas, [r[metrica] for r in resultados], marker="o", color=color)
-            plt.title(f"{metrica.capitalize()} por Corrida")
-            plt.xlabel("Corrida")
-            plt.ylabel("Costo")
-            plt.grid(True)
-            plt.tight_layout()
-            if not os.path.exists("graficas/costos"):
-                os.makedirs("graficas/costos")
-            plt.savefig(f"graficas/costos/{metrica}_por_corrida.png")
-            plt.close()
-    
-    
-    
-    def main():
-        parser = argparse.ArgumentParser(description="Simulación del modelo de inventario (s, S)")
-    
-        parser.add_argument("--s", type=int, default=20, help="Punto de reorden (s)")
-        parser.add_argument("--S", type=int, default=80, help="Nivel objetivo de inventario (S)")
-        parser.add_argument("--d", type=float, default=5.0, help="Demanda media")
-        parser.add_argument("--t", type=int, default=100, help="Períodos de simulación")
-        parser.add_argument("--co", type=float, default=50.0, help="Costo por orden")
-        parser.add_argument("--cm", type=float, default=1.0, help="Costo de mantenimiento")
-        parser.add_argument("--cf", type=float, default=10.0, help="Costo por faltante")
-        parser.add_argument("--l", type=int, default=2, help="Lead time (períodos)")
-        parser.add_argument("--c", type=int, default=10, help="Cantidad de corridas")
-    
-        args = parser.parse_args()
-    
-        if args.s > args.S:
-            raise ValueError("El valor de s no puede ser mayor que S")
-    
-        promedio, resultados = correr_experimentos(
-            args.s, args.S, args.d, args.t, args.co, args.cm, args.cf, args.l, args.c
-        )
-    
-        print("RESULTADOS PROMEDIO")
-        for clave, valor in promedio.items():
-            print(f"  {clave.capitalize():<10}: ${valor:.2f}")
-    
-        graficar_inventario(resultados[0]["historial"])
-        graficar_costos_promedio(promedio)
-        graficar_costos_por_corrida(resultados)
-    
-    
-    if __name__ == "__main__":
-        main()
-    # python3 sim-modelo-inventario.py --s 20 --S 100 --d 7 --t 365 --co 100 --cm 0.2 --cf 5 --l 3 --c 30
-       
-\end{verbatim}
 
 
 %-------------------------------------
@@ -844,7 +534,7 @@ La estructura principal del modelo en AnyLogic incluye los siguientes bloques:
 \vspace{0.5em}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{figs/modelo_anylogic.png}
+    \includegraphics[width=0.9\textwidth]{graficas/modelos/ModeloMM1/diagrama_mm1.png}
     \caption{Estructura del modelo $(s, S)$ implementado en AnyLogic.}
 \end{figure}
 
@@ -855,9 +545,9 @@ Se definieron los siguientes valores de referencia para realizar la simulación:
 \begin{itemize}
     \item Punto de reorden: \( s = 20 \)
     \item Nivel máximo: \( S = 80 \)
-    \item Demanda diaria media: \( \lambda = 6 \)
+    \item Demanda diaria media: \( \lambda = 5 \)
     \item Lead time: \( l = 2 \) días
-    \item Horizonte de simulación: \( T = 365 \) días
+    \item Horizonte de simulación: \( T = 100\) días
 \end{itemize}
 
 Estos parámetros coinciden con los utilizados en la simulación en Python, permitiendo una comparación directa de resultados.
@@ -876,7 +566,7 @@ El modelo incluye las siguientes variables y eventos personalizados:
 
 La lógica de reorden se implementa dentro de un bloque de código ejecutado cada día, que evalúa si el inventario cayó por debajo del punto de reorden y, en ese caso, genera un pedido cuya llegada se programa a \( t + l \) días.
 
-\subsubsection*{Captura de resultados}
+\subsubsection*{Graficos de resultados}
 
 Durante la simulación se registran las métricas clave de interés:
 
@@ -889,57 +579,55 @@ Durante la simulación se registran las métricas clave de interés:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{figs/inventario_anylogic.png}
+    \includegraphics[width=0.9\textwidth]{./graficas/modelos/inventario/evolucion.jpg}
     \caption{Gráfico de evolución del inventario simulado en AnyLogic.}
 \end{figure}
-
-\subsubsection*{Comparación con resultados en Python}
-
-Los valores obtenidos con AnyLogic se utilizaron como validación de los resultados generados en Python. Las curvas de inventario y los costos totales se mantuvieron consistentes bajo múltiples corridas, lo que respalda la correcta implementación del modelo en ambos entornos.
-
-
 
 %-------------------------------------
 \subsection{Resultados y Gráficas}
 %-------------------------------------
 \subsubsection*{Gráficas Generadas}
-\begin{itemize}
-    \item Evolución del inventario en el tiempo.
-    \item Costo promedio por categoría.
-    \item Costos por corrida.
-\end{itemize}
 
-\subsubsection*{Comparación de Resultados}
-\begin{itemize}
-    \item Tabla comparativa de:
-    \begin{enumerate}
-        \item Costo total teórico.
-        \item Simulación Python.
-        \item Simulación AnyLogic.
-    \end{enumerate}
-    \item Análisis de patrones: ¿qué afecta más el costo total?
-\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{graficas/costos/costos_promedio.png}
+    \includegraphics[width=0.48\textwidth]{graficas/costos/faltante_por_corrida.png}
+    \includegraphics[width=0.48\textwidth]{graficas/costos/mantener_por_corrida.png}
+    \includegraphics[width=0.48\textwidth]{graficas/costos/orden_por_corrida.png}
+    \includegraphics[width=0.48\textwidth]{graficas/costos/total_por_corrida.png}
+    
+    \caption{Costos del inventario simulados en python}
+\end{figure}
 
-%-------------------------------------
 \subsection{Conclusiones del Modelo de Inventario}
-%-------------------------------------
 \begin{itemize}
-    \item Comportamiento del inventario frente a variaciones de demanda y lead time.
-    \item Relación entre costos y parámetros $(s, S)$.
-    \item Coincidencias entre métodos.
-    \item Limitaciones y sugerencias para futuras mejoras.
+    \item \textbf{Comportamiento del inventario frente a variaciones de demanda y lead time:}  
+    El modelo de inventario basado en la política $(s, S)$ mostró un comportamiento dinámico ante la variabilidad de la demanda generada mediante una distribución de Poisson. Se observó que, a pesar de las fluctuaciones aleatorias en la demanda y en el tiempo de entrega (lead time), el sistema logró mantener el inventario dentro de márgenes operativos seguros. Los períodos en que el inventario descendía por debajo del punto de reorden eran compensados por pedidos emitidos oportunamente, reduciendo así el riesgo de desabastecimiento prolongado.
+
+    \item \textbf{Relación entre costos y parámetros $(s, S)$:}  
+    Los resultados evidenciaron que los costos de mantenimiento y orden fueron los componentes más significativos del costo total. En particular, el costo de mantenimiento representó el mayor porcentaje (más del 90\% en algunas simulaciones con AnyLogic), mientras que los costos por faltante se mantuvieron bajos gracias a la adecuada configuración de los parámetros $s = 20$ y $S = 80$. Estos valores permitieron alcanzar un nivel de servicio superior al 99\%, con un control eficiente del inventario y los costos asociados.
+
+    \item \textbf{Coincidencias entre métodos:}  
+    La comparación entre los resultados obtenidos en Python y los generados en AnyLogic reveló una alta concordancia en las métricas clave del sistema. Las gráficas de evolución del inventario, así como los costos promedio y por corrida, reflejaron comportamientos coherentes, lo que valida la implementación conceptual y confirma la equivalencia funcional entre ambos entornos de simulación.
+
+    \item \textbf{Limitaciones y sugerencias para futuras mejoras:}  
+    Entre las limitaciones del modelo se destaca el uso de parámetros fijos para los costos y el lead time. Para una mayor realismo, se sugiere incorporar distribuciones probabilísticas en estos valores. También sería valioso extender el modelo para incluir múltiples productos, restricciones de almacenamiento, políticas de revisión continua y costos no lineales. Finalmente, se recomienda considerar métricas adicionales como el fill rate o el nivel de backorders para obtener una visión más integral del desempeño del sistema.
 \end{itemize}
+
 
 %===========================================================
 \section{Conclusiones Generales}
 %===========================================================
 
-\begin{itemize}
-    \item Reflexión final sobre la utilidad de la simulación.
-    \item Comparación global entre teoría, Python y AnyLogic.
-    \item Dificultades encontradas y aprendizajes adquiridos.
-    \item Recomendaciones para aplicar estos modelos a escenarios reales.
-\end{itemize}
+A lo largo del trabajo se desarrollaron y analizaron dos modelos clásicos de la teoría de colas y gestión de inventarios: el modelo de colas M/M/1/K y el modelo de inventario $(s, S)$. Ambos fueron implementados en Python y AnyLogic.
+
+La simulación demostró ser una herramienta esencial para comprender el comportamiento del sistema bajo distintas configuraciones, especialmente en escenarios donde la teoría no es aplicable, como en situaciones de sobrecarga (\( \lambda \geq \mu \)) o restricciones operativas (capacidad finita, tiempos de entrega).
+
+Los resultados mostraron una buena coincidencia entre los métodos teoricos y simulados. Además, se observó cómo el tamaño de la cola o los parámetros de reorden influyen directamente en métricas clave como la probabilidad de rechazo, tiempos de espera, utilización del servidor y costos totales.
+
+En cuanto a las dificultades encontradas, se destacan algunos desafíos en la sincronización de eventos y validación de métricas en ambos entornos. Sin embargo, esto permitió profundizar nuestro conocimiento cobre la plataforma Anylogic.
+
+
 
 %===========================================================
 \appendix
@@ -950,5 +638,7 @@ Los valores obtenidos con AnyLogic se utilizaron como validación de los resulta
 
 \subsection*{Inventario}
 \lstinputlisting[language=Python]{sim-modelo-inventario.py}
+
+
 
 \end{document}
